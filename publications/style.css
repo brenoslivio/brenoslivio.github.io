@@ -53,11 +53,6 @@ nav .main-links a:hover::after {
     position: relative;
 }
 
-h1 {
-    border-bottom: 1px solid #de0be6; /* Adjust color and thickness as needed */
-    padding-bottom: 10px; /* Adds space between text and line */
-}
-
 aside {
     width: 200px;
     padding-right: 1rem;
@@ -88,31 +83,14 @@ main section {
 }
 
 .profile-pic {
-    position: relative;
+    position: absolute;
     right: 2%;
     top: 5%;
     width: 20rem;
     height: 20rem;
-    margin-left: 5rem;
     border-radius: 50%;
     object-fit: cover;
     border: 3px solid #de0be6;
-    box-shadow: 0.2rem 0.2rem 1rem #de0be6;
-    transition: opacity 0.5s ease;
-}
-
-.profile-pic:hover {
-    opacity: 0.9;
-    cursor: pointer;
-}
-
-figure {
-    text-align: center; 
-    margin: 0;
+    /* box-shadow: 0.2rem 0.2rem 1rem #de0be6; */
 }
   
-figcaption {
-    font-style: italic;
-    margin-top: 4em; 
-    margin-left: 4em;
-}
