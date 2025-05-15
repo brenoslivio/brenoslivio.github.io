@@ -1,0 +1,214 @@
+body {
+    font-family: Inter, Arial, sans-serif;
+    background: #191919;
+    margin: 0;
+    padding: 0;
+    color: #ffffff;
+}
+  
+header {
+    background: #191919;
+    padding: 1rem;
+    border-bottom: 0.2rem solid #de0be6;
+    box-shadow: 0 0.2rem 1rem #de0be6;
+}
+
+/* Update your nav styles */
+nav {
+    display: flex;
+    flex-direction: column; /* Stack vertically on mobile */
+    align-items: center;
+    padding: 0.5rem 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* For larger screens */
+@media (min-width: 768px) {
+    nav {
+        flex-direction: row; /* Horizontal layout on desktop */
+        justify-content: space-between;
+    }
+}
+
+.main-links, .social-links {
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap on small screens */
+    justify-content: center;
+    gap: 0.5rem; /* Reduce gap on mobile */
+    padding: 0.5rem 0;
+}
+
+@media (min-width: 768px) {
+    .main-links {
+        margin-right: auto;
+    }
+    .social-links {
+        margin-left: auto;
+    }
+    .main-links, .social-links {
+        gap: 1rem; /* Restore original gap on desktop */
+    }
+}
+
+/* Optional: Adjust margins for better spacing */
+nav a {
+    position: relative;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1rem;
+}
+  
+nav .social-links a,
+nav .main-links a {
+    position: relative;
+    margin: 0 10px;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+/* Animated underline */
+nav .social-links a::after,
+nav .main-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -8px; /* distance below the text */
+    width: 0;
+    height: 2px;
+    background-color: #de0be6;
+    transition: width 0.8s ease;
+}
+
+nav .social-links a:hover::after,
+nav .main-links a:hover::after {
+    width: 100%;
+}
+
+h1 {
+    border-bottom: 1px solid #de0be6; /* Adjust color and thickness as needed */
+    padding-bottom: 10px; /* Adds space between text and line */
+}
+
+a {
+    color: #eaabec; /* Orange color */
+}
+a:hover {
+    color: #de0be6; /* Darker red on hover */
+}
+a:visited {
+    color: #de0be6; /* Different color for visited links */
+}
+
+aside {
+    width: 200px;
+    padding-right: 1rem;
+}
+
+aside h3 {
+    color: #333;
+    font-size: 1rem;
+    margin-top: 1rem;
+}
+
+aside ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+aside ul li {
+    margin: 5px 0;
+}
+
+main section {
+    margin-bottom: 30px;
+}
+
+.container {
+    display: flex;
+    padding: 1rem;
+    position: relative;
+    max-width: 1200rem;
+}
+
+main {
+    flex: 1;
+    min-width: 10rem;
+    margin-right: 1rem;
+}
+
+figure {
+    position: relative; 
+    text-align: center;
+    margin: 2em auto; 
+    max-width: 100%;
+    z-index: 9999;
+}
+
+figure.float-right {
+    float: right;
+    margin: 0 0 1rem 1.5rem;
+    max-width: 30rem;
+}
+
+@media (max-width: 768px) {
+    figure.float-right {
+        float: none;
+        margin: 2em auto;
+        text-align: center;
+        display: block;
+    }
+}
+
+.profile-pic {
+    width: 100%;
+    max-width: 30rem;
+    height: auto;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #de0be6;
+    box-shadow: 0.2rem 0.2rem 1rem #de0be6;
+    transition: opacity 0.5s ease;
+}
+
+.profile-pic:hover {
+    opacity: 0.9;
+    transition: opacity 0.9s ease;
+    cursor: pointer;
+}
+
+figcaption {
+    font-style: italic;
+    margin-top: 1em;
+    margin-left: 0;
+}
+
+@media (max-width: 768px) {
+    figure {
+        position: relative;
+        right: auto;
+        top: auto;
+        width: 80%;
+        margin: 2em auto;
+    }
+    
+    .profile-pic {
+        max-width: 15rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-pic {
+        max-width: 12rem;
+    }
+}
+
+.boxed {
+    border: 1px solid #de0be6;
+    padding: 1rem;
+    margin: 1rem 0;
+    background-color: #191919; 
+    border-radius: 5px;
+}
