@@ -15,9 +15,33 @@ header {
 
 nav {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Push items to far left and right */
     align-items: center;
-    padding: 0.5rem 2rem;
+    padding: 0.5rem 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Main links - align to the left */
+.main-links {
+    display: flex;
+    gap: 1rem; /* Adjust spacing between main links */
+    margin-right: auto; /* Push as far left as possible */
+}
+
+/* Social links - align to the right */
+.social-links {
+    display: flex;
+    gap: 1rem; /* Adjust spacing between social links */
+    margin-left: auto; /* Push as far right as possible */
+}
+
+/* Optional: Adjust margins for better spacing */
+nav a {
+    position: relative;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1rem;
 }
   
 nav .social-links a,
@@ -47,15 +71,19 @@ nav .main-links a:hover::after {
     width: 100%;
 }
 
-.container {
-    display: flex;
-    padding: 1rem;
-    position: relative;
-}
-
 h1 {
     border-bottom: 1px solid #de0be6; /* Adjust color and thickness as needed */
     padding-bottom: 10px; /* Adds space between text and line */
+}
+
+a {
+    color: #eaabec; /* Orange color */
+}
+a:hover {
+    color: #de0be6; /* Darker red on hover */
+}
+a:visited {
+    color: #de0be6; /* Different color for visited links */
 }
 
 aside {
@@ -78,22 +106,34 @@ aside ul li {
     margin: 5px 0;
 }
 
-main {
-    flex: 1;
-    max-width: 700px;
-}
-
 main section {
     margin-bottom: 30px;
 }
 
-.profile-pic {
+.container {
+    display: flex;
+    padding: 1rem;
     position: relative;
+    max-width: 1200rem; /* Set a max width for the container */
+    /* margin: 0 auto; Center the container */
+}
+
+main {
+    flex: 1;
+    margin-right: 22rem; /* Add space for the figure on the right */
+}
+
+figure {
+    position: fixed;
     right: 2%;
-    top: 5%;
+    top: 15%;
+    text-align: center;
+    margin: 0;
+}
+
+.profile-pic {
     width: 20rem;
     height: 20rem;
-    margin-left: 5rem;
     border-radius: 50%;
     object-fit: cover;
     border: 3px solid #de0be6;
@@ -103,16 +143,12 @@ main section {
 
 .profile-pic:hover {
     opacity: 0.9;
+    transition: opacity 0.9s ease;
     cursor: pointer;
 }
 
-figure {
-    text-align: center; 
-    margin: 0;
-}
-  
 figcaption {
     font-style: italic;
-    margin-top: 4em; 
-    margin-left: 4em;
+    margin-top: 1em;
+    margin-left: 0;
 }
