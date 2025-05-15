@@ -51,7 +51,6 @@ nav {
     }
 }
 
-/* Optional: Adjust margins for better spacing */
 nav a {
     position: relative;
     color: #ffffff;
@@ -66,10 +65,13 @@ nav .main-links a {
     color: #ffffff;
     text-decoration: none;
     font-size: 1rem;
+    transition: color 0.8s ease;
 }
 
-/* Animated underline */
-nav .social-links a::after,
+nav .social-links a:hover {
+    color: #de0be6;
+}
+
 nav .main-links a::after {
     content: "";
     position: absolute;
