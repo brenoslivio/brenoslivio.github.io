@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Breno Livio Silva de Almeida</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -11,9 +11,11 @@
   <header>
     <nav>
         <div class="main-links">
-            <a href="/">Home</a>
-            <a href="/publications">Publications</a>
-            <a href="/cv/Breno_CV.pdf">CV</a>
+            <a href="/"><i class="fa-solid fa-house"></i>  Home</a>
+            <a href="/works"><i class="fa-solid fa-book"></i>  Works</a>
+            <a href="/events"><i class="fa-solid fa-calendar"></i>  Events</a>
+            <a href="/cv/Breno_CV.pdf"><i class="fa-solid fa-file-invoice"></i>  CV</a>
+            <a href="/faq"><i class="fa-solid fa-question"></i>  FAQ</a>
         </div>
 
         <div class="social-links">
@@ -26,34 +28,39 @@
   </header>
 
   <div class="container">
-    <aside>
+    <!-- <aside>
       <h3>ABOUT ME</h3>
       <ul>
+        <li><a href="/publications">Publications</a></li>
         <li><a href="/cv/Breno_CV.pdf">CV</a></li>
-        <li><a href="#">Publications</a></li>
       </ul>
 
-      <!-- <h3>SOFTWARE</h3>
+      <h3>SOFTWARE</h3>
       <ul>
         <li><a href="#">blabla</a></li>
         <li><a href="#">blabla</a></li>
-      </ul> -->
+      </ul>
 
       <h3>OTHER STUFF</h3>
       <ul>
         <li><a href="#">FAQ</a></li>
+        <li><a href="#">Linux</a></li>
       </ul>
-    </aside>
+    </aside> -->
 
     <main>
       <section>
+        <figure class="float-right">
+          <img src="imgs/me_square.png" id="profileImage" alt="Profile photo" class="profile-pic">
+          <figcaption id="profileCaption">That's me! (try clicking on me)</figcaption>
+        </figure>
         <h1>Who Am I?</h1>
         <p>I am a double-degree PhD student at the <a href="https://www.icmc.usp.br/">
           Institute of Mathematics and Computer Sciences</a> (ICMC) of the 
           <a href="https://www5.usp.br/">University of São Paulo</a> (USP) and the 
           <a href="https://www.uni-leipzig.de/en">University of Leipzig</a>, researching 
-          pattern recognition in biological sequences using alignment-free methods such 
-          as language models. My work focuses on developing computational approaches to 
+          pattern recognition in biological sequences using alignment-free approaches such 
+          as machine learning. My work focuses on developing computational approaches to 
           analyze complex biological data, bridging machine learning and bioinformatics.
         </p> 
 
@@ -66,7 +73,7 @@
           and advancing tools for sequence-based discovery.
         </p> 
         
-        <p>Before my PhD, I completed my BSc in Computer Science at ICMC-USP, where I first 
+        <p>Before my PhD, I completed my BSc Degree in Computer Science at the ICMC-USP, where I first 
           explored machine-learning applications in bioinformatics. During this time, I had 
           the privilege of working under the guidance of 
           <a href="https://scholar.google.com/citations?user=Jx_5GrgAAAAJ">Prof. Dr. André de Carvalho</a>, 
@@ -78,13 +85,32 @@
       </section>
 
       <section>
+        <h1>Upcoming Events</h1>
+        <h2>2025</h2>
+        <p><b>5 June</b> - My seminal work on protein language models was chosen for presentation at
+            the <a href="https://haicon.cc/">Helmholtz AI 2025 conference</a> (Rheinstetten, Germany), being presented this day.
+        </p>
+        <p>
+          <b>1 July</b> - My in-person contract with UFZ will begin and I will be moving to Leipzig.
+        </p>
+        <p>
+          <b>4 July</b> - My work was also selected as a flash talk at the <a href="https://bageco.org/">BAGECO 2025</a> (Graz, Austria) to be presented this day.
+        </p>
+
+        <p>
+          <h3>Check <a href="/events">here</a> to check previous events.</h3>
+        </p>
+
+      </section>
+
+      <section>
         <h1>Research Interests</h1>
         <p>
-          Since High School, where I developed a simple Chatbot for assistance in interventions
-          with patients with Asperger's Syndrome, I tried to use computer science for social good.
-          I continued doing this in college, where my interests in biology and nutrition led me to
-          try to understand disorders such as Autism Spectrum and Bipolar Disorder through the lens of
-          machine learning and bioinformatics.
+          Since high school, when I developed a simple chatbot to assist in interventions for individuals with Asperger's syndrome, 
+          I have been passionate about leveraging computer science for social good. This commitment 
+          continued in college, where my fascination with biology and nutrition inspired me to study on my own 
+          the link between complex disorders, such as autism spectrum disorder and bipolar disorder, and the human gut microbiome through the 
+          interdisciplinary lens of machine learning and bioinformatics.
         </p>
 
         <p>
@@ -93,68 +119,79 @@
           which can help non-experts to use machine learning.
         </p>
 
-        <p>
-          My current research interests, in a more <b>technical version</b>: 
-        </p>
+        <div class="boxed">
+          <p>
+            My current research interests, in a more <b>technical version</b>: 
+          </p>
+  
+          <p>
+            I am interested in developing alignment-free computational approaches, particularly machine 
+            learning-based methods to analyze biological sequences that resist traditional annotation 
+            due to high divergence and remote homology. By leveraging language models to extract evolutionary 
+            and ecological features, I aim to build nature-inspired machine-learning frameworks for the 
+            discovery of novel enzymes.
+          </p>
+  
+        </div>
 
-        <p>
-          I am interested in developing alignment-free computational approaches, particularly machine 
-          learning-based methods to analyze biological sequences that resist traditional annotation 
-          due to high divergence and remote homology. By leveraging language models to extract evolutionary 
-          and ecological features, I aim to build nature-inspired machine-learning frameworks for the 
-          discovery of novel enzymes.
-        </p>
+        <div class="boxed">
+          <p>
+            Now, in a <b>less technical version that I could explain to my mom and impress her</b>: 
+          </p>
 
-        <p>
-          Now, in a <b>less technical version that I could explain to my mom and impress her</b>: 
-        </p>
+          <p>
+            Proteins are molecules that perform many essential functions in the body, 
+            such as building tissues and regulating processes. Some researchers like to call proteins 
+            with unknown functions as being "functional dark matter"
+            <a href="https://merenlab.org/2017/06/22/microbial-dark-matter/">(although some are pretty much 
+            against using the term "dark matter")</a>.
+          </p>
 
-        <p>
-          Proteins are molecules that perform many essential functions in the body, 
-          such as building tissues and regulating processes. Some researchers like to call proteins 
-          with unknown functions as being "functional dark matter"
-          <a href="https://merenlab.org/2017/06/22/microbial-dark-matter/">(although some are pretty much 
-          against using the term "dark matter")</a>.
-        </p>
+          <p>
+            Even with databases containing billions of proteins, those proteins are not considered similar
+            to those with functions in the databases, so we cannot adequately characterize them. The problem
+            with the methods that do this comparison is that they can be prone to errors. 
+          </p>
 
-        <p>
-          Even with databases containing billions of proteins, those proteins are not considered similar
-          to those with functions in the databases, so we cannot adequately characterize them. The problem
-          with the methods that do this comparison is that they can be prone to errors. 
-        </p>
+          <p>
+            These methods compare protein sequences to find similarities, but they can miss highly 
+            divergent sequences, which are proteins that have changed so much over time that their shared origins are hard 
+            to detect. They also struggle with remote homologs: distantly related proteins with the 
+            same evolutionary ancestor but very different sequences. Because these methods rely on apparent 
+            similarities, many important but deeply evolved proteins remain unknown, leaving gaps in our 
+            understanding of "functional dark matter."
+          </p>
 
-        <p>
-          These methods compare protein sequences to find similarities, but they can miss highly 
-          divergent sequences, which are proteins that have changed so much over time that their shared origins are hard 
-          to detect. They also struggle with remote homologs: distantly related proteins with the 
-          same evolutionary ancestor but very different sequences. Because these methods rely on apparent 
-          similarities, many important but deeply evolved proteins remain unknown, leaving gaps in our 
-          understanding of "functional dark matter."
-        </p>
-
-        <p>
-          Just as language models, like the one used by ChatGPT, can learn patterns in words in a sentence, they can also
-          learn patterns in amino acids of proteins, finding hidden patterns in the "language of life" such evolutionary
-          and ecological information. I believe language models can be key to unlocking nature's hidden biochemical 
-          potential by finding novel enzymes, discovering new enzymes that could revolutionize medicine, industry, 
-          and sustainability.
-        </p>
+          <p>
+            Just as language models, like the one used by ChatGPT, can learn patterns in words in a sentence, they can also
+            learn patterns in amino acids of proteins, finding hidden patterns in the "language of life" such as evolutionary
+            and ecological information. I believe language models can be key to unlocking nature's hidden biochemical 
+            potential by finding novel enzymes, discovering new enzymes that could revolutionize medicine, industry, 
+            and sustainability.
+          </p>
+        </div>
         
       </section>
 
       <section>
-        <h1>TBD</h1>
-        <p><strong>July 2025:</strong> blabla</p>
+        <h1>Awards and Recognition</h1>
+
+        <p><b>J. F. Marar Artificial Intelligence Prize for Undergraduate Research</b>: Winner project "BioDeepFuse: 
+          Empowering Researchers in Life Sciences with Deep Learning". Project was 
+          selected winner considering criteria such as academic and social relevance, 
+          adherence to the United Nations' Sustainable Development Goals (SDGs), and 
+          academic performance. More details in Portuguese here: <a href="https://www.icmc.usp.br/noticias/6414-projeto-para-empoderar-pesquisadores-em-ciencias-da-vida-vence-premio-j-f-marar-de-inteligencia-artificial-para-a-graduacao">
+          News shared by the University of São Paulo.</a>
+        </p>
+        <p><b>Prototypes for Humanity</b>: BioAutoML was selected by Prototypes for 
+          Humanity as one of the top 100 projects from nearly 3,000 applications 
+          submitted by graduates from over 100 countries. The project received 
+          funding for participation and was presented at the international festival 
+          in Dubai. More information is available at: <a href="https://www.prototypesforhumanity.com/project/bioautoml/">BioAutoML on the event website.</a>
+        </p>
+
       </section>
-
-
     </main>
-
-    <figure>
-      <img src="imgs/me_square.png" id="profileImage" alt="Profile photo" class="profile-pic">
-      <figcaption id="profileCaption">That's me! (try clicking on it)</figcaption>
-    </figure>
-    
   </div>
   <script src="js/script.js"></script>
 </body>
