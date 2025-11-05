@@ -151,7 +151,16 @@ figure {
 figure.float-right {
     float: right;
     margin: 0 0 1rem 1.5rem;
-    max-width: 30rem;
+    max-width: 30rem;       /* keeps responsiveness */
+    width: 15rem;           /* fixes figure width */
+    text-align: center;
+}
+
+figure.float-right img.profile-pic {
+    width: 15rem;           /* same as figure width */
+    height: 15rem;          /* square image */
+    object-fit: cover;      /* ensures image doesn’t stretch */
+    border-radius: 8px;     /* optional aesthetic */
 }
 
 @media (max-width: 768px) {
@@ -160,6 +169,12 @@ figure.float-right {
         margin: 2em auto;
         text-align: center;
         display: block;
+        width: 12rem;       /* smaller fixed width for mobile */
+    }
+
+    figure.float-right img.profile-pic {
+        width: 12rem;
+        height: 12rem;
     }
 }
 
