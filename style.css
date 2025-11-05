@@ -152,13 +152,13 @@ figure.float-right {
     float: right;
     margin: 0 0 1rem 1.5rem;
     max-width: 30rem;       /* keeps responsiveness */
-    width: 15rem;           /* fixes figure width */
+    width: 22rem;           /* fixes figure width */
     text-align: center;
 }
 
 figure.float-right img.profile-pic {
-    width: 15rem;           /* same as figure width */
-    height: 15rem;          /* square image */
+    width: 22rem;           /* same as figure width */
+    height: 22rem;          /* square image */
     object-fit: cover;      /* ensures image doesn’t stretch */
     border-radius: 8px;     /* optional aesthetic */
 }
