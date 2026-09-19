@@ -21,6 +21,7 @@
 
         <div class="social-links">
             <a href="https://scholar.google.com/citations?user=g0zZ_U4AAAAJ" title="Google Scholar" target="_blank"><i class="fas fa-graduation-cap"></i></a>
+            <a href="https://orcid.org/0000-0002-2041-9170" title="ORCID" target="_blank"><i class="fab fa-orcid"></i></a>
             <a href="https://www.linkedin.com/in/brenoslivio" title="LinkedIn" target="_blank"><i class="fab fa-linkedin"></i></a>
             <a href="https://github.com/brenoslivio" title="GitHub" target="_blank"><i class="fab fa-github"></i></a>
             <a href="mailto:brenoslivio@pm.me" title="Email"><i class="fas fa-envelope"></i></a>
@@ -52,29 +53,31 @@
     <main>
       <section>
         <figure class="float-right">
-          <img src="imgs/me_square.png" id="profileImage" alt="Profile photo" class="profile-pic">
-          <figcaption id="profileCaption">That's me! (try clicking on me)</figcaption>
+          <img src="imgs/me_square.jpg" id="profileImage" alt="Profile photo" class="profile-pic">
+          <figcaption id="profileCaption">Me in front of my hobbit-hole (try clicking on me)</figcaption>
         </figure>
         <h1>Who Am I?</h1>
         <p>I am a double-degree PhD student at the <a href="https://www.icmc.usp.br/">
           Institute of Mathematics and Computer Sciences</a> (ICMC) of the 
           <a href="https://www5.usp.br/">University of São Paulo</a> (USP) and the 
-          <a href="https://www.uni-leipzig.de/en">University of Leipzig</a>, researching 
-          pattern recognition in biological sequences using alignment-free approaches such 
-          as machine learning. My work focuses on developing computational approaches to 
-          analyze complex biological data, bridging machine learning and bioinformatics.
+          <a href="https://www.uni-leipzig.de/en">University of Leipzig</a>. My thesis,
+          <em>Decoding the Language of Life: Towards the Limits of Biological Sequence Representation</em>,
+          investigates how DNA and protein sequences can be represented for alignment-free machine learning,
+          what biological information different representations capture, and where their limits lie. My work
+          spans handcrafted biological descriptors, foundation models, automated machine learning, and
+          environmental metagenomics, with an emphasis on making robust computational methods more accessible.
           My research is funded by the São Paulo Research Foundation (FAPESP), 
           <a href="https://bv.fapesp.br/en/bolsas/221592/decoding-the-language-of-life-towards-protein-classification-and-design-through-large-language-model/">process #2024/10958-1</a>,
           and the <a href="https://research.google/programs-and-events/phd-fellowship/recipients/?filtertab=2025">Google PhD Fellowship in Health Research</a>.
         </p> 
 
-        <p>As part of my doctoral research, I am also a <a href="https://www.ufz.de/index.php?en=52216">Research Assistant</a> at the 
+        <p>As part of my doctoral research, I spent one year as a <a href="https://www.ufz.de/index.php?en=52216">Research Assistant</a> at the
           <a href="https://www.ufz.de/">Helmholtz Centre for Environmental Research (UFZ)</a> 
           in the Microbial Data Science Group headed by <a href="https://scholar.google.com/citations?user=BOIkqjQAAAAJ">
           Dr. Ulisses da Rocha</a> (Department of Computational Biology and Chemistry). 
-          Here, I apply and extend my PhD methods to study microbial systems, 
-          contributing to large-scale environmental data analysis 
-          and advancing tools for sequence-based discovery.
+          There, I applied my PhD research to microbial systems and large-scale environmental data,
+          working on protein-function discovery and tools for the reproducible deposition of
+          metagenome-assembled genomes and their metadata.
         </p> 
         
         <p>Before my PhD, I completed my BSc Degree in Computer Science at the ICMC-USP, where I first 
@@ -112,11 +115,22 @@
           </p>
   
           <p>
-            I am interested in developing alignment-free computational approaches, particularly machine 
-            learning-based methods to analyze biological sequences that resist traditional annotation 
-            due to high divergence and remote homology. By leveraging language models to extract evolutionary 
-            and ecological features, I aim to build nature-inspired machine-learning frameworks for the 
-            discovery of novel enzymes.
+            My research centers on a representation problem: how much biologically relevant information can
+            alignment-free methods recover from a DNA or protein sequence, and what remains beyond their reach?
+            I compare handcrafted descriptors, which encode explicit compositional, physicochemical, and
+            mathematical properties, with embeddings learned by foundation models, which capture higher-order
+            patterns from large sequence collections. I study what each representation encodes, where it fails,
+            and how its usefulness changes across datasets and evolutionary distances.
+          </p>
+
+          <p>
+            I use automated machine learning to select representations and predictive models for individual
+            biological tasks, reducing the expertise and resources required to apply these methods. I also use
+            protein language models and hierarchical classification to investigate functional dark matter in
+            environmental metagenomes, while developing infrastructure for the reproducible public deposition
+            of the underlying genomes and ecological metadata. Ultimately, I want to understand the
+            representational limits of sequence-based prediction and when additional context or experimental
+            validation is needed.
           </p>
   
         </div>
@@ -127,40 +141,45 @@
           </p>
 
           <p>
-            Proteins are molecules that perform many essential functions in the body, 
-            such as building tissues and regulating processes. Some researchers like to call proteins 
-            with unknown functions as being "functional dark matter"
+            Proteins are molecules that perform many essential functions in humans, other organisms, and
+            throughout the environment. However, many proteins still have no known
+            function. Researchers sometimes call these uncharacterized proteins "functional dark matter"
             <a href="https://merenlab.org/2017/06/22/microbial-dark-matter/">(although some are pretty much 
             against using the term "dark matter")</a>.
           </p>
 
           <p>
-            Even with databases containing billions of proteins, those proteins are not considered similar
-            to those with functions in the databases, so we cannot adequately characterize them. The problem
-            with the methods that do this comparison is that they can be prone to errors. 
+            The usual way to infer a protein's function is to compare its sequence with proteins we already
+            understand. This works well for close matches, but it can miss proteins that have changed greatly
+            through evolution. To a comparison tool, these proteins may look unrelated even when they share
+            structural or functional properties.
           </p>
 
           <p>
-            These methods compare protein sequences to find similarities, but they can miss highly 
-            divergent sequences, which are proteins that have changed so much over time that their shared origins are hard 
-            to detect. They also struggle with remote homologs: distantly related proteins with the 
-            same evolutionary ancestor but very different sequences. Because these methods rely on apparent 
-            similarities, many important but deeply evolved proteins remain unknown, leaving gaps in our 
-            understanding of "functional dark matter."
+            My thesis asks how we can translate a biological sequence into information a computer can learn
+            from. One option is to describe properties that scientists already know how to measure, such as
+            composition and physicochemical characteristics. Another is to use language models that learn
+            patterns from millions of sequences, much as language models learn relationships among words.
+            Neither view captures everything, so I investigate what each one reveals and where each one stops
+            being reliable.
           </p>
 
-          <p>
-            Just as language models, like the one used by ChatGPT, can learn patterns in words in a sentence, they can also
-            learn patterns in amino acids of proteins, finding hidden patterns in the "language of life" such as evolutionary
-            and ecological information. I believe language models can be key to unlocking nature's hidden biochemical 
-            potential by finding novel enzymes that could revolutionize medicine, industry, and sustainability.
-          </p>
         </div>
         
       </section>
 
       <section>
         <h1>Awards and Recognition</h1>
+
+        <p><b>HIDA-Sponsored Participant – The Carpentries Instructor Training</b>: Selected in 2026 for one
+          of 15 annually sponsored training places offered by the Helmholtz Information &amp; Data Science
+          Academy (HIDA) to Helmholtz researchers. The program provides evidence-based training in
+          scientific and data science instruction and leads toward certification as a Carpentries Instructor.
+        </p>
+
+        <p><b>ISME Scholar Mobility Fund</b>: Awarded in 2025 with &euro;2,300 in funding for a research
+          period in July 2026 at the Helmholtz Centre for Environmental Research (UFZ) in Leipzig, Germany.
+        </p>
 
         <p><b>Google PhD Fellowship</b>: Received the 2025 Google Latin America 
           PhD Fellowship in Health. The Google PhD Fellowship Program was created to recognize outstanding graduate students 
