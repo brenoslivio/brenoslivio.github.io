@@ -274,10 +274,7 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
             spotifyStatus.replaceChildren(buildSpotifyCard(status));
         } catch (error) {
             console.error(error);
-            const unavailable = document.createElement("span");
-            unavailable.className = "spotify-status-unavailable";
-            unavailable.textContent = "Spotify status temporarily unavailable";
-            spotifyStatus.replaceChildren(unavailable);
+            spotifyStatus.replaceChildren(buildSpotifyCard({ isPlaying: false }));
         } finally {
             window.clearTimeout(requestTimeout);
         }
