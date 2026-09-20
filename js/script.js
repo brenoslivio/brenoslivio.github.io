@@ -58,6 +58,7 @@ const terminalHistory = document.getElementById("terminalHistory");
 const initialWhoamiOutput = document.getElementById("whoamiOutput");
 const spotifyStatus = document.getElementById("spotifyStatus");
 const spotifyStatusUrl = "https://raw.githubusercontent.com/brenoslivio/brenoslivio.github.io/spotify-data/spotify.json";
+const spotifyCacheKey = "brenoslivio-last-spotify-track";
 
 if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
     const whoamiMarkup = initialWhoamiOutput.innerHTML;
@@ -189,7 +190,9 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
     };
 
     const buildSpotifyCard = (status) => {
-        if (!status.isPlaying) {
+        const hasTrack = Boolean(status.track && status.artist);
+
+        if (!status.isPlaying && !hasTrack) {
             const idle = document.createElement("div");
             idle.className = "spotify-now-playing spotify-now-playing-idle";
 
@@ -204,13 +207,14 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
         }
 
         const card = document.createElement(status.spotifyUrl ? "a" : "div");
-        card.className = "spotify-now-playing spotify-now-playing-active";
+        card.className = `spotify-now-playing ${status.isPlaying ? "spotify-now-playing-active" : "spotify-now-playing-previous"}`;
 
         if (status.spotifyUrl) {
             card.href = status.spotifyUrl;
             card.target = "_blank";
             card.rel = "noopener noreferrer";
-            card.setAttribute("aria-label", `${status.track} by ${status.artist} on Spotify`);
+            const playbackLabel = status.isPlaying ? "Currently playing" : "Last played";
+            card.setAttribute("aria-label", `${playbackLabel}: ${status.track} by ${status.artist} on Spotify`);
         }
 
         if (status.albumArt) {
@@ -234,7 +238,7 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
         icon.className = "fab fa-spotify";
         icon.setAttribute("aria-hidden", "true");
         const labelText = document.createElement("span");
-        labelText.textContent = "LISTENING NOW";
+        labelText.textContent = status.isPlaying ? "LISTENING NOW" : "LAST PLAYED";
         label.append(icon, labelText);
 
         const track = document.createElement("strong");
@@ -250,13 +254,34 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
         return card;
     };
 
+    const rememberSpotifyTrack = (status) => {
+        if (!status.track) {
+            return;
+        }
+
+        try {
+            window.localStorage.setItem(spotifyCacheKey, JSON.stringify(status));
+        } catch (error) {
+            console.debug("Could not cache the Spotify track", error);
+        }
+    };
+
+    const getRememberedSpotifyTrack = () => {
+        try {
+            const status = JSON.parse(window.localStorage.getItem(spotifyCacheKey));
+            return status?.track ? { ...status, isPlaying: false, isFallback: true } : null;
+        } catch (error) {
+            console.debug("Could not read the cached Spotify track", error);
+            return null;
+        }
+    };
+
     const loadSpotifyStatus = async () => {
         const requestController = new AbortController();
         const requestTimeout = window.setTimeout(() => requestController.abort(), 8000);
 
         try {
-            const cacheWindow = Math.floor(Date.now() / 300000);
-            const response = await fetch(`${spotifyStatusUrl}?v=${cacheWindow}`, {
+            const response = await fetch(`${spotifyStatusUrl}?v=${Date.now()}`, {
                 cache: "no-store",
                 signal: requestController.signal
             });
@@ -264,17 +289,19 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
                 throw new Error(`Spotify status request failed with ${response.status}`);
             }
 
-            const status = await response.json();
+            let status = await response.json();
             const updatedAt = Date.parse(status.updatedAt);
             const isFresh = Number.isFinite(updatedAt) && Date.now() - updatedAt < 15 * 60 * 1000;
             if (!isFresh) {
-                throw new Error("Spotify status is stale");
+                status = { ...status, isPlaying: false, isFallback: Boolean(status.track) };
             }
 
+            rememberSpotifyTrack(status);
             spotifyStatus.replaceChildren(buildSpotifyCard(status));
         } catch (error) {
             console.error(error);
-            spotifyStatus.replaceChildren(buildSpotifyCard({ isPlaying: false }));
+            const rememberedTrack = getRememberedSpotifyTrack();
+            spotifyStatus.replaceChildren(buildSpotifyCard(rememberedTrack || { isPlaying: false }));
         } finally {
             window.clearTimeout(requestTimeout);
         }

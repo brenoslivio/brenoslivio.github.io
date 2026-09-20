@@ -50,7 +50,12 @@ jobs:
           access_token=$(jq --exit-status --raw-output '.access_token' <<<"$token_response")
           response_file="$RUNNER_TEMP/spotify-response.json"
           output_file="$RUNNER_TEMP/spotify.json"
+          previous_file="$RUNNER_TEMP/spotify-previous.json"
           updated_at=$(date --utc +"%Y-%m-%dT%H:%M:%SZ")
+
+          if ! git fetch --depth=1 origin spotify-data || ! git show FETCH_HEAD:spotify.json > "$previous_file"; then
+            jq --null-input '{}' > "$previous_file"
+          fi
 
           http_status=$(curl --silent --show-error \
             --output "$response_file" \
@@ -62,6 +67,7 @@ jobs:
             200)
               jq --arg updatedAt "$updated_at" '{
                 isPlaying: (.is_playing == true),
+                isFallback: (.is_playing != true),
                 track: (.item.name // ""),
                 artist: (
                   if ((.item.artists? // []) | length) > 0
@@ -74,21 +80,36 @@ jobs:
                 spotifyUrl: (.item.external_urls.spotify // ""),
                 progressMs: (.progress_ms // 0),
                 durationMs: (.item.duration_ms // 0),
+                lastPlayedAt: $updatedAt,
                 updatedAt: $updatedAt
               }' "$response_file" > "$output_file"
               ;;
             204)
-              jq --null-input --arg updatedAt "$updated_at" '{
-                isPlaying: false,
-                track: "",
-                artist: "",
-                album: "",
-                albumArt: "",
-                spotifyUrl: "",
-                progressMs: 0,
-                durationMs: 0,
-                updatedAt: $updatedAt
-              }' > "$output_file"
+              jq --arg updatedAt "$updated_at" '
+                if ((.track // "") | length) > 0 then
+                  . + {
+                    isPlaying: false,
+                    isFallback: true,
+                    progressMs: 0,
+                    lastPlayedAt: (.lastPlayedAt // .updatedAt // $updatedAt),
+                    updatedAt: $updatedAt
+                  }
+                else
+                  {
+                    isPlaying: false,
+                    isFallback: false,
+                    track: "",
+                    artist: "",
+                    album: "",
+                    albumArt: "",
+                    spotifyUrl: "",
+                    progressMs: 0,
+                    durationMs: 0,
+                    lastPlayedAt: "",
+                    updatedAt: $updatedAt
+                  }
+                end
+              ' "$previous_file" > "$output_file"
               ;;
             *)
               echo "Spotify currently-playing endpoint returned HTTP $http_status" >&2
@@ -115,14 +136,15 @@ jobs:
               return value if len(value) <= limit else value[: limit - 1].rstrip() + "…"
 
           playing = bool(status.get("isPlaying"))
-          label = "LISTENING NOW" if playing else "SPOTIFY"
-          track = shorten(status.get("track"), 36) if playing else "Nothing playing right now"
-          artist = shorten(status.get("artist"), 42) if playing else "Check back later"
-          album = shorten(status.get("album"), 48) if playing else ""
-          title = f"{track} by {artist}" if playing else track
+          has_track = bool(status.get("track"))
+          label = "LISTENING NOW" if playing else "LAST PLAYED" if has_track else "SPOTIFY"
+          track = shorten(status.get("track"), 36) if has_track else "Nothing playing right now"
+          artist = shorten(status.get("artist"), 42) if has_track else "Check back later"
+          album = shorten(status.get("album"), 48) if has_track else ""
+          title = f"{track} by {artist}" if has_track else track
 
           artwork_data = ""
-          artwork_url = status.get("albumArt", "") if playing else ""
+          artwork_url = status.get("albumArt", "") if has_track else ""
           if artwork_url:
               try:
                   request = urllib.request.Request(artwork_url, headers={"User-Agent": "Mozilla/5.0"})
