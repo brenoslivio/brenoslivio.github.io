@@ -429,8 +429,12 @@ figcaption {
     position: absolute;
     top: 50%;
     left: 0.9em;
+    max-width: calc(100% - 0.9em);
+    overflow: hidden;
     color: #827c86;
+    text-overflow: ellipsis;
     transform: translateY(-50%);
+    white-space: nowrap;
     pointer-events: none;
 }
 
@@ -469,6 +473,20 @@ figcaption {
         opacity: 1;
         transform: translateY(0) scale(1);
         filter: grayscale(0) contrast(1);
+    }
+}
+
+@media (max-width: 500px) {
+    .terminal-input-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.35rem;
+    }
+
+    .terminal-input-field {
+        width: 100%;
+        min-height: 1.25em;
+        margin-left: 0;
     }
 }
 

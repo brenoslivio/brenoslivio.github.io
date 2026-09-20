@@ -64,6 +64,7 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const wait = (milliseconds) => new Promise((resolve) => window.setTimeout(resolve, milliseconds));
     const nextFrame = () => new Promise((resolve) => window.requestAnimationFrame(resolve));
+    const focusTerminalInput = () => terminalInput.focus({ preventScroll: true });
 
     const prepareOutputStream = (output) => {
         const groups = Array.from(output.querySelectorAll(":scope > p")).map((paragraph) => {
@@ -125,6 +126,7 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
 
     const playTerminalIntro = async () => {
         if (!terminal || !initialCommandText || reduceMotion) {
+            focusTerminalInput();
             return;
         }
 
@@ -141,7 +143,7 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
 
         for (const character of command) {
             initialCommandText.textContent += character;
-            await wait(105 + Math.random() * 55);
+            await wait(350 + Math.random() * 150);
         }
 
         await wait(280);
@@ -149,6 +151,7 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
         await streamOutput(initialWhoamiOutput, outputStream);
         terminal.classList.remove("terminal-intro-running");
         terminalHistory.setAttribute("aria-live", "polite");
+        focusTerminalInput();
     };
 
     const appendCommand = (command) => {
