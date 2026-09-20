@@ -348,6 +348,7 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
 
     playTerminalIntro();
     loadSpotifyStatus();
+    window.setInterval(loadSpotifyStatus, 2 * 60 * 1000);
 }
 
 initializeProfileToggles();
