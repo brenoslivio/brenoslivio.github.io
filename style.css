@@ -256,7 +256,7 @@ figcaption {
 .terminal {
     position: relative;
     overflow: hidden;
-    margin: 1rem 0 0.75rem;
+    margin: 1rem 0 2.5rem;
     border: 1px solid transparent;
     border-radius: 10px;
     background:
@@ -394,9 +394,12 @@ figcaption {
 
 .spotify-status {
     display: flex;
+    width: 100%;
     min-height: 3.25rem;
-    align-items: flex-start;
-    margin: 0 0 2.5rem;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0.7rem 2rem 0;
     color: #aaa5ad;
     font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 }
@@ -595,6 +598,11 @@ a.spotify-now-playing:focus-visible {
 }
 
 @media (max-width: 500px) {
+    .spotify-status {
+        min-height: 3rem;
+        padding: 0.6rem 1rem 0;
+    }
+
     .terminal-input-row {
         display: grid;
         grid-template-columns: minmax(0, 1fr);
