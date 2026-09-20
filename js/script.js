@@ -57,7 +57,7 @@ const terminalInput = document.getElementById("terminalInput");
 const terminalHistory = document.getElementById("terminalHistory");
 const initialWhoamiOutput = document.getElementById("whoamiOutput");
 const spotifyStatus = document.getElementById("spotifyStatus");
-const spotifyStatusUrl = "https://raw.githubusercontent.com/brenoslivio/brenoslivio.github.io/spotify-data/spotify.json";
+const spotifyStatusUrl = "https://api.github.com/repos/brenoslivio/brenoslivio.github.io/contents/spotify.json?ref=spotify-data";
 const spotifyCacheKey = "brenoslivio-last-spotify-track";
 
 if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
@@ -281,8 +281,9 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
         const requestTimeout = window.setTimeout(() => requestController.abort(), 8000);
 
         try {
-            const response = await fetch(`${spotifyStatusUrl}?v=${Date.now()}`, {
+            const response = await fetch(`${spotifyStatusUrl}&v=${Date.now()}`, {
                 cache: "no-store",
+                headers: { Accept: "application/vnd.github.raw+json" },
                 signal: requestController.signal
             });
             if (!response.ok) {
