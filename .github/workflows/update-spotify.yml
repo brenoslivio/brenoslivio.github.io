@@ -7,7 +7,7 @@ on:
     paths:
       - ".github/workflows/update-spotify.yml"
   schedule:
-    - cron: "2/5 * * * *"
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -96,6 +96,85 @@ jobs:
               ;;
           esac
 
+      - name: Build GitHub profile card
+        run: |
+          python3 - <<'PY'
+          import base64
+          import html
+          import json
+          import os
+          import sys
+          import urllib.request
+
+          runner_temp = os.environ["RUNNER_TEMP"]
+          with open(os.path.join(runner_temp, "spotify.json"), encoding="utf-8") as source:
+              status = json.load(source)
+
+          def shorten(value, limit):
+              value = " ".join(str(value or "").split())
+              return value if len(value) <= limit else value[: limit - 1].rstrip() + "…"
+
+          playing = bool(status.get("isPlaying"))
+          label = "LISTENING NOW" if playing else "SPOTIFY"
+          track = shorten(status.get("track"), 36) if playing else "Nothing playing right now"
+          artist = shorten(status.get("artist"), 42) if playing else "Check back later"
+          album = shorten(status.get("album"), 48) if playing else ""
+          title = f"{track} by {artist}" if playing else track
+
+          artwork_data = ""
+          artwork_url = status.get("albumArt", "") if playing else ""
+          if artwork_url:
+              try:
+                  request = urllib.request.Request(artwork_url, headers={"User-Agent": "Mozilla/5.0"})
+                  with urllib.request.urlopen(request, timeout=20) as response:
+                      mime_type = response.headers.get_content_type()
+                      artwork_data = f"data:{mime_type};base64," + base64.b64encode(response.read()).decode()
+              except Exception as error:
+                  print(f"Album artwork unavailable: {type(error).__name__}", file=sys.stderr)
+
+          if artwork_data:
+              cover = (
+                  '<image x="12" y="12" width="96" height="96" '
+                  'preserveAspectRatio="xMidYMid slice" clip-path="url(#cover)" '
+                  f'href="{artwork_data}"/>'
+              )
+          else:
+              cover = '''
+                <rect x="12" y="12" width="96" height="96" rx="7" fill="#202020"/>
+                <circle cx="60" cy="60" r="27" fill="#1db954"/>
+                <path d="M43 52c12-4 27-3 37 3M45 61c10-3 23-2 32 3M47 70c8-2 18-1 26 2"
+                      fill="none" stroke="#121212" stroke-width="4" stroke-linecap="round"/>
+              '''
+
+          album_line = (
+              f'<text x="126" y="102" fill="#777777" font-size="11">{html.escape(album)}</text>'
+              if album else ""
+          )
+
+          svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="460" height="120" viewBox="0 0 460 120" role="img" aria-labelledby="title description">
+            <title id="title">{html.escape(title)}</title>
+            <desc id="description">Breno's current Spotify listening status</desc>
+            <defs>
+              <linearGradient id="border" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#1db954" stop-opacity="0.85"/>
+                <stop offset="0.55" stop-color="#973caa" stop-opacity="0.65"/>
+                <stop offset="1" stop-color="#de0be6" stop-opacity="0.75"/>
+              </linearGradient>
+              <clipPath id="cover"><rect x="12" y="12" width="96" height="96" rx="7"/></clipPath>
+            </defs>
+            <rect x="1" y="1" width="458" height="118" rx="10" fill="#121212" stroke="url(#border)" stroke-width="2"/>
+            {cover}
+            <circle cx="130" cy="26" r="6" fill="#1db954"/>
+            <text x="143" y="30" fill="#1db954" font-family="Inter,Arial,sans-serif" font-size="11" font-weight="700" letter-spacing="1.2">{label}</text>
+            <text x="126" y="60" fill="#ffffff" font-family="Inter,Arial,sans-serif" font-size="16" font-weight="700">{html.escape(track)}</text>
+            <text x="126" y="83" fill="#b3b3b3" font-family="Inter,Arial,sans-serif" font-size="13">{html.escape(artist)}</text>
+            {album_line}
+          </svg>'''
+
+          with open(os.path.join(runner_temp, "spotify.svg"), "w", encoding="utf-8") as output:
+              output.write(svg)
+          PY
+
       - name: Publish status without growing branch history
         run: |
           set -euo pipefail
@@ -104,6 +183,7 @@ jobs:
           git switch --orphan spotify-data
           git rm --recursive --force . 2>/dev/null || true
           cp "$RUNNER_TEMP/spotify.json" spotify.json
-          git add spotify.json
+          cp "$RUNNER_TEMP/spotify.svg" spotify.svg
+          git add spotify.json spotify.svg
           git commit --message "Update Spotify status"
           git push --force origin HEAD:spotify-data
