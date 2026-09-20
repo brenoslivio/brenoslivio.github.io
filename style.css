@@ -84,11 +84,17 @@ nav .main-links a::after {
 }
 
 nav .social-links a:hover::after,
-nav .main-links a:hover::after {
+nav .main-links a:hover::after,
+nav .main-links a[aria-current="page"]::after {
     width: 100%;
 }
 
-h1 {
+nav .main-links a[aria-current="page"] {
+    color: #eaabec;
+}
+
+h1,
+.section-heading {
     border-bottom: 1px solid #de0be6; /* Adjust color and thickness as needed */
     padding-bottom: 10px; /* Adds space between text and line */
 }

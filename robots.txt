@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://brenoslivio.github.io/sitemap.xml

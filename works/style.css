@@ -85,8 +85,13 @@ nav .main-links a::after {
 }
 
 nav .social-links a:hover::after,
-nav .main-links a:hover::after {
+nav .main-links a:hover::after,
+nav .main-links a[aria-current="page"]::after {
     width: 100%;
+}
+
+nav .main-links a[aria-current="page"] {
+    color: #eaabec;
 }
 
 h1 {
