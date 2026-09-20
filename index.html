@@ -52,43 +52,66 @@
 
     <main>
       <section>
-        <figure class="float-right">
-          <img src="imgs/me_square.jpg" id="profileImage" alt="Profile photo" class="profile-pic">
-          <figcaption id="profileCaption">Me in front of my hobbit-hole (try clicking on me)</figcaption>
-        </figure>
-        <h1>Who Am I?</h1>
-        <p>I am a double-degree PhD student at the <a href="https://www.icmc.usp.br/">
-          Institute of Mathematics and Computer Sciences</a> (ICMC) of the 
-          <a href="https://www5.usp.br/">University of São Paulo</a> (USP) and the 
-          <a href="https://www.uni-leipzig.de/en">University of Leipzig</a>. My thesis,
-          <em>Decoding the Language of Life: Towards the Limits of Biological Sequence Representation</em>,
-          investigates how DNA and protein sequences can be represented for alignment-free machine learning,
-          what biological information different representations capture, and where their limits lie. My work
-          spans handcrafted biological descriptors, foundation models, automated machine learning, and
-          environmental metagenomics, with an emphasis on making robust computational methods more accessible.
-          My research is funded by the São Paulo Research Foundation (FAPESP), 
-          <a href="https://bv.fapesp.br/en/bolsas/221592/decoding-the-language-of-life-towards-protein-classification-and-design-through-large-language-model/">process #2024/10958-1</a>,
-          and the <a href="https://research.google/programs-and-events/phd-fellowship/recipients/?filtertab=2025">Google PhD Fellowship in Health Research</a>.
-        </p> 
+        <h1 class="visually-hidden">Who Am I?</h1>
 
-        <p>As part of my doctoral research, I spent one year as a <a href="https://www.ufz.de/index.php?en=52216">Research Assistant</a> at the
-          <a href="https://www.ufz.de/">Helmholtz Centre for Environmental Research (UFZ)</a> 
-          in the Microbial Data Science Group headed by <a href="https://scholar.google.com/citations?user=BOIkqjQAAAAJ">
-          Dr. Ulisses da Rocha</a> (Department of Computational Biology and Chemistry). 
-          There, I applied my PhD research to microbial systems and large-scale environmental data,
-          working on protein-function discovery and tools for the reproducible deposition of
-          metagenome-assembled genomes and their metadata.
-        </p> 
-        
-        <p>Before my PhD, I completed my BSc Degree in Computer Science at the ICMC-USP, where I first 
-          explored machine-learning applications in bioinformatics. During this time, I had 
-          the privilege of working under the guidance of 
-          <a href="https://scholar.google.com/citations?user=Jx_5GrgAAAAJ">Prof. Dr. André de Carvalho</a>, 
-          who played a pivotal role in shaping my research interests. Now, as a PhD student, 
-          I am fortunate to continue this academic journey with him as one of my co-advisors, 
-          alongside <a href="https://scholar.google.com/citations?user=pVnGRlkAAAAJ">Prof. Dr. Peter Stadler</a> 
-          from the University of Leipzig.
-        </p>
+        <div class="terminal" aria-label="Interactive Who Am I terminal">
+          <div class="terminal-history" id="terminalHistory" aria-live="polite">
+            <div class="terminal-command">
+              <span class="terminal-user">brenoslivio@ahimsa</span><span>:</span><span class="terminal-path">~</span><span>$</span>
+              <span class="terminal-command-text">whoami</span>
+            </div>
+
+            <div class="terminal-output" id="whoamiOutput">
+              <figure class="float-right">
+                <img src="imgs/me_square.jpg" alt="Breno in front of his hobbit-hole" class="profile-pic" data-profile-toggle role="button" tabindex="0" aria-label="Switch between Breno's photo and his dog Tião">
+                <figcaption class="profile-caption">In front of my hobbit-hole (try clicking on me)</figcaption>
+              </figure>
+
+              <p>I am a double-degree PhD student at the <a href="https://www.icmc.usp.br/">
+                Institute of Mathematics and Computer Sciences</a> (ICMC) of the
+                <a href="https://www5.usp.br/">University of São Paulo</a> (USP) and the
+                <a href="https://www.uni-leipzig.de/en">University of Leipzig</a>. My thesis,
+                <em>Decoding the Language of Life: Towards the Limits of Biological Sequence Representation</em>,
+                investigates how DNA and protein sequences can be represented for alignment-free machine learning,
+                what biological information different representations capture, and where their limits lie. My work
+                spans handcrafted biological descriptors, foundation models, automated machine learning, and
+                environmental metagenomics, with an emphasis on making robust computational methods more accessible.
+                My research is funded by the São Paulo Research Foundation (FAPESP),
+                <a href="https://bv.fapesp.br/en/bolsas/221592/decoding-the-language-of-life-towards-protein-classification-and-design-through-large-language-model/">process #2024/10958-1</a>,
+                and the <a href="https://research.google/programs-and-events/phd-fellowship/recipients/?filtertab=2025">Google PhD Fellowship in Health Research</a>.
+              </p>
+
+              <p>As part of my doctoral research, I spent one year as a <a href="https://www.ufz.de/index.php?en=52216">Research Assistant</a> at the
+                <a href="https://www.ufz.de/">Helmholtz Centre for Environmental Research (UFZ)</a>
+                in the Microbial Data Science Group headed by <a href="https://scholar.google.com/citations?user=BOIkqjQAAAAJ">
+                Dr. Ulisses da Rocha</a> (Department of Computational Biology and Chemistry).
+                There, I applied my PhD research to microbial systems and large-scale environmental data,
+                working on protein-function discovery and tools for the reproducible deposition of
+                metagenome-assembled genomes and their metadata.
+              </p>
+
+              <p>Before my PhD, I completed my BSc Degree in Computer Science at the ICMC-USP, where I first
+                explored machine-learning applications in bioinformatics. During this time, I had
+                the privilege of working under the guidance of
+                <a href="https://scholar.google.com/citations?user=Jx_5GrgAAAAJ">Prof. Dr. André de Carvalho</a>,
+                who played a pivotal role in shaping my research interests. Now, as a PhD student,
+                I am fortunate to continue this academic journey with him as one of my co-advisors,
+                alongside <a href="https://scholar.google.com/citations?user=pVnGRlkAAAAJ">Prof. Dr. Peter Stadler</a>
+                from the University of Leipzig.
+              </p>
+            </div>
+
+            <form class="terminal-input-row" id="terminalForm">
+              <label class="visually-hidden" for="terminalInput">Enter a terminal command and press Enter</label>
+              <span class="terminal-prompt" aria-hidden="true"><span class="terminal-user">brenoslivio@ahimsa</span>:<span class="terminal-path">~</span>$</span>
+              <span class="terminal-input-field">
+                <input id="terminalInput" name="command" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder=" ">
+                <span class="terminal-cursor" aria-hidden="true"></span>
+                <span class="terminal-hint" aria-hidden="true">type help, then press Enter</span>
+              </span>
+            </form>
+          </div>
+        </div>
       </section>
 
 
@@ -96,7 +119,7 @@
       <section>
         <h1>Research Interests</h1>
         <p>
-          Since high school, when I developed a simple chatbot to assist in interventions for autistic individuals, 
+          Since high school, when I developed a simple chatbot to assist in interventions for autistic people,
           I have been passionate about leveraging computer science for social good. This commitment 
           continued in college, where my fascination with biology and nutrition inspired me to study on my own 
           the link between complex disorders, such as autism spectrum disorder and bipolar disorder, and the human gut microbiome through the 
