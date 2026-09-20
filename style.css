@@ -1,4 +1,7 @@
 body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
     font-family: Inter, Arial, sans-serif;
     background: #191919;
     margin: 0;
@@ -135,9 +138,22 @@ main section {
 
 .container {
     display: flex;
+    flex: 1;
     padding: 1rem;
     position: relative;
     max-width: 1200rem;
+}
+
+.site-footer {
+    padding: 1.25rem 1rem;
+    border-top: 1px solid rgba(222, 11, 230, 0.35);
+    color: #918b94;
+    font-size: 0.78rem;
+    text-align: center;
+}
+
+.site-footer p {
+    margin: 0;
 }
 
 main {
