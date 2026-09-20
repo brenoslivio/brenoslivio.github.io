@@ -251,9 +251,15 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
     };
 
     const loadSpotifyStatus = async () => {
+        const requestController = new AbortController();
+        const requestTimeout = window.setTimeout(() => requestController.abort(), 8000);
+
         try {
             const cacheWindow = Math.floor(Date.now() / 300000);
-            const response = await fetch(`${spotifyStatusUrl}?v=${cacheWindow}`, { cache: "no-store" });
+            const response = await fetch(`${spotifyStatusUrl}?v=${cacheWindow}`, {
+                cache: "no-store",
+                signal: requestController.signal
+            });
             if (!response.ok) {
                 throw new Error(`Spotify status request failed with ${response.status}`);
             }
@@ -272,6 +278,8 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
             unavailable.className = "spotify-status-unavailable";
             unavailable.textContent = "Spotify status temporarily unavailable";
             spotifyStatus.replaceChildren(unavailable);
+        } finally {
+            window.clearTimeout(requestTimeout);
         }
     };
 
