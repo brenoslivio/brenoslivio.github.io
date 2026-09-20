@@ -392,6 +392,90 @@ figcaption {
     color: #ff8c86;
 }
 
+.terminal-spotify {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0.9rem;
+    max-width: 34rem;
+    margin: 0 0 1rem;
+    padding: 0.75rem;
+    border: 1px solid rgba(30, 215, 96, 0.45);
+    border-radius: 7px;
+    background: linear-gradient(135deg, rgba(30, 215, 96, 0.09), rgba(222, 11, 230, 0.08));
+    box-shadow: inset 0 0 1rem rgba(30, 215, 96, 0.04);
+}
+
+a.terminal-spotify {
+    color: #ffffff;
+    text-decoration: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+a.terminal-spotify:hover,
+a.terminal-spotify:focus-visible {
+    color: #ffffff;
+    border-color: #1ed760;
+    box-shadow: 0 0 1rem rgba(30, 215, 96, 0.18);
+    transform: translateY(-1px);
+}
+
+a.terminal-spotify:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 3px;
+}
+
+.terminal-spotify-art {
+    display: block;
+    width: 4.75rem;
+    height: 4.75rem;
+    border-radius: 5px;
+    object-fit: contain;
+}
+
+.terminal-spotify-details {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.terminal-spotify-label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #1ed760;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.terminal-spotify-track,
+.terminal-spotify-artist {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.terminal-spotify-track {
+    font-size: 1rem;
+}
+
+.terminal-spotify-artist {
+    color: #b9b5bc;
+    font-size: 0.88rem;
+}
+
+.terminal-spotify-idle {
+    grid-template-columns: auto minmax(0, 1fr);
+    color: #b9b5bc;
+}
+
+.terminal-spotify-idle i {
+    color: #1ed760;
+    font-size: 1.25rem;
+}
+
 .terminal-input-row {
     display: flex;
     align-items: center;
@@ -493,6 +577,15 @@ figcaption {
         width: 100%;
         min-height: 1.25em;
         margin-left: 0;
+    }
+
+    .terminal-spotify-art {
+        width: 4rem;
+        height: 4rem;
+    }
+
+    .terminal-spotify-label {
+        font-size: 0.64rem;
     }
 }
 
