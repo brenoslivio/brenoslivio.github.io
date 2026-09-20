@@ -256,7 +256,7 @@ figcaption {
 .terminal {
     position: relative;
     overflow: hidden;
-    margin: 1rem 0 2.5rem;
+    margin: 1rem 0 0.75rem;
     border: 1px solid transparent;
     border-radius: 10px;
     background:
@@ -392,88 +392,116 @@ figcaption {
     color: #ff8c86;
 }
 
-.terminal-spotify {
+.spotify-status {
+    display: flex;
+    min-height: 3.25rem;
+    align-items: flex-start;
+    margin: 0 0 2.5rem;
+    color: #aaa5ad;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+.spotify-status-loading,
+.spotify-status-unavailable {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.15rem;
+    font-size: 0.76rem;
+}
+
+.spotify-status-loading i {
+    color: #1ed760;
+}
+
+.spotify-status-unavailable {
+    color: #777279;
+}
+
+.spotify-now-playing {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
-    gap: 0.9rem;
-    max-width: 34rem;
-    margin: 0 0 1rem;
-    padding: 0.75rem;
-    border: 1px solid rgba(30, 215, 96, 0.45);
-    border-radius: 7px;
-    background: linear-gradient(135deg, rgba(30, 215, 96, 0.09), rgba(222, 11, 230, 0.08));
-    box-shadow: inset 0 0 1rem rgba(30, 215, 96, 0.04);
+    gap: 0.65rem;
+    max-width: 30rem;
+    padding: 0.4rem 0.65rem;
+    border-left: 2px solid rgba(30, 215, 96, 0.55);
+    border-radius: 0 5px 5px 0;
+    background: linear-gradient(90deg, rgba(30, 215, 96, 0.06), transparent 80%);
 }
 
-a.terminal-spotify {
+a.spotify-now-playing {
     color: #ffffff;
     text-decoration: none;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
-a.terminal-spotify:hover,
-a.terminal-spotify:focus-visible {
+a.spotify-now-playing:hover,
+a.spotify-now-playing:focus-visible {
     color: #ffffff;
     border-color: #1ed760;
-    box-shadow: 0 0 1rem rgba(30, 215, 96, 0.18);
-    transform: translateY(-1px);
+    background-color: rgba(30, 215, 96, 0.06);
 }
 
-a.terminal-spotify:focus-visible {
+a.spotify-now-playing:focus-visible {
     outline: 2px solid #ffffff;
     outline-offset: 3px;
 }
 
-.terminal-spotify-art {
+.spotify-now-playing-art {
     display: block;
-    width: 4.75rem;
-    height: 4.75rem;
-    border-radius: 5px;
+    width: 3.15rem;
+    height: 3.15rem;
+    border-radius: 3px;
     object-fit: contain;
 }
 
-.terminal-spotify-details {
+.spotify-now-playing-details {
     display: flex;
     min-width: 0;
     flex-direction: column;
-    gap: 0.2rem;
+    gap: 0.1rem;
 }
 
-.terminal-spotify-label {
+.spotify-now-playing-label {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.32rem;
     color: #1ed760;
-    font-size: 0.72rem;
+    font-size: 0.62rem;
     font-weight: 700;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.09em;
 }
 
-.terminal-spotify-track,
-.terminal-spotify-artist {
+.spotify-now-playing-track,
+.spotify-now-playing-artist {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.terminal-spotify-track {
-    font-size: 1rem;
-}
-
-.terminal-spotify-artist {
-    color: #b9b5bc;
+.spotify-now-playing-track {
     font-size: 0.88rem;
 }
 
-.terminal-spotify-idle {
-    grid-template-columns: auto minmax(0, 1fr);
-    color: #b9b5bc;
+.spotify-now-playing-artist {
+    color: #aaa5ad;
+    font-size: 0.76rem;
 }
 
-.terminal-spotify-idle i {
-    color: #1ed760;
-    font-size: 1.25rem;
+.spotify-now-playing-idle {
+    grid-template-columns: auto minmax(0, 1fr);
+    min-height: auto;
+    padding: 0.35rem 0.15rem;
+    border-left: 0;
+    background: none;
+    color: #777279;
+    font-size: 0.76rem;
+}
+
+.spotify-now-playing-idle i {
+    color: rgba(30, 215, 96, 0.72);
+    font-size: 0.95rem;
 }
 
 .terminal-input-row {
@@ -579,13 +607,13 @@ a.terminal-spotify:focus-visible {
         margin-left: 0;
     }
 
-    .terminal-spotify-art {
-        width: 4rem;
-        height: 4rem;
+    .spotify-now-playing-art {
+        width: 2.85rem;
+        height: 2.85rem;
     }
 
-    .terminal-spotify-label {
-        font-size: 0.64rem;
+    .spotify-now-playing {
+        max-width: calc(100vw - 3.2rem);
     }
 }
 

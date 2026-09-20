@@ -56,6 +56,7 @@ const terminalForm = document.getElementById("terminalForm");
 const terminalInput = document.getElementById("terminalInput");
 const terminalHistory = document.getElementById("terminalHistory");
 const initialWhoamiOutput = document.getElementById("whoamiOutput");
+const spotifyStatus = document.getElementById("spotifyStatus");
 const spotifyStatusUrl = "https://raw.githubusercontent.com/brenoslivio/brenoslivio.github.io/spotify-data/spotify.json";
 
 if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
@@ -177,7 +178,6 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
         output.className = `terminal-message${isError ? " terminal-error" : ""}`;
         output.textContent = message;
         terminalHistory.insertBefore(output, terminalForm);
-        return output;
     };
 
     const appendWhoami = () => {
@@ -191,20 +191,20 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
     const buildSpotifyCard = (status) => {
         if (!status.isPlaying) {
             const idle = document.createElement("div");
-            idle.className = "terminal-spotify terminal-spotify-idle";
+            idle.className = "spotify-now-playing spotify-now-playing-idle";
 
             const icon = document.createElement("i");
             icon.className = "fab fa-spotify";
             icon.setAttribute("aria-hidden", "true");
 
             const message = document.createElement("span");
-            message.textContent = "Not listening to anything on Spotify right now.";
+            message.textContent = "Nothing playing right now";
             idle.append(icon, message);
             return idle;
         }
 
         const card = document.createElement(status.spotifyUrl ? "a" : "div");
-        card.className = "terminal-spotify terminal-spotify-playing";
+        card.className = "spotify-now-playing spotify-now-playing-active";
 
         if (status.spotifyUrl) {
             card.href = status.spotifyUrl;
@@ -215,7 +215,7 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
 
         if (status.albumArt) {
             const artwork = document.createElement("img");
-            artwork.className = "terminal-spotify-art";
+            artwork.className = "spotify-now-playing-art";
             artwork.src = status.albumArt;
             artwork.alt = status.album ? `Album artwork for ${status.album}` : "Spotify album artwork";
             artwork.width = 300;
@@ -226,23 +226,23 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
         }
 
         const details = document.createElement("span");
-        details.className = "terminal-spotify-details";
+        details.className = "spotify-now-playing-details";
 
         const label = document.createElement("span");
-        label.className = "terminal-spotify-label";
+        label.className = "spotify-now-playing-label";
         const icon = document.createElement("i");
         icon.className = "fab fa-spotify";
         icon.setAttribute("aria-hidden", "true");
         const labelText = document.createElement("span");
-        labelText.textContent = "NOW PLAYING ON SPOTIFY";
+        labelText.textContent = "LISTENING NOW";
         label.append(icon, labelText);
 
         const track = document.createElement("strong");
-        track.className = "terminal-spotify-track";
+        track.className = "spotify-now-playing-track";
         track.textContent = status.track || "Unknown track";
 
         const artist = document.createElement("span");
-        artist.className = "terminal-spotify-artist";
+        artist.className = "spotify-now-playing-artist";
         artist.textContent = status.artist || "Unknown artist";
 
         details.append(label, track, artist);
@@ -250,9 +250,7 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
         return card;
     };
 
-    const appendSpotify = async () => {
-        const loading = appendMessage("querying Spotify...");
-
+    const loadSpotifyStatus = async () => {
         try {
             const cacheWindow = Math.floor(Date.now() / 300000);
             const response = await fetch(`${spotifyStatusUrl}?v=${cacheWindow}`, { cache: "no-store" });
@@ -267,11 +265,13 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
                 throw new Error("Spotify status is stale");
             }
 
-            loading.replaceWith(buildSpotifyCard(status));
+            spotifyStatus.replaceChildren(buildSpotifyCard(status));
         } catch (error) {
             console.error(error);
-            loading.classList.add("terminal-error");
-            loading.textContent = "Spotify status is temporarily unavailable. Try again in a few minutes.";
+            const unavailable = document.createElement("span");
+            unavailable.className = "spotify-status-unavailable";
+            unavailable.textContent = "Spotify status temporarily unavailable";
+            spotifyStatus.replaceChildren(unavailable);
         }
     };
 
@@ -291,10 +291,7 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
                 appendWhoami();
                 break;
             case "help":
-                appendMessage("Available commands:\n  whoami   show my biography\n  spotify  show what I am listening to\n  funfact  show a personal fun fact\n  neofetch inspect the system\n  help     list available commands\n  clear    clear the terminal");
-                break;
-            case "spotify":
-                appendSpotify();
+                appendMessage("Available commands:\n  whoami   show my biography\n  funfact  show a personal fun fact\n  neofetch inspect the system\n  help     list available commands\n  clear    clear the terminal");
                 break;
             case "funfact":
                 appendMessage("Linux user since 2010, vegan since 2018, autistic since forever.");
@@ -317,6 +314,7 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
     });
 
     playTerminalIntro();
+    loadSpotifyStatus();
 }
 
 initializeProfileToggles();
