@@ -1,7 +1,7 @@
 const defaultProfile = {
     image: "imgs/me_square.jpg",
     alt: "Breno in front of his hobbit-hole",
-    caption: "In front of my hobbit-hole (try clicking on me)"
+    caption: "Me in front of my hobbit-hole (try clicking on me)"
 };
 
 const alternateProfile = {
