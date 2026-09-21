@@ -23,6 +23,8 @@ nav {
     align-items: center;
     padding: 0.5rem 1rem;
     width: 100%;
+    max-width: 75rem;
+    margin-inline: auto;
     box-sizing: border-box;
 }
 
@@ -141,7 +143,10 @@ main section {
     flex: 1;
     padding: 1rem;
     position: relative;
-    max-width: 1200rem;
+    width: 100%;
+    max-width: 75rem;
+    margin-inline: auto;
+    box-sizing: border-box;
 }
 
 .site-footer {
@@ -159,7 +164,6 @@ main section {
 main {
     flex: 1;
     min-width: 10rem;
-    margin-right: 1rem;
 }
 
 figure {
