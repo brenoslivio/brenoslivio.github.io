@@ -61,22 +61,43 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
     const whoamiMarkup = initialWhoamiOutput.innerHTML;
     const terminal = terminalHistory.closest(".terminal");
     const initialCommandText = terminalHistory.querySelector(".terminal-command .terminal-command-text");
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
     const wait = (milliseconds) => new Promise((resolve) => window.setTimeout(resolve, milliseconds));
     const nextFrame = () => new Promise((resolve) => window.requestAnimationFrame(resolve));
     const focusTerminalInput = () => terminalInput.focus({ preventScroll: true });
+    let introCancelled = false;
+
+    const revealOutput = () => {
+        window.CSS?.highlights?.delete("terminal-unrevealed");
+        window.CSS?.highlights?.delete("terminal-typing-caret");
+        initialWhoamiOutput.classList.remove("terminal-output-streaming", "terminal-output-streaming-active");
+        terminal?.classList.remove("terminal-intro-running");
+    };
+
+    const cancelIntro = () => {
+        introCancelled = true;
+        revealOutput();
+    };
+
+    const handleMotionChange = (event) => {
+        if (event.matches) cancelIntro();
+    };
 
     const prepareOutputStream = (output) => {
+        // Highlight ranges affect only the paint, never the original text or links.
+        const unrevealed = new Highlight();
         const groups = Array.from(output.querySelectorAll(":scope > p")).map((paragraph) => {
             const walker = document.createTreeWalker(paragraph, NodeFilter.SHOW_TEXT);
             const textNodes = [];
             let node = walker.nextNode();
 
             while (node) {
-                const text = node.nodeValue.replace(/\s+/g, " ");
-                if (text) {
-                    textNodes.push({ node, text });
-                    node.nodeValue = "";
+                const text = node.nodeValue;
+                if (text.trim()) {
+                    const range = document.createRange();
+                    range.selectNodeContents(node);
+                    unrevealed.add(range);
+                    textNodes.push({ node, text, range });
                 }
                 node = walker.nextNode();
             }
@@ -89,61 +110,69 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
             0
         );
 
-        return { groups, characterCount };
+        CSS.highlights.set("terminal-unrevealed", unrevealed);
+        return { groups, characterCount, unrevealed };
     };
 
     const streamOutput = async (output, outputStream) => {
-        const { groups, characterCount } = outputStream;
+        const { groups, characterCount, unrevealed } = outputStream;
         const charactersPerFrame = Math.max(1, Math.ceil(characterCount / 230));
+        const caret = document.createRange();
 
         await wait(180);
-        output.classList.remove("terminal-output-waiting");
+        if (introCancelled) return;
         output.classList.add("terminal-output-streaming-active");
+        CSS.highlights.set("terminal-typing-caret", new Highlight(caret));
 
-        for (const { paragraph, textNodes } of groups) {
-            paragraph.classList.add("terminal-text-typing");
-
-            for (const { node, text } of textNodes) {
+        for (const { textNodes } of groups) {
+            for (const { node, text, range } of textNodes) {
                 let position = 0;
 
                 while (position < text.length) {
+                    if (introCancelled) return;
                     const variableBatch = Math.max(
                         1,
                         Math.round(charactersPerFrame * (0.75 + Math.random() * 0.5))
                     );
                     position = Math.min(position + variableBatch, text.length);
-                    node.nodeValue = text.slice(0, position);
+                    range.setStart(node, position);
+                    caret.setStart(node, position);
+                    caret.setEnd(node, Math.min(position + 1, text.length));
                     await nextFrame();
                 }
+                unrevealed.delete(range);
             }
-
-            paragraph.classList.remove("terminal-text-typing");
         }
 
+        CSS.highlights.delete("terminal-typing-caret");
         await wait(180);
-        output.classList.remove("terminal-output-streaming", "terminal-output-streaming-active", "terminal-output-waiting");
     };
 
     const playTerminalIntro = async () => {
-        if (!terminal || !initialCommandText || reduceMotion) {
+        const supportsTextReveal = window.CSS?.highlights && typeof window.Highlight === "function"
+            && CSS.supports("selector(::highlight(terminal-unrevealed))");
+        if (!terminal || !initialCommandText || motionPreference.matches || !supportsTextReveal) {
             focusTerminalInput();
             return;
         }
 
         const command = "whoami";
 
-        document.body.classList.add("terminal-intro-running");
         try {
             terminal.classList.add("terminal-intro-running");
             terminalHistory.setAttribute("aria-live", "off");
-            initialWhoamiOutput.classList.add("terminal-output-streaming", "terminal-output-waiting");
+            initialWhoamiOutput.classList.add("terminal-output-streaming");
             const outputStream = prepareOutputStream(initialWhoamiOutput);
+            // Keyboard users can read and activate every biography link immediately.
+            initialWhoamiOutput.addEventListener("focusin", cancelIntro);
+            motionPreference.addEventListener("change", handleMotionChange);
             initialCommandText.classList.add("terminal-command-typing");
             initialCommandText.textContent = "";
 
             await wait(350);
 
             for (const character of command) {
+                if (introCancelled) return;
                 initialCommandText.textContent += character;
                 await wait(350 + Math.random() * 150);
             }
@@ -152,17 +181,15 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
             initialCommandText.classList.remove("terminal-command-typing");
             await streamOutput(initialWhoamiOutput, outputStream);
         } catch (error) {
-            initialCommandText.textContent = command;
-            initialWhoamiOutput.innerHTML = whoamiMarkup;
-            initializeProfileToggles(initialWhoamiOutput);
             console.error("Terminal intro failed:", error);
         } finally {
-            document.body.classList.remove("terminal-intro-running");
-            terminal.classList.remove("terminal-intro-running");
+            revealOutput();
+            initialWhoamiOutput.removeEventListener("focusin", cancelIntro);
+            motionPreference.removeEventListener("change", handleMotionChange);
+            initialCommandText.textContent = command;
             initialCommandText.classList.remove("terminal-command-typing");
-            initialWhoamiOutput.classList.remove("terminal-output-streaming", "terminal-output-streaming-active", "terminal-output-waiting");
             terminalHistory.setAttribute("aria-live", "polite");
-            if (document.activeElement === document.body || terminal.contains(document.activeElement)) {
+            if (!introCancelled && (document.activeElement === document.body || terminal.contains(document.activeElement))) {
                 focusTerminalInput();
             }
         }

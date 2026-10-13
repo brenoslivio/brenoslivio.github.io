@@ -169,10 +169,6 @@ main section {
     margin-bottom: 30px;
 }
 
-body.terminal-intro-running [data-after-terminal] {
-    display: none;
-}
-
 .container {
     display: flex;
     flex: 1;
@@ -426,20 +422,23 @@ figcaption {
     transform: translateY(0.35rem) scale(0.985);
 }
 
-.terminal-output-waiting {
-    display: none;
+::highlight(terminal-unrevealed) {
+    color: transparent;
+    text-shadow: none;
+}
+
+::highlight(terminal-typing-caret) {
+    color: #79c8ff;
+    background-color: #79c8ff;
+    text-shadow: none;
+}
+
+.terminal-output-streaming a {
+    text-decoration: none;
 }
 
 .terminal-output-streaming-active figure {
     animation: terminal-profile-resolve 0.45s steps(6, end) forwards;
-}
-
-.terminal-text-typing::after {
-    content: "█";
-    margin-left: 0.12em;
-    color: #79c8ff;
-    text-shadow: 0 0 0.5rem rgba(121, 200, 255, 0.7);
-    animation: terminal-blink 0.72s steps(1, end) infinite;
 }
 
 .terminal-intro-running .terminal-input-row {
@@ -586,7 +585,6 @@ figcaption {
 @media (prefers-reduced-motion: reduce) {
     .terminal-cursor,
     .terminal-command-typing::after,
-    .terminal-text-typing::after,
     .terminal-output-streaming-active figure {
         animation: none;
     }
