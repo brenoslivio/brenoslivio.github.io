@@ -27,7 +27,8 @@
   <meta name="twitter:image:alt" content="Breno Livio Silva de Almeida presenting at ISME20 in Auckland">
 
   <link rel="icon" href="../imgs/NixOS.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=footer-1">
+  <link rel="stylesheet" href="style.css?v=spotify-header-1">
+  <link rel="stylesheet" href="/spotify.css?v=spotify-header-1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script type="application/ld+json">
   {
@@ -64,12 +65,25 @@
             <a href="/faq/"><i class="fa-solid fa-question"></i>  FAQ</a>
         </div>
 
-        <div class="social-links">
-            <a href="https://scholar.google.com/citations?user=g0zZ_U4AAAAJ" title="Google Scholar" target="_blank"><i class="fas fa-graduation-cap"></i></a>
-            <a href="https://orcid.org/0000-0002-2041-9170" title="ORCID" target="_blank"><i class="fab fa-orcid"></i></a>
-            <a href="https://www.linkedin.com/in/brenoslivio" title="LinkedIn" target="_blank"><i class="fab fa-linkedin"></i></a>
-            <a href="https://github.com/brenoslivio" title="GitHub" target="_blank"><i class="fab fa-github"></i></a>
-            <a href="mailto:brenoslivio@pm.me" title="Email"><i class="fas fa-envelope"></i></a>
+        <div class="header-extras">
+            <div class="social-links">
+                <a href="https://scholar.google.com/citations?user=g0zZ_U4AAAAJ" title="Google Scholar" target="_blank"><i class="fas fa-graduation-cap"></i></a>
+                <a href="https://orcid.org/0000-0002-2041-9170" title="ORCID" target="_blank"><i class="fab fa-orcid"></i></a>
+                <a href="https://www.linkedin.com/in/brenoslivio" title="LinkedIn" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/brenoslivio" title="GitHub" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="mailto:brenoslivio@pm.me" title="Email"><i class="fas fa-envelope"></i></a>
+            </div>
+            <div class="spotify-widget" data-spotify-widget hidden>
+                <button class="spotify-trigger" type="button" aria-expanded="false" aria-controls="spotifyPanel" aria-label="Show Spotify details">
+                    <i class="fab fa-spotify" aria-hidden="true"></i>
+                    <span class="spotify-summary">Checking Spotify…</span>
+                </button>
+                <div class="spotify-panel" id="spotifyPanel" role="region" aria-label="Spotify listening details" hidden>
+                    <div class="spotify-card-content">
+                        <p class="spotify-card-loading">Checking Spotify…</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </nav>
   </header>
@@ -231,5 +245,6 @@
     <p>Copyright &copy; 2025-<span data-current-year>2026</span>. Breno Livio Silva de Almeida. All rights reserved.</p>
   </footer>
   <script src="/js/site.js?v=footer-1"></script>
+  <script src="/js/spotify.js?v=spotify-header-1"></script>
 </body>
 </html>

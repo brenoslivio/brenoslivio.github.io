@@ -98,6 +98,24 @@ nav .main-links a[aria-current="page"] {
     color: #eaabec;
 }
 
+@media (max-width: 767px) {
+    nav .main-links {
+        row-gap: 0.75rem;
+    }
+
+    nav .main-links a {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        min-height: 44px;
+        white-space: nowrap;
+    }
+
+    nav .main-links a::after {
+        bottom: 0;
+    }
+}
+
 h1,
 .section-heading {
     border-bottom: 1px solid #de0be6; /* Adjust color and thickness as needed */
@@ -231,6 +249,30 @@ figcaption {
     font-style: italic;
     margin-top: 1em;
     margin-left: 0;
+}
+
+.xkcd-figure {
+    width: 100%;
+}
+
+.xkcd-image-link {
+    display: block;
+    max-width: 701px;
+    margin-inline: auto;
+    cursor: zoom-in;
+}
+
+.xkcd-image-link:focus-visible {
+    outline: 3px solid #eaabec;
+    outline-offset: 4px;
+}
+
+.xkcd-figure img {
+    display: block;
+    width: 100%;
+    max-width: 701px;
+    height: auto;
+    margin-inline: auto;
 }
 
 @media (max-width: 768px) {
@@ -412,116 +454,6 @@ figcaption {
     color: #ff8c86;
 }
 
-.spotify-status {
-    display: flex;
-    width: 100%;
-    min-height: 3.25rem;
-    box-sizing: border-box;
-    align-items: flex-start;
-    justify-content: flex-end;
-    margin: 0 0 2.5rem;
-    color: #aaa5ad;
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-}
-
-.spotify-status-loading {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.35rem 0.15rem;
-    font-size: 0.76rem;
-}
-
-.spotify-status-loading i {
-    color: #1ed760;
-}
-
-.spotify-now-playing {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    align-items: center;
-    gap: 0.65rem;
-    max-width: 30rem;
-    padding: 0.4rem 0.65rem;
-    border-left: 2px solid rgba(30, 215, 96, 0.55);
-    border-radius: 0 5px 5px 0;
-    background: linear-gradient(90deg, rgba(30, 215, 96, 0.06), transparent 80%);
-}
-
-a.spotify-now-playing {
-    color: #ffffff;
-    text-decoration: none;
-    transition: border-color 0.2s ease, background-color 0.2s ease;
-}
-
-a.spotify-now-playing:hover,
-a.spotify-now-playing:focus-visible {
-    color: #ffffff;
-    border-color: #1ed760;
-    background-color: rgba(30, 215, 96, 0.06);
-}
-
-a.spotify-now-playing:focus-visible {
-    outline: 2px solid #ffffff;
-    outline-offset: 3px;
-}
-
-.spotify-now-playing-art {
-    display: block;
-    width: 3.15rem;
-    height: 3.15rem;
-    border-radius: 3px;
-    object-fit: contain;
-}
-
-.spotify-now-playing-details {
-    display: flex;
-    min-width: 0;
-    flex-direction: column;
-    gap: 0.1rem;
-}
-
-.spotify-now-playing-label {
-    display: flex;
-    align-items: center;
-    gap: 0.32rem;
-    color: #1ed760;
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: 0.09em;
-}
-
-.spotify-now-playing-track,
-.spotify-now-playing-artist {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.spotify-now-playing-track {
-    font-size: 0.88rem;
-}
-
-.spotify-now-playing-artist {
-    color: #aaa5ad;
-    font-size: 0.76rem;
-}
-
-.spotify-now-playing-idle {
-    grid-template-columns: auto minmax(0, 1fr);
-    min-height: auto;
-    padding: 0.35rem 0.15rem;
-    border-left: 0;
-    background: none;
-    color: #777279;
-    font-size: 0.76rem;
-}
-
-.spotify-now-playing-idle i {
-    color: rgba(30, 215, 96, 0.72);
-    font-size: 0.95rem;
-}
-
 .terminal-input-row {
     display: flex;
     align-items: center;
@@ -613,10 +545,6 @@ a.spotify-now-playing:focus-visible {
 }
 
 @media (max-width: 500px) {
-    .spotify-status {
-        min-height: 3rem;
-    }
-
     .terminal-input-row {
         display: grid;
         grid-template-columns: minmax(0, 1fr);
@@ -629,14 +557,6 @@ a.spotify-now-playing:focus-visible {
         margin-left: 0;
     }
 
-    .spotify-now-playing-art {
-        width: 2.85rem;
-        height: 2.85rem;
-    }
-
-    .spotify-now-playing {
-        max-width: calc(100vw - 3.2rem);
-    }
 }
 
 @media (max-width: 480px) {

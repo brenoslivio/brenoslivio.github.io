@@ -56,9 +56,6 @@ const terminalForm = document.getElementById("terminalForm");
 const terminalInput = document.getElementById("terminalInput");
 const terminalHistory = document.getElementById("terminalHistory");
 const initialWhoamiOutput = document.getElementById("whoamiOutput");
-const spotifyStatus = document.getElementById("spotifyStatus");
-const spotifyStatusUrl = "https://api.github.com/repos/brenoslivio/brenoslivio.github.io/contents/spotify.json?ref=spotify-data";
-const spotifyCacheKey = "brenoslivio-last-spotify-track";
 
 if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
     const whoamiMarkup = initialWhoamiOutput.innerHTML;
@@ -189,125 +186,6 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
         initializeProfileToggles(output);
     };
 
-    const buildSpotifyCard = (status) => {
-        const hasTrack = Boolean(status.track && status.artist);
-
-        if (!status.isPlaying && !hasTrack) {
-            const idle = document.createElement("div");
-            idle.className = "spotify-now-playing spotify-now-playing-idle";
-
-            const icon = document.createElement("i");
-            icon.className = "fab fa-spotify";
-            icon.setAttribute("aria-hidden", "true");
-
-            const message = document.createElement("span");
-            message.textContent = "Nothing playing right now";
-            idle.append(icon, message);
-            return idle;
-        }
-
-        const card = document.createElement(status.spotifyUrl ? "a" : "div");
-        card.className = `spotify-now-playing ${status.isPlaying ? "spotify-now-playing-active" : "spotify-now-playing-previous"}`;
-
-        if (status.spotifyUrl) {
-            card.href = status.spotifyUrl;
-            card.target = "_blank";
-            card.rel = "noopener noreferrer";
-            const playbackLabel = status.isPlaying ? "Currently playing" : "Last played";
-            card.setAttribute("aria-label", `${playbackLabel}: ${status.track} by ${status.artist} on Spotify`);
-        }
-
-        if (status.albumArt) {
-            const artwork = document.createElement("img");
-            artwork.className = "spotify-now-playing-art";
-            artwork.src = status.albumArt;
-            artwork.alt = status.album ? `Album artwork for ${status.album}` : "Spotify album artwork";
-            artwork.width = 300;
-            artwork.height = 300;
-            artwork.loading = "lazy";
-            artwork.decoding = "async";
-            card.append(artwork);
-        }
-
-        const details = document.createElement("span");
-        details.className = "spotify-now-playing-details";
-
-        const label = document.createElement("span");
-        label.className = "spotify-now-playing-label";
-        const icon = document.createElement("i");
-        icon.className = "fab fa-spotify";
-        icon.setAttribute("aria-hidden", "true");
-        const labelText = document.createElement("span");
-        labelText.textContent = status.isPlaying ? "LISTENING NOW" : "LAST PLAYED";
-        label.append(icon, labelText);
-
-        const track = document.createElement("strong");
-        track.className = "spotify-now-playing-track";
-        track.textContent = status.track || "Unknown track";
-
-        const artist = document.createElement("span");
-        artist.className = "spotify-now-playing-artist";
-        artist.textContent = status.artist || "Unknown artist";
-
-        details.append(label, track, artist);
-        card.append(details);
-        return card;
-    };
-
-    const rememberSpotifyTrack = (status) => {
-        if (!status.track) {
-            return;
-        }
-
-        try {
-            window.localStorage.setItem(spotifyCacheKey, JSON.stringify(status));
-        } catch (error) {
-            console.debug("Could not cache the Spotify track", error);
-        }
-    };
-
-    const getRememberedSpotifyTrack = () => {
-        try {
-            const status = JSON.parse(window.localStorage.getItem(spotifyCacheKey));
-            return status?.track ? { ...status, isPlaying: false, isFallback: true } : null;
-        } catch (error) {
-            console.debug("Could not read the cached Spotify track", error);
-            return null;
-        }
-    };
-
-    const loadSpotifyStatus = async () => {
-        const requestController = new AbortController();
-        const requestTimeout = window.setTimeout(() => requestController.abort(), 8000);
-
-        try {
-            const response = await fetch(`${spotifyStatusUrl}&v=${Date.now()}`, {
-                cache: "no-store",
-                headers: { Accept: "application/vnd.github.raw+json" },
-                signal: requestController.signal
-            });
-            if (!response.ok) {
-                throw new Error(`Spotify status request failed with ${response.status}`);
-            }
-
-            let status = await response.json();
-            const updatedAt = Date.parse(status.updatedAt);
-            const isFresh = Number.isFinite(updatedAt) && Date.now() - updatedAt < 15 * 60 * 1000;
-            if (!isFresh) {
-                status = { ...status, isPlaying: false, isFallback: Boolean(status.track) };
-            }
-
-            rememberSpotifyTrack(status);
-            spotifyStatus.replaceChildren(buildSpotifyCard(status));
-        } catch (error) {
-            console.error(error);
-            const rememberedTrack = getRememberedSpotifyTrack();
-            spotifyStatus.replaceChildren(buildSpotifyCard(rememberedTrack || { isPlaying: false }));
-        } finally {
-            window.clearTimeout(requestTimeout);
-        }
-    };
-
     terminalForm.addEventListener("submit", (event) => {
         event.preventDefault();
 
@@ -347,8 +225,6 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
     });
 
     playTerminalIntro();
-    loadSpotifyStatus();
-    window.setInterval(loadSpotifyStatus, 2 * 60 * 1000);
 }
 
 initializeProfileToggles();

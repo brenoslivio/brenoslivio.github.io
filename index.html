@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Breno Livio Silva de Almeida | Computational Biologist</title>
-  <meta name="description" content="Breno Livio Silva de Almeida is a PhD researcher developing AutoML and protein language-model methods for biological sequence analysis and microbial ecology.">
+  <meta name="description" content="Breno Livio Silva de Almeida is a PhD researcher studying biological sequence representations, automated machine learning, foundation models, and environmental metagenomics.">
   <meta name="author" content="Breno Livio Silva de Almeida">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <link rel="canonical" href="https://brenoslivio.github.io/">
@@ -13,7 +13,7 @@
   <meta property="og:type" content="profile">
   <meta property="og:site_name" content="Breno Livio Silva de Almeida">
   <meta property="og:title" content="Breno Livio Silva de Almeida | Computational Biologist">
-  <meta property="og:description" content="PhD researcher working on AutoML, protein language models, biological sequence analysis, and microbial ecology.">
+  <meta property="og:description" content="PhD researcher studying biological sequence representations, automated machine learning, foundation models, and environmental metagenomics.">
   <meta property="og:url" content="https://brenoslivio.github.io/">
   <meta property="og:image" content="https://brenoslivio.github.io/imgs/me_square.jpg">
   <meta property="og:image:width" content="954">
@@ -24,12 +24,13 @@
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Breno Livio Silva de Almeida | Computational Biologist">
-  <meta name="twitter:description" content="PhD researcher working on AutoML, protein language models, biological sequence analysis, and microbial ecology.">
+  <meta name="twitter:description" content="PhD researcher studying biological sequence representations, automated machine learning, foundation models, and environmental metagenomics.">
   <meta name="twitter:image" content="https://brenoslivio.github.io/imgs/me_square.jpg">
   <meta name="twitter:image:alt" content="Portrait of Breno Livio Silva de Almeida">
 
   <link rel="icon" href="imgs/NixOS.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=footer-1">
+  <link rel="stylesheet" href="style.css?v=spotify-header-1">
+  <link rel="stylesheet" href="/spotify.css?v=spotify-header-1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script type="application/ld+json">
   {
@@ -63,7 +64,7 @@
         "url": "https://brenoslivio.github.io/",
         "image": "https://brenoslivio.github.io/imgs/me_square.jpg",
         "jobTitle": "Computational Biologist and PhD Researcher",
-        "description": "PhD researcher studying biological sequence representations, automated machine learning, protein language models, and environmental metagenomics.",
+        "description": "PhD researcher studying biological sequence representations, automated machine learning, foundation models, and environmental metagenomics.",
         "affiliation": [
           {
             "@type": "CollegeOrUniversity",
@@ -105,12 +106,25 @@
             <a href="/faq/"><i class="fa-solid fa-question"></i>  FAQ</a>
         </div>
 
-        <div class="social-links">
-            <a href="https://scholar.google.com/citations?user=g0zZ_U4AAAAJ" title="Google Scholar" target="_blank"><i class="fas fa-graduation-cap"></i></a>
-            <a href="https://orcid.org/0000-0002-2041-9170" title="ORCID" target="_blank"><i class="fab fa-orcid"></i></a>
-            <a href="https://www.linkedin.com/in/brenoslivio" title="LinkedIn" target="_blank"><i class="fab fa-linkedin"></i></a>
-            <a href="https://github.com/brenoslivio" title="GitHub" target="_blank"><i class="fab fa-github"></i></a>
-            <a href="mailto:brenoslivio@pm.me" title="Email"><i class="fas fa-envelope"></i></a>
+        <div class="header-extras">
+            <div class="social-links">
+                <a href="https://scholar.google.com/citations?user=g0zZ_U4AAAAJ" title="Google Scholar" target="_blank"><i class="fas fa-graduation-cap"></i></a>
+                <a href="https://orcid.org/0000-0002-2041-9170" title="ORCID" target="_blank"><i class="fab fa-orcid"></i></a>
+                <a href="https://www.linkedin.com/in/brenoslivio" title="LinkedIn" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/brenoslivio" title="GitHub" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="mailto:brenoslivio@pm.me" title="Email"><i class="fas fa-envelope"></i></a>
+            </div>
+            <div class="spotify-widget" data-spotify-widget hidden>
+                <button class="spotify-trigger" type="button" aria-expanded="false" aria-controls="spotifyPanel" aria-label="Show Spotify details">
+                    <i class="fab fa-spotify" aria-hidden="true"></i>
+                    <span class="spotify-summary">Checking Spotify…</span>
+                </button>
+                <div class="spotify-panel" id="spotifyPanel" role="region" aria-label="Spotify listening details" hidden>
+                    <div class="spotify-card-content">
+                        <p class="spotify-card-loading">Checking Spotify…</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </nav>
   </header>
@@ -152,7 +166,7 @@
                 <figcaption class="profile-caption">Me in front of my hobbit-hole (try clicking on me)</figcaption>
               </figure>
 
-              <p>I am a double-degree PhD student at the <a href="https://www.icmc.usp.br/">
+              <p>I am a double-degree PhD candidate at the <a href="https://www.icmc.usp.br/">
                 Institute of Mathematics and Computer Sciences</a> (ICMC) of the
                 <a href="https://www5.usp.br/">University of São Paulo</a> (USP) and the
                 <a href="https://www.uni-leipzig.de/en">University of Leipzig</a>. My thesis,
@@ -198,13 +212,14 @@
           </div>
         </div>
 
-        <div class="spotify-status" id="spotifyStatus" aria-live="polite">
-          <span class="spotify-status-loading"><i class="fab fa-spotify" aria-hidden="true"></i> checking Spotify...</span>
-        </div>
-
       </section>
 
-
+      <figure class="xkcd-figure">
+        <a class="xkcd-image-link" href="imgs/dna.png" aria-label="View the DNA comic at full size">
+          <img src="imgs/dna.png" alt="XKCD comic about DNA" width="701" height="323" loading="lazy" decoding="async">
+        </a>
+        <figcaption><a href="https://xkcd.com/1605/">Randall Munroe, xkcd #1605</a></figcaption>
+      </figure>
 
       <section>
         <h2 class="section-heading">Research Interests</h2>
@@ -323,6 +338,7 @@
     <p>Copyright &copy; 2025-<span data-current-year>2026</span>. Breno Livio Silva de Almeida. All rights reserved.</p>
   </footer>
   <script src="/js/site.js?v=footer-1"></script>
-  <script src="js/script.js?v=spotify-fallback-6"></script>
+  <script src="/js/spotify.js?v=spotify-header-1"></script>
+  <script src="js/script.js?v=spotify-header-1"></script>
 </body>
 </html>
