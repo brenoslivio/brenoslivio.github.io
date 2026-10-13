@@ -29,7 +29,7 @@ header nav {
     align-items: center;
     gap: 0.4rem;
     max-width: 100%;
-    width: 16rem;
+    width: auto;
     min-height: 28px;
     padding: 0.25rem 0.5rem;
     border: 0;
@@ -195,6 +195,11 @@ a.spotify-now-playing:focus-visible {
 @media (min-width: 768px) {
     .header-extras {
         margin-left: auto;
+    }
+
+    .spotify-widget {
+        /* Match the trailing margin of the social links. */
+        margin-right: 10px;
     }
 }
 
