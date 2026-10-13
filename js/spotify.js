@@ -3,7 +3,6 @@
     if (!widget) return;
 
     const trigger = widget.querySelector(".spotify-trigger");
-    const summary = widget.querySelector(".spotify-summary");
     const panel = widget.querySelector(".spotify-panel");
     const spotifyStatus = widget.querySelector(".spotify-card-content");
     const spotifyStatusUrl = "https://api.github.com/repos/brenoslivio/brenoslivio.github.io/contents/spotify.json?ref=spotify-data";
@@ -61,13 +60,6 @@
         if (signature === lastStatus) return;
         lastStatus = signature;
         const hasTrack = Boolean(status.track && status.artist);
-        const label = status.isPlaying ? "Listening" : "Last played";
-        summary.textContent = hasTrack
-            ? `${label} · ${status.track}`
-            : status.unavailable ? "Spotify unavailable" : "Nothing playing";
-        trigger.setAttribute("aria-label", hasTrack
-            ? `${label}: ${status.track} by ${status.artist}. Show Spotify details`
-            : `${summary.textContent}. Show Spotify details`);
         widget.classList.toggle("spotify-is-playing", Boolean(status.isPlaying && hasTrack));
         const restoreFocus = spotifyStatus.contains(document.activeElement);
         spotifyStatus.replaceChildren(buildSpotifyCard(status));

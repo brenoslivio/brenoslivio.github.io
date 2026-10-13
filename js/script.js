@@ -132,26 +132,40 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
 
         const command = "whoami";
 
-        terminal.classList.add("terminal-intro-running");
-        terminalHistory.setAttribute("aria-live", "off");
-        initialWhoamiOutput.classList.add("terminal-output-streaming", "terminal-output-waiting");
-        const outputStream = prepareOutputStream(initialWhoamiOutput);
-        initialCommandText.classList.add("terminal-command-typing");
-        initialCommandText.textContent = "";
+        document.body.classList.add("terminal-intro-running");
+        try {
+            terminal.classList.add("terminal-intro-running");
+            terminalHistory.setAttribute("aria-live", "off");
+            initialWhoamiOutput.classList.add("terminal-output-streaming", "terminal-output-waiting");
+            const outputStream = prepareOutputStream(initialWhoamiOutput);
+            initialCommandText.classList.add("terminal-command-typing");
+            initialCommandText.textContent = "";
 
-        await wait(350);
+            await wait(350);
 
-        for (const character of command) {
-            initialCommandText.textContent += character;
-            await wait(350 + Math.random() * 150);
+            for (const character of command) {
+                initialCommandText.textContent += character;
+                await wait(350 + Math.random() * 150);
+            }
+
+            await wait(280);
+            initialCommandText.classList.remove("terminal-command-typing");
+            await streamOutput(initialWhoamiOutput, outputStream);
+        } catch (error) {
+            initialCommandText.textContent = command;
+            initialWhoamiOutput.innerHTML = whoamiMarkup;
+            initializeProfileToggles(initialWhoamiOutput);
+            console.error("Terminal intro failed:", error);
+        } finally {
+            document.body.classList.remove("terminal-intro-running");
+            terminal.classList.remove("terminal-intro-running");
+            initialCommandText.classList.remove("terminal-command-typing");
+            initialWhoamiOutput.classList.remove("terminal-output-streaming", "terminal-output-streaming-active", "terminal-output-waiting");
+            terminalHistory.setAttribute("aria-live", "polite");
+            if (document.activeElement === document.body || terminal.contains(document.activeElement)) {
+                focusTerminalInput();
+            }
         }
-
-        await wait(280);
-        initialCommandText.classList.remove("terminal-command-typing");
-        await streamOutput(initialWhoamiOutput, outputStream);
-        terminal.classList.remove("terminal-intro-running");
-        terminalHistory.setAttribute("aria-live", "polite");
-        focusTerminalInput();
     };
 
     const appendCommand = (command) => {
