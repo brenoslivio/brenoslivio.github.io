@@ -78,6 +78,19 @@ nav .social-links a:hover {
     color: #de0be6;
 }
 
+nav .capybara-link {
+    white-space: nowrap;
+}
+
+.capybara-icon {
+    display: inline-block;
+    width: 1.5em;
+    height: 1.125em;
+    flex-shrink: 0;
+    vertical-align: -0.2em;
+    fill: currentColor;
+}
+
 nav .main-links a::after {
     content: "";
     position: absolute;
