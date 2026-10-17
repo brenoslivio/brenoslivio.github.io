@@ -1,0 +1,13 @@
+{
+  "isPlaying": false,
+  "isFallback": true,
+  "track": "The Wizard",
+  "artist": "Al Di Meola",
+  "album": "Land Of The Midnight Sun",
+  "albumArt": "https://i.scdn.co/image/ab67616d0000b273b82520e2f43cacacd2a72234",
+  "spotifyUrl": "https://open.spotify.com/track/049LYvMmtkeEs4WxP7MPXa",
+  "progressMs": 0,
+  "durationMs": 406133,
+  "lastPlayedAt": "2026-10-16T20:55:53Z",
+  "updatedAt": "2026-10-17T16:24:02Z"
+}
