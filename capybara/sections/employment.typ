@@ -1,31 +1,23 @@
 #import "../layout/style.typ": entry, cv-list
+#import "collab.typ": collaborations
 
-= Employment History
-
+#let experience(short: false) = [
+= Research Experience
 #entry[07.2025 – 06.2026][
-#strong[Research Assistant,] Microbial Data Science group, Department of Computational Biology and Chemistry, Helmholtz Centre for Environmental Research (UFZ).
-
-#cv-list(
-  [Contributing to the EReMiD project for AI-assisted data type categorization and ontology alignment across different disciplines. More information: #link("https://helmholtz-metadaten.de/inf-projects/ereemid")[link]],
-  [Development of deep-learning approaches leveraging protein language models for functional annotation of metagenomic datasets through the AI MareExplore collaboration. More information: #link("https://www.ufz.de/index.php?en=102369")[link]],
-)
+  *Research Assistant — Helmholtz Centre for Environmental Research (UFZ).* Microbial Data Science group, Department of Computational Biology and Chemistry.
+  #if short [Contributed protein-language-model approaches for functional annotation of environmental metagenomic sequences.] else [
+    #cv-list(
+      [Contributed to protein-language-model approaches for functional annotation of metagenomic sequences within #link("https://www.ufz.de/index.php?en=102369")[AI MareExplore].],
+      [Contributed to AI-assisted data-type categorization and ontology alignment in #link("https://helmholtz-metadaten.de/inf-projects/ereemid")[EReMiD].],
+    )
+  ]
+  // TODO[RES-02]: Describe your individual model/pipeline contribution and evaluation. Define the baseline, confidence thresholds, validation, and publication status behind the 14.2-fold annotation result before using it as an achievement bullet.
+  // TODO[RES-03]: Add your specific EReMiD deliverable, ontology/data coverage, and a public resource or measured outcome.
 ]
-
 #entry[07.2022 – 09.2022][
-#strong[Research Intern,] Big Data Biology Lab, Fudan University
-
-#cv-list(
-  [Large-scale metagenomic data analysis across multiple environments],
-  [Rarefaction analysis of unique small open reading frames (smORFs)],
-  [Co-author of a Nature Communications publication],
-)
+  *Research Intern — Big Data Biology Lab, Fudan University.*
+  Performed rarefaction analyses of small open reading frames across environmental metagenomes, contributing to _A catalog of small proteins from the global microbiome_ (_Nature Communications_, 2024).
+  // TODO[RES-04]: Add the scale of your own analysis and the specific finding or resource it supported.
 ]
-
-#entry[05.2021 – 11.2022][
-#strong[Teaching Assistant,] undergraduate level, 8 hours/week, Institute of Mathematics and Computer Sciences, University of São Paulo.
-
-#cv-list(
-  [Assisted in four undergraduate courses: Object-Oriented Analysis and Design, Statistics, Fundamentals of Data Science, and Computational Visualization],
-  [Responsibilities included grading assignments, preparing exams, and delivering practical lectures to support student learning],
-)
+#if not short { collaborations() }
 ]

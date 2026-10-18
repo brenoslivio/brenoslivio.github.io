@@ -34,18 +34,22 @@
   if url == none { content } else { link(url, content) }
 }
 
-#let cv(body) = {
-  set document(title: "Breno Livio Silva de Almeida — Curriculum Vitae", author: "Breno Livio Silva de Almeida")
-  set page(paper: "a4", margin: (x: 22.5mm, y: 20mm), numbering: "1", number-align: center)
+#let cv(body, short: false) = {
+  set document(title: "Breno Livio Silva de Almeida — " + if short { "Abbreviated Academic CV" } else { "Curriculum Vitae" }, author: "Breno Livio Silva de Almeida")
+  set page(paper: "a4", margin: (x: 20mm, y: 17mm),
+    footer: context text(size: 9pt, fill: rgb("555555"))[
+      Breno Livio Silva de Almeida #h(1fr)
+      #if short { [Abbreviated CV · ] }#counter(page).display("1 / 1", both: true)
+    ])
   // Libertinus Serif is embedded in both the Typst CLI and Tinymist.
   set text(font: "Libertinus Serif", size: 10.5pt, lang: "en")
-  set par(leading: 0.5em, spacing: 0.65em)
+  set par(leading: 0.5em, spacing: 0.7em)
   set heading(numbering: none)
   show link: set text(fill: purple)
-  show heading.where(level: 1): it => block(above: 1.2em, below: 0.65em, sticky: true,
+  show heading.where(level: 1): it => block(above: 0.9em, below: 0.45em, sticky: true,
     stack(dir: ttb, spacing: 3pt,
-      text(size: 16pt, weight: "bold", it.body),
-      rect(width: 100%, height: 2.5pt, stroke: none, fill: gradient.linear(lilac.lighten(40%), white)),
+      text(size: if short { 12pt } else { 14pt }, weight: "bold", it.body),
+      line(length: 100%, stroke: 0.5pt + lilac.lighten(35%)),
     ),
   )
   show heading.where(level: 2): it => block(above: 0.7em, below: 0.4em, sticky: true)[
@@ -55,13 +59,12 @@
 }
 
 // Keep each date together with its entry when content moves between pages.
-#let entry(date, body) = block(above: 0.3em, below: 0.5em, breakable: false)[
+#let entry(date, body) = block(above: 0.5em, below: 0.5em, breakable: false)[
   #grid(
-    columns: (30mm, 3mm, 1fr),
-    column-gutter: 2mm,
-    align: (right + top, center + top, left + top),
-    text(size: 10pt, date),
-    icon("bookmark", size: 0.85em),
+    columns: (25mm, 1fr),
+    column-gutter: 4mm,
+    align: (left + top, left + top),
+    text(size: 9pt, date),
     body,
   )
 ]

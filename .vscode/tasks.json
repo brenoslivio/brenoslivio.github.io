@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Build CV PDF",
+      "label": "Build full academic CV",
       "type": "process",
       "command": "typst",
       "args": [
@@ -11,10 +11,48 @@
         "capybara/cv.typ",
         "capybara/cv.pdf"
       ],
-      "options": { "cwd": "${workspaceFolder}" },
-      "group": { "kind": "build", "isDefault": true },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
       "problemMatcher": [],
-      "presentation": { "reveal": "silent", "panel": "dedicated" }
+      "presentation": {
+        "reveal": "silent",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Build abbreviated academic CV",
+      "type": "process",
+      "command": "typst",
+      "args": [
+        "compile",
+        "--ignore-system-fonts",
+        "capybara/cv-short.typ",
+        "capybara/cv-short.pdf"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Build both academic CVs",
+      "dependsOn": [
+        "Build full academic CV",
+        "Build abbreviated academic CV"
+      ],
+      "dependsOrder": "parallel",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
     }
   ]
 }

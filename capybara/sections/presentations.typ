@@ -1,8 +1,21 @@
-#import "../layout/style.typ": cv-list
+#import "../layout/style.typ": cv-list, entry
+#import "../data/presentations.typ": invited, oral_presentations, abstracts, isme_program_url
 
-= Invited Talks and Selected Oral Presentations
-
-#cv-list(
-  [#strong[de Almeida, B. L.] Da bancada ao teclado: ferramentas gratuitas para a pesquisa científica \[From bench to keyboard: free tools for scientific research\]. #strong[Invited talk], 36th FisFar Summer Course, Federal University of Minas Gerais (UFMG), Brazil. January 2027. #emph[Scheduled.]],
-  [#strong[de Almeida, B. L.], Kamath, S., Santos, A. P. A., Bonidia, R. P., Espíndola-Hernández, P., Stadler, P. F., Wierckx, N., Borchert, E., Rother, D., Oliveira, A., de Carvalho, A. C. P. L. F., & Rocha, U. N. Combining protein language models with different architectures expands protein family annotation 14.2-fold across 16 million open reading frames from 3,802 environmental metagenomes. In: 20th International Symposium on Microbial Ecology (ISME20), 2026, Auckland, New Zealand.],
-)
+#let presentations(short: false) = [
+= #if short [Selected Presentations] else [Invited Talks and Conference Presentations]
+#if short [
+  #entry[2026][*ISME20, Auckland — oral presentation.* Protein language models for protein-family annotation in environmental metagenomes. #link(isme_program_url)[Program MS13].]
+  #entry[2026][*VAAM, Berlin — oral presentation.* Protein language models for functional annotation. #link("https://vaam-kongress.de/fileadmin/vaam/2026/docs/2026/VAAM2026_Abstract_booklet.pdf")[Abstract SL-CM-01].]
+  #entry[2025][*BAGECO, Graz — flash talk; Helmholtz AI, Messe Karlsruhe — oral presentation.* Protein language models for uncharacterized microbial proteins. #link("https://bageco.org/fileadmin/bageco/2025/BAGECO2025_Abstractbooklet.pdf#page=257")[BAGECO abstract] · #link("https://haicon.cc/conference-2025/")[Helmholtz AI].]
+] else [
+  == Invited Talk
+  #cv-list(invited)
+  == Oral Presentations and Flash Talks
+  // Preserve the reported title verbatim; its quantitative result is not reused as a validated research-achievement claim.
+  #cv-list(..oral_presentations)
+  == Conference Abstracts and Posters
+  #cv-list(..abstracts)
+  #link("https://brenoslivio.github.io/works/")[Additional conference contributions and abstracts].
+  // TODO[TALK-01]: Add presentation type, presenter, and abstract/program link for each conference entry; distinguish co-authorship from personally presenting. ISME20 BioAutoML-FAST was a poster.
+]
+]

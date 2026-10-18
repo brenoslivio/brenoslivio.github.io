@@ -1,18 +1,22 @@
-#import "../layout/style.typ": entry, field
+#import "../layout/style.typ": entry, icon
 
+#let supervisor(name, orcid) = [#name~#link("https://orcid.org/" + orcid, icon("orcid", alt: "ORCID: " + orcid))]
+#let andre = supervisor("André C. P. L. F. de Carvalho", "0000-0002-4765-6459")
+#let peter = supervisor("Peter F. Stadler", "0000-0002-5016-5191")
+
+#let education(short: false) = [
 = Education
-
-#entry[07.2024 – Present][
-#strong[PhD~Computer Science, University of São Paulo and University of Leipzig] \
-Double degree PhD program with the University of São Paulo and University of Leipzig. \
-PhD Thesis: #emph[Decoding the Language of Life: Towards the Limits of Biological Sequence Representation]. \
-Advisor (University of São Paulo): Prof. Dr. André C. P. L. F. de Carvalho #field("orcid", url: "https://orcid.org/0000-0002-4765-6459", alt: "ORCID")[0000-0002-4765-6459] \
-Advisor (University of Leipzig): Prof. Dr. Peter F. Stadler #field("orcid", url: "https://orcid.org/0000-0002-5016-5191", alt: "ORCID")[0000-0002-5016-5191]
+#entry[2024 – Present][
+  *PhD in Computer Science — University of São Paulo / Leipzig University.* Double-degree program.
+  #if not short [Thesis: _Decoding the Language of Life: Towards the Limits of Biological Sequence Representation_.]
+  Supervisors: #andre and #peter.
 ]
-
-#entry[01.2020 – 02.2024][
-#strong[BSc~Computer Science (5-Year Curriculum, Research-Intensive Track), University of São Paulo] with curricular specializations in Data Engineering and Data Science \
-GPA 9,4/10 (Rank: 7/116). Program completed on an accelerated timeline due to credit transfer from Computer Engineering. Thesis research conducted jointly between the Institute of Mathematics and Computer Sciences and the Helmholtz Centre for Environmental Research (UFZ), supported by a São Paulo Research Foundation (FAPESP) scholarship. \
-BSc Thesis: #emph[BioDeepFuse: A Hybrid Deep Learning Approach with Handcrafted Features for Non-coding RNA Classification]. DOI: #link("https://www.tandfonline.com/doi/epdf/10.1080/15476286.2024.2329451")[10.1080/15476286.2024.2329451] \
-Advisor: Prof. Dr. André C. P. L. F. de Carvalho #field("orcid", url: "https://orcid.org/0000-0002-4765-6459", alt: "ORCID")[0000-0002-4765-6459]
+#entry[2020 – 2024][
+  *BSc in Computer Science — University of São Paulo.* GPA: 9.4/10; rank: 7/116.
+  #if not short [
+    Specializations: Data Engineering and Data Science.
+    Thesis: _BioDeepFuse: A Hybrid Deep Learning Approach with Handcrafted Features for Non-coding RNA Classification_.
+    Research conducted with UFZ, supported by the São Paulo Research Foundation (FAPESP); supervisor: #andre.
+  ]
+]
 ]
