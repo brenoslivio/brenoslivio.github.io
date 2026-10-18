@@ -7,8 +7,10 @@
       "command": "typst",
       "args": [
         "compile",
+        "--root",
+        "capybara",
         "--ignore-system-fonts",
-        "capybara/cv.typ",
+        "capybara/src/cv.typ",
         "capybara/cv.pdf"
       ],
       "options": {
@@ -27,8 +29,10 @@
       "command": "typst",
       "args": [
         "compile",
+        "--root",
+        "capybara",
         "--ignore-system-fonts",
-        "capybara/cv-short.typ",
+        "capybara/src/cv-short.typ",
         "capybara/cv-short.pdf"
       ],
       "options": {

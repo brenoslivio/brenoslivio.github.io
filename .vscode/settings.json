@@ -1,5 +1,7 @@
 {
   "tinymist.serverPath": "tinymist",
   "tinymist.systemFonts": false,
-  "tinymist.exportPdf": "never"
+  "tinymist.exportPdf": "never",
+  "tinymist.rootPath": "${workspaceFolder}/capybara",
+  "tinymist.outputPath": "$root/$name"
 }

@@ -42,8 +42,8 @@
       #if short { [Abbreviated CV · ] }#counter(page).display("1 / 1", both: true)
     ])
   // Libertinus Serif is embedded in both the Typst CLI and Tinymist.
-  set text(font: "Libertinus Serif", size: 10.5pt, lang: "en")
-  set par(leading: 0.5em, spacing: 0.7em)
+  set text(font: "Libertinus Serif", size: if short { 10pt } else { 10.5pt }, lang: "en")
+  set par(leading: if short { 0.4em } else { 0.5em }, spacing: 0.7em)
   set heading(numbering: none)
   show link: set text(fill: purple)
   show heading.where(level: 1): it => block(above: 0.9em, below: 0.45em, sticky: true,
@@ -53,7 +53,7 @@
     ),
   )
   show heading.where(level: 2): it => block(above: 0.7em, below: 0.4em, sticky: true)[
-    #text(size: 12pt, weight: "bold", it.body)
+    #text(size: if short { 10.5pt } else { 12pt }, weight: "bold", it.body)
   ]
   body
 }
@@ -75,15 +75,36 @@
 }
 
 // Dates belong to the data snapshot, never to the compilation time.
-#let citation-metrics(metrics) = block[
-  #icon("chart-pie")#h(0.4em)
-  *h-index:* #metrics.google_scholar.h_index #h(0.6em)
-  *i10-index:* #metrics.google_scholar.i10_index #h(0.6em)
-  *Citations:* #metrics.google_scholar.citations (Google Scholar),
-  #metrics.scopus.citations (Scopus)
-  #linebreak()
-  #text(size: 9pt, fill: rgb("555555"))[
-    Google Scholar as of #metrics.google_scholar.as_of ·
-    Scopus as of #(metrics.scopus.as_of).
+#let citation-metrics(metrics) = {
+  let scholar-url = "https://scholar.google.com/citations?user=" + metrics.google_scholar.profile_id
+  let scopus-url = "https://www.scopus.com/authid/detail.uri?authorId=" + metrics.scopus.profile_id
+  let metric(value, label, source, url, prominent: false) = {
+    set text(top-edge: "cap-height", bottom-edge: "baseline")
+    block(width: 100%, height: 30pt, above: 0pt, below: 0pt,
+      align(center + horizon, stack(
+        dir: ttb,
+        spacing: 1.5pt,
+        text(size: if prominent { 17pt } else { 15pt },
+          weight: "bold", fill: purple, str(value)),
+        text(size: 9pt, weight: "bold", fill: rgb("333333"), label),
+        text(size: 8pt, link(url, source)),
+      )),
+    )
+  }
+  block(breakable: false)[
+    #block(width: 100%, fill: purple.lighten(95%),
+      stroke: 0.4pt + purple.lighten(80%), radius: 3pt,
+      inset: (x: 8pt, y: 4pt), above: 0pt, below: 3pt,
+      grid(columns: (1fr, 1fr, 1fr, 1fr), column-gutter: 10pt,
+        metric(metrics.google_scholar.citations, "Citations", "Google Scholar", scholar-url, prominent: true),
+        metric(metrics.scopus.citations, "Citations", "Scopus", scopus-url, prominent: true),
+        metric(metrics.google_scholar.h_index, "h-index", "Google Scholar", scholar-url),
+        metric(metrics.google_scholar.i10_index, "i10-index", "Google Scholar", scholar-url),
+      ),
+    )
+    #text(size: 8.5pt, fill: rgb("555555"))[
+      Google Scholar as of #metrics.google_scholar.as_of ·
+      Scopus as of #(metrics.scopus.as_of).
+    ]
   ]
-]
+}
