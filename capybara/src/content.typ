@@ -1,4 +1,6 @@
-// Shared content for both CVs. Edit the section below; short: true selects the abbreviated version.
+// Shared content for both CVs. Short mode omits details; it never paraphrases them.
+// Keep included sentences, entry titles, and link labels identical in both versions.
+// Selected presentation topics are concise summaries of the full citation titles.
 #import "style.typ": cv, entry, cv-list, icon, field, citation-metrics
 #import "@preview/metalogo:1.2.0": LaTeX
 
@@ -29,7 +31,7 @@
 #field("github", url: "https://github.com/brenoslivio", alt: "GitHub")[GitHub] #h(0.7em)
 #field("linkedin", url: "https://www.linkedin.com/in/brenoslivio/", alt: "LinkedIn")[LinkedIn]
 
-*Research interests:* Representation and prediction of biological sequences, combining handcrafted descriptors, learned representations from foundation models, metagenomic metadata curation and automated machine learning for classification and annotation in microbial ecology.
+*Research interests:* Biological sequence representation and functional inference in microbial ecology, with a focus on handcrafted descriptors, foundation models and automated machine learning for sequence classification and annotation, complemented by metagenomic metadata curation.
 ]
 
 
@@ -42,19 +44,36 @@
 #let peter = supervisor("Peter F. Stadler", "0000-0002-5016-5191")
 
 #let education(short: false) = [
+#let cv-list = if short {
+  (..items) => items.pos().join(linebreak())
+} else { cv-list }
+#let entry = entry.with(compact: short)
 = Education
-#entry[2024 – Present][
-  *PhD in Computer Science — University of São Paulo / Leipzig University.* Double-degree program.
-  #if not short [Thesis: _Decoding the Language of Life: Towards the Limits of Biological Sequence Representation_.]
-  Supervisors: #andre and #peter.
+#entry([2024 – Present], title: [*PhD in Computer Science — University of São Paulo / Leipzig University*])[
+  #if not short { linebreak() }
+  *Double-degree programme*
+  #if short { linebreak() }
+  #cv-list(
+    [*Thesis:* Decoding the Language of Life: Towards the Limits of Biological Sequence Representation.],
+    [*Supervisors:* #andre and #peter.],
+  )
 ]
-#entry[2020 – 2024][
-  *BSc in Computer Science — University of São Paulo.* GPA: 9.4/10; rank: 7/116.
-  #if not short [
-    Specializations: Data Engineering and Data Science.
-    Thesis: _BioDeepFuse: A Hybrid Deep Learning Approach with Handcrafted Features for Non-coding RNA Classification_.
-    Research conducted with UFZ, supported by the São Paulo Research Foundation (FAPESP); supervisor: #andre.
-  ]
+#if short { v(0.3em) }
+#entry([2020 – 2024], title: [*BSc in Computer Science, with specialisations in Data Engineering and Data Science — University of São Paulo*])[
+  #if not short { linebreak() }
+  *Five-year programme* · GPA: 9.4/10 · Rank: 7/116
+  #linebreak()
+  Research-intensive final year with 600 hours of thesis work.
+  #if not short [Accelerated completion through credit transfer from prior Computer Engineering coursework.]
+  #if short { linebreak() }
+  #cv-list(
+    [*Thesis:* BioDeepFuse: A Hybrid Deep Learning Approach with Handcrafted Features for Non-coding RNA Classification. #link("https://doi.org/10.1080/15476286.2024.2329451")[Paper DOI].
+      #if not short [
+        #linebreak()
+        Research conducted with UFZ, supported by the São Paulo Research Foundation (FAPESP).
+      ]],
+    [*Supervisor:* #andre.],
+  )
 ]
 ]
 
@@ -96,31 +115,27 @@
 // ========================================================================
 
 #let experience(short: false) = [
+#let cv-list = cv-list.with(compact: short)
+#let entry = entry.with(compact: short)
 = Research Experience
-#entry[07.2025 – 06.2026][
-  *Research Assistant — Helmholtz Centre for Environmental Research (UFZ).* Microbial Data Science group, Department of Computational Biology and Chemistry.
-  #if short [
-    Helped develop a machine-learning approach to classify data types across millions of Sequence Read Archive (SRA) runs within #link("https://helmholtz-metadaten.de/inf-projects/ereemid")[EReMiD]. Contributed to metagenomic metadata standardisation in related projects and to teaching materials.
-  ] else [
-    #cv-list(
+#entry([07.2025 – 06.2026], title: [*Research Assistant — Helmholtz Centre for Environmental Research (UFZ).*])[
+  #if not short [Microbial Data Science group, Department of Computational Biology and Chemistry.]
+  #cv-list(
       [Helped develop a machine-learning approach to classify data types across millions of runs from the Sequence Read Archive (SRA) within #link("https://helmholtz-metadaten.de/inf-projects/ereemid")[EReMiD].],
       [Contributed to metagenomic metadata standardisation in related projects and to the development of teaching materials.],
-    )
-  ]
+  )
   // TODO[RES-03]: Add a public resource, model evaluation results, and links to metadata standards or teaching materials you contributed to.
 ]
-#entry[07.2022 – 09.2022][
-  *Research Intern — Big Data Biology Lab, Fudan University.*
-  #if short [
-    Developed a rarefaction workflow for nearly one billion small open reading frames (smORFs) across 63,402 samples, identifying undersampled soil-associated diversity. Contributed to _A catalog of small proteins from the global microbiome_ (_Nature Communications_, 2024).
-  ] else [
+#entry([07.2022 – 09.2022], title: [*Research Intern — Big Data Biology Lab, Fudan University.*])[
+
+  #if not short [
     Research internship in Prof. Luis Pedro Coelho's group, contributing to the Global Microbial Small ORFs Catalog (GMSC).
-    #cv-list(
-      [Developed a rarefaction workflow for nearly one billion unique small open reading frames (smORFs) across 63,402 samples.],
-      [Compared smORF richness and sampling saturation across habitats, identifying undersampled soil-associated diversity.],
-      [Contributed to _A catalog of small proteins from the global microbiome_ (_Nature Communications_, 2024). #link("https://www.big-data-biology.org/blog/2022/09/29/smorfs_rarefaction/")[Lab blog post] · #link("https://doi.org/10.1038/s41467-024-51894-6")[Paper].],
-    )
   ]
+  #cv-list(
+      [Developed a rarefaction workflow for nearly one billion unique small open reading frames (smORFs) across 63,402 samples.],
+      ..if short { () } else { ([Compared smORF richness and sampling saturation across habitats, identifying undersampled soil-associated diversity.],) },
+      [Contributed to _A catalog of small proteins from the global microbiome_ (_Nature Communications_, 2024). #link("https://www.big-data-biology.org/blog/2022/09/29/smorfs_rarefaction/")[Lab blog post] · #link("https://doi.org/10.1038/s41467-024-51894-6")[Paper].],
+  )
 
 ]
 ]
@@ -135,37 +150,29 @@
 #let eur-rates = (BRL: 0.17, USD: 0.85, EUR: 1)
 #let awards = (
   (year: [2025], title: [Google PhD Fellowship in Health Research], currency: "USD", amount: 30000,
-    detail: [International fellowship recognizing outstanding doctoral research in computing and related fields, with USD 15,000 annually for two years and mentorship from a Google researcher. Selected among 15 fellows in Latin America in 2025, including eight from Brazil; supports research on language models for biological sequences.],
-    short-detail: [Two-year fellowship with Google research mentorship; one of 15 Latin American fellows selected in 2025.],
+    detail: ([International fellowship recognising outstanding doctoral research in computing and related fields, with USD 15,000 annually for two years and mentorship from a Google researcher.], [Selected among 15 fellows in Latin America in 2025, including eight from Brazil.]), selected-sentence: 1,
     links: (("Recipients", "https://research.google/programs-and-events/phd-fellowship/recipients/?filtertab=2025"), ("USP award report", "https://icmc.usp.br/noticias/7263-google-seleciona-aluno-da-usp-sao-carlos-para-programa-internacional-de-bolsas-de-pesquisa")), selected: true),
   (year: [2025], title: [ISME Scholar Mobility Fund], currency: "EUR", amount: 2300,
-    detail: [Awarded by the International Society for Microbial Ecology for a research visit to UFZ, Leipzig, in July 2026. The program supports international research and training visits by graduate students and postdoctoral researchers to advance microbial ecology and collaboration with host laboratories.],
-    short-detail: [Supported a July 2026 research visit to UFZ, Leipzig, through ISME's international microbial-ecology mobility program.],
-    links: (("Program", "https://isme-microbes.org/public/scholar-fund/"), ("USP visit report", "https://saocarlos.usp.br/projeto-premiado-do-icmc-avanca-e-amplia-uso-de-inteligencia-artificial-em-estudos-de-dna-rna-e-proteinas/")), selected: true),
+    detail: ([Awarded by the International Society for Microbial Ecology for a research visit to UFZ, Leipzig, in July 2026.], [The programme supports international research and training visits by graduate students and postdoctoral researchers to advance microbial ecology and collaboration with host laboratories.]), selected-sentence: 0,
+    links: (("Programme", "https://isme-microbes.org/public/scholar-fund/"), ("USP visit report", "https://saocarlos.usp.br/projeto-premiado-do-icmc-avanca-e-amplia-uso-de-inteligencia-artificial-em-estudos-de-dna-rna-e-proteinas/")), selected: true),
   (year: [2024], title: [FAPESP Doctoral Scholarship], currency: "BRL", amount: 453168,
     detail: [_Decoding the language of life: Towards protein classification and design through large language models_. São Paulo Research Foundation (FAPESP); competitive, peer-reviewed; grant \#2024/10958-1.],
-    short-detail: [_Decoding the language of life: Towards protein classification and design through large language models_. São Paulo Research Foundation (FAPESP); competitive, peer-reviewed; grant \#2024/10958-1.],
     links: (("FAPESP grant record", "https://bv.fapesp.br/en/bolsas/221592/"),), selected: true),
   (year: [2024], title: [FAPESP Technical Training Scholarship], currency: "BRL", amount: 10553.20,
-    detail: [_Democratization of machine learning in life sciences and annotation of protein families_. Grant \#2024/03304-5, April–October 2024.],
-    short-detail: [_Democratization of machine learning in life sciences and annotation of protein families_. Grant \#2024/03304-5.],
+    detail: [_Democratization of machine learning in life sciences and annotation of protein families_. Grant \#2024/03304-5.],
     links: (("FAPESP grant record", "https://bv.fapesp.br/en/bolsas/216410/"),), selected: false),
   (year: [2024], title: [Prototypes for Humanity Travel Grant], currency: "USD", amount: 760,
     detail: [Travel support to present BioAutoML at Prototypes for Humanity in Dubai, November 2024. The project was selected for an international showcase of university innovations addressing social and environmental challenges, providing an opportunity to present accessible machine-learning tools for life-science research.],
-    short-detail: [Supported presentation of BioAutoML at the international innovation showcase in Dubai.],
     links: (("Selected project", "https://www.prototypesforhumanity.com/prototypes/bioautoml"),), selected: false),
   (year: [2023], title: [FAPESP Scientific Initiation Scholarship], currency: "BRL", amount: 7920.99,
-    detail: [_Machine learning applied to multiomics analysis for exploration of microbial communities_. Competitive, peer-reviewed; grant \#2023/00264-0, April–December 2023.],
-    short-detail: [_Machine learning applied to multiomics analysis for exploration of microbial communities_. Competitive, peer-reviewed; grant \#2023/00264-0.],
+    detail: [_Machine learning applied to multiomics analysis for exploration of microbial communities_. Competitive, peer-reviewed; grant \#2023/00264-0.],
     links: (("FAPESP grant record", "https://bv.fapesp.br/en/bolsas/208213/"),), selected: false),
   (year: [2023], title: [CNPq Scientific Initiation Scholarship], currency: "BRL", amount: 1500,
     detail: [_Automated machine learning for life sciences_. National Council for Scientific and Technological Development (CNPq); grant \#101243/2023-5.],
-    short-detail: [_Automated machine learning for life sciences_. Grant \#101243/2023-5.],
     // TODO[AUDIT-01]: Add a public award-specific record for CNPq #101243/2023-5; the link below explains the scholarship category, not the individual award or amount.
     links: (("CNPq scholarship category", "https://www.gov.br/cnpq/pt-br/acesso-a-informacao/bolsas-e-auxilios/copy_of_modalidades/bolsas-modalidades"),), selected: false),
   (year: [2021 – 2022], title: [FAPESP Scientific Initiation Scholarship], currency: "BRL", amount: 7652.70,
-    detail: [_Classification and analysis of bacterial non-coding RNA sequences using machine-learning techniques_. Competitive, peer-reviewed; grant \#2021/08561-8, September 2021–June 2022.],
-    short-detail: [_Classification and analysis of bacterial non-coding RNA sequences using machine-learning techniques_. Competitive, peer-reviewed; grant \#2021/08561-8.],
+    detail: [_Classification and analysis of bacterial non-coding RNA sequences using machine-learning techniques_. Competitive, peer-reviewed; grant \#2021/08561-8.],
     links: (("FAPESP grant record", "https://bv.fapesp.br/en/bolsas/198279/"),), selected: false),
 )
 #let eur-total = awards.map(a => a.amount * eur-rates.at(a.currency)).sum()
@@ -179,14 +186,15 @@
 }
 
 #let funding(short: false) = [
+#let entry = entry.with(compact: short)
 = Research Funding and Fellowships
 Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowships, research scholarships, and mobility/travel grants across the award periods.
-#if short [Selected awards below; full breakdown in the complete CV.]
 
 #for a in awards.filter(a => not short or a.selected) {
-  entry(a.year)[
-    #strong(a.title) — #a.currency #money(a.amount).
-    #if short { a.short-detail } else { a.detail }
+  entry(a.year, title: [#strong(a.title) — #a.currency #money(a.amount).])[
+    #if type(a.detail) == array {
+      if short { a.detail.at(a.selected-sentence) } else { a.detail.join([ ]) }
+    } else { a.detail }
     #a.links.map(((label, url)) => link(url, label)).join([ · ]).
   ]
 }
@@ -199,38 +207,38 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
 
 
 // ========================================================================
-// Honors and awards
+// Honours and awards
 // ========================================================================
 
 #let honors(short: false) = [
-= Honors and Awards
-#entry[2026][
-  *IRCAI Global Top 100 — Outstanding (2025 edition).* Team recognition for BioAutoML from the International Research Centre on Artificial Intelligence (IRCAI), under the auspices of UNESCO.
-  #if not short [Recognizes accessible machine learning for life sciences supporting UN Sustainable Development Goals 3 (health) and 10 (reduced inequalities).]
-  Contributing developer of BioAutoML; currently lead developer of BioAutoML-FAST.
+#let entry = entry.with(compact: short)
+= Honours and Awards
+#entry([2026], title: [*IRCAI Global Top 100 — Outstanding (2025 edition).*])[
+  Team recognition for BioAutoML from the International Research Centre on Artificial Intelligence (IRCAI), under the auspices of UNESCO.
+  #if not short [Recognises accessible machine learning for life sciences supporting UN Sustainable Development Goals 3 (health) and 10 (reduced inequalities).]
+  #if not short [Contributing developer of BioAutoML; currently lead developer of BioAutoML-FAST.]
   #link("https://ircai.org/top100/entry/bioautoml-democratizing-machine-learning-in-life-sciences/")[Official recognition].
 ]
-#if not short [
-  #entry[2026][
-    *HIDA-sponsored Carpentries Instructor Training.* Selected for one of 15 annually sponsored places for Helmholtz researchers; estimated training value: USD 1,600.
-    The program prepares researchers to teach practical computing and data-science workshops using evidence-based instruction, supporting reproducibility and open science. Participation leads toward Carpentries instructor certification.
-    #link("https://www.helmholtz-hida.de/en/training/data-science-instructor-certification/")[HIDA program and selection details].
+#entry([2026], title: [*HIDA-sponsored Carpentries Instructor Training.*])[
+
+  Selected for one of 15 annually sponsored places for Helmholtz researchers; estimated training value: USD 1,600.
+  #if not short [
+    The programme prepares researchers to teach practical computing and data-science workshops using evidence-based instruction, supporting reproducibility and open science. Participation leads towards Carpentries instructor certification.
   ]
+  #link("https://www.helmholtz-hida.de/en/training/data-science-instructor-certification/")[HIDA programme and selection details].
 ]
-#entry[2024][
-  *J. F. Marar Artificial Intelligence Prize for Undergraduate Research.* Winner for _BioDeepFuse: Empowering Researchers in Life Sciences with Deep Learning_; cash prize: *BRL 10,500*.
-  #if short [
-    Inaugural ICMC-USP award recognizing academic and social relevance, alignment with the UN Sustainable Development Goals, and academic performance.
-  ] else [
+#entry([2024], title: [*J. F. Marar Artificial Intelligence Prize for Undergraduate Research.*])[
+  Winner for _BioDeepFuse: Empowering Researchers in Life Sciences with Deep Learning_; cash prize: *BRL 10,500*.
+  #if not short [
     Inaugural award for ICMC-USP undergraduate AI research (2023 edition, presented in February 2024), selected unanimously by the committee on academic relevance, social relevance, alignment with the UN Sustainable Development Goals, and the student's academic performance.
     BioDeepFuse combines deep learning and handcrafted sequence features to make non-coding RNA classification more accessible to life-science researchers.
   ]
   #link("https://saocarlos.usp.br/projeto-para-empoderar-pesquisadores-em-ciencias-da-vida-vence-premio-j-f-marar-de-inteligencia-artificial-para-a-graduacao/")[USP award announcement].
 ]
-#entry[2024][
-  *Prototypes for Humanity.* BioAutoML selected among 100 projects from nearly 3,000 submissions worldwide.
-  #if short [International showcase of university innovations addressing social and environmental challenges.] else [
-    Presented in Dubai in November 2024, showcasing automated machine learning that enables life-science researchers to analyze biological sequences with less programming expertise. Travel support is reported in Research Funding and Fellowships.
+#entry([2024], title: [*Prototypes for Humanity.*])[
+  BioAutoML selected among 100 projects from nearly 3,000 submissions worldwide.
+  #if not short [
+    Presented in Dubai in November 2024, showcasing automated machine learning that enables life-science researchers to analyse biological sequences with less programming expertise. Travel support is reported in Research Funding and Fellowships.
   ]
   #link("https://www.prototypesforhumanity.com/prototypes/bioautoml")[Selected project].
 ]
@@ -256,6 +264,7 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
 )
 
 #let publications(short: false) = [
+#let cv-list = cv-list.with(dense: short)
 = Publications
 #citation-metrics(json("../data/metrics.json"))
 // TODO[MET-01]: Refresh citation counts and each source's actual retrieval date together; do not change dates merely because the CV was rebuilt.
@@ -276,6 +285,9 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
 // ========================================================================
 
 #let software(short: false) = [
+#let entry = if short {
+  (name, body) => block(above: 0.3em, below: 0.3em, breakable: false)[#strong(name) — #body]
+} else { entry }
 = Research Software and Resources
 #entry[BioAutoML-FAST][
   *Automated machine learning for biological sequences.* Lead developer; expanded sequence types, prediction tasks, and evaluation within the BioAutoML framework.
@@ -293,7 +305,8 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
 ]
 #entry[BioDeepFuse][
   *Hybrid deep learning for non-coding RNA classification.* Co-first author of the methods paper.
-  #if short [Combines neural networks with handcrafted sequence features.] else [Combines convolutional or bidirectional LSTM networks with handcrafted sequence features to capture complementary sequence patterns. Includes training and evaluation scripts, datasets, and experimental results for bacterial RNA classification.]
+  Combines convolutional or bidirectional LSTM networks with handcrafted sequence features to capture complementary sequence patterns.
+  #if not short [Includes training and evaluation scripts, datasets, and experimental results for bacterial RNA classification.]
   #link("https://github.com/brenoslivio/BioDeepFuse")[Code] ·
   #link("https://doi.org/10.1080/15476286.2024.2329451")[Paper].
   // TODO[SW-02]: Add a stable archived release, your specific software contribution, and evidence of external reuse.
@@ -313,16 +326,20 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
 
 #let isme_program_url = "https://isme-microbes.org/media/documents/isme20-full-programme-overview3.pdf#page=29"
 #let invited = [#strong[de Almeida, B. L.] Da bancada ao teclado: ferramentas gratuitas para a pesquisa científica \[From bench to keyboard: free tools for scientific research\]. #strong[Invited talk], 36th FisFar Summer Course, Federal University of Minas Gerais (UFMG), Brazil. January 2027. #emph[Scheduled.]]
-#let isme_oral = [#strong[de Almeida, B. L.], Kamath, S., Santos, A. P. A., Bonidia, R. P., Espíndola-Hernández, P., Stadler, P. F., Wierckx, N., Borchert, E., Rother, D., Oliveira, A., de Carvalho, A. C. P. L. F., & Rocha, U. N. Combining protein language models with different architectures expands protein family annotation 14.2-fold across 16 million open reading frames from 3,802 environmental metagenomes. #strong[Oral presentation], 20th International Symposium on Microbial Ecology (ISME20), Auckland, New Zealand, 18 August 2026 (MS13, Computational Approaches in Microbial Ecology). #link(isme_program_url)[Conference program].]
+#let isme_oral_event = [#strong[Oral presentation], 20th International Symposium on Microbial Ecology (ISME20), Auckland, New Zealand, 18 August 2026 (MS13, Computational Approaches in Microbial Ecology). #link(isme_program_url)[Conference programme].]
+#let isme_oral = [#strong[de Almeida, B. L.], Kamath, S., Santos, A. P. A., Bonidia, R. P., Espíndola-Hernández, P., Stadler, P. F., Wierckx, N., Borchert, E., Rother, D., Oliveira, A., de Carvalho, A. C. P. L. F., & Rocha, U. N. Combining protein language models with different architectures expands protein family annotation 14.2-fold across 16 million open reading frames from 3,802 environmental metagenomes. #isme_oral_event]
 // Titles and author order follow the supplied CV/website; source links verify the event records.
 // Numerical results are retained as presentation titles, not independent achievement claims.
 // Verified 2026-10-18: VAAM abstract SL-CM-01; BAGECO flash-talk abstract FT043.
 // The user confirmed presenting the VAAM protein-language-model work in 2026.
 // Helmholtz AI title/authors and 5 June 2025 presentation date come from the
-// personal works/events pages; the official 2025 archive's program link is unavailable.
-#let vaam_oral = [#strong[de Almeida, B. L. S.], Kamath, S., Santos, A. P. A., Bonidia, R. P., Espíndola-Hernández, P., Stadler, P. F., Wierckx, N., Borchert, E., Rother, D., Oliveira, A., de Carvalho, A. C. P. L. F., & Rocha, U. N. Different protein language models uncover 23.21% of the functional dark matter across 16 million open reading frames recovered from thousands of environmental metagenomes. #strong[Oral presentation], VAAM Annual Conference, Berlin, Germany, 22–25 March 2026 (SL-CM-01, Computational Microbiology). #link("https://vaam-kongress.de/fileadmin/vaam/2026/docs/2026/VAAM2026_Abstract_booklet.pdf")[Abstract book].]
-#let helmholtz_oral = [#strong[de Almeida, B. L. S.], Kamath, S., Santos, A. P. A., Bonidia, R. P., Espíndola-Hernández, P., Stadler, P. F., Oliveira, A., de Carvalho, A. C. P. L. F., & Rocha, U. N. Unveiling protein domains and families in 183,044 novel orthologs exploring multiple protein language models and over 16 million open reading frames recovered from thousands of terrestrial metagenomes. #strong[Oral presentation], Helmholtz AI Conference 2025, Messe Karlsruhe, Rheinstetten, Germany, 5 June 2025. #link("https://haicon.cc/conference-2025/")[Conference archive]]
-#let bageco_flash = [#strong[de Almeida, B. L.], Kamath, S., Santos, A. P. A., Bonidia, R. P., Espíndola-Hernández, P., Stadler, P. F., Oliveira, A., de Carvalho, A. C. P. L. F., & Rocha, U. N. Exploration of multiple protein language models and over 16 million open reading frames recovered from thousands of terrestrial metagenomes uncover protein domains and families in 13,486 previously unknown orthologs. In: 17th Symposium on Genetics and Bacterial Ecology (BAGECO 2025), 2025, Graz, Austria. #strong[Flash talk], 4 July 2025 (FT043). #link("https://bageco.org/fileadmin/bageco/2025/BAGECO2025_Abstractbooklet.pdf#page=257")[Abstract].]
+// personal works/events pages; the official 2025 archive's programme link is unavailable.
+#let vaam_oral_event = [#strong[Oral presentation], VAAM Annual Conference, Berlin, Germany, 22–25 March 2026 (SL-CM-01, Computational Microbiology). #link("https://vaam-kongress.de/fileadmin/vaam/2026/docs/2026/VAAM2026_Abstract_booklet.pdf")[Abstract book].]
+#let vaam_oral = [#strong[de Almeida, B. L. S.], Kamath, S., Santos, A. P. A., Bonidia, R. P., Espíndola-Hernández, P., Stadler, P. F., Wierckx, N., Borchert, E., Rother, D., Oliveira, A., de Carvalho, A. C. P. L. F., & Rocha, U. N. Different protein language models uncover 23.21% of the functional dark matter across 16 million open reading frames recovered from thousands of environmental metagenomes. #vaam_oral_event]
+#let helmholtz_oral_event = [#strong[Oral presentation], Helmholtz AI Conference 2025, Messe Karlsruhe, Rheinstetten, Germany, 5 June 2025. #link("https://haicon.cc/conference-2025/")[Conference archive]]
+#let helmholtz_oral = [#strong[de Almeida, B. L. S.], Kamath, S., Santos, A. P. A., Bonidia, R. P., Espíndola-Hernández, P., Stadler, P. F., Oliveira, A., de Carvalho, A. C. P. L. F., & Rocha, U. N. Unveiling protein domains and families in 183,044 novel orthologs exploring multiple protein language models and over 16 million open reading frames recovered from thousands of terrestrial metagenomes. #helmholtz_oral_event]
+#let bageco_flash_event = [17th Symposium on Genetics and Bacterial Ecology (BAGECO 2025), 2025, Graz, Austria. #strong[Flash talk], 4 July 2025 (FT043). #link("https://bageco.org/fileadmin/bageco/2025/BAGECO2025_Abstractbooklet.pdf#page=257")[Abstract].]
+#let bageco_flash = [#strong[de Almeida, B. L.], Kamath, S., Santos, A. P. A., Bonidia, R. P., Espíndola-Hernández, P., Stadler, P. F., Oliveira, A., de Carvalho, A. C. P. L. F., & Rocha, U. N. Exploration of multiple protein language models and over 16 million open reading frames recovered from thousands of terrestrial metagenomes uncover protein domains and families in 13,486 previously unknown orthologs. In: #bageco_flash_event]
 #let oral_presentations = (isme_oral, vaam_oral, bageco_flash, helmholtz_oral)
 
 #let abstracts = (
@@ -333,21 +350,32 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
 )
 
 #let presentations(short: false) = [
-= #if short [Selected Presentations] else [Invited Talks and Conference Presentations]
-#if short [
-  #entry[2026][*ISME20, Auckland — oral presentation.* Protein language models for protein-family annotation in environmental metagenomes. #link(isme_program_url)[Program MS13].]
-  #entry[2026][*VAAM, Berlin — oral presentation.* Protein language models for functional annotation. #link("https://vaam-kongress.de/fileadmin/vaam/2026/docs/2026/VAAM2026_Abstract_booklet.pdf")[Abstract SL-CM-01].]
-  #entry[2025][*BAGECO, Graz — flash talk; Helmholtz AI, Messe Karlsruhe — oral presentation.* Protein language models for uncharacterized microbial proteins. #link("https://bageco.org/fileadmin/bageco/2025/BAGECO2025_Abstractbooklet.pdf#page=257")[BAGECO abstract] · #link("https://haicon.cc/conference-2025/")[Helmholtz AI].]
-] else [
+#if not short [
+  = Invited Talks and Conference Presentations
   == Invited Talk
   #cv-list(invited)
-  == Oral Presentations and Flash Talks
-  // Preserve the reported title verbatim; its quantitative result is not reused as a validated research-achievement claim.
-  #cv-list(..oral_presentations)
+]
+#heading(level: if short { 1 } else { 2 })[
+  #if short [Selected Presentations] else [Oral Presentations and Flash Talks]
+]
+// Full citations preserve the reported titles. Short summaries describe the presented work.
+// VAAM SL-CM-01, abstract book p. 62 (PDF p. 64), reports 453,261 additional
+// annotated orthogroups across 93 bacterial and 10 archaeal phyla. Evolutionary
+// diversity describes this taxonomic breadth, not a separate phylogenetic analysis.
+#if short {
+  for talk in (
+    (year: [2026], event: [ISME20, Auckland], subject: [Protein language models for protein-family annotation in environmental metagenomes.], url: isme_program_url),
+    (year: [2026], event: [VAAM, Berlin], subject: [Protein language models annotating 453,261 additional orthogroups across microbial evolutionary diversity: 93 bacterial and 10 archaeal phyla.], url: "https://vaam-kongress.de/fileadmin/vaam/2026/docs/2026/VAAM2026_Abstract_booklet.pdf#page=64"),
+    (year: [2025], event: [Helmholtz AI, Messe Karlsruhe], subject: [Protein language models for domain and family annotation of 183,044 novel orthogroups.], url: "https://haicon.cc/conference-2025/"),
+  ) {
+    entry(talk.year, compact: true)[#strong(link(talk.url, talk.event)) — oral presentation. #talk.subject]
+  }
+} else { cv-list(..oral_presentations) }
+#if not short [
   == Conference Abstracts and Posters
   #cv-list(..abstracts)
   #link("https://brenoslivio.github.io/works/")[Additional conference contributions and abstracts].
-  // TODO[TALK-01]: Add presentation type, presenter, and abstract/program link for each conference entry; distinguish co-authorship from personally presenting. ISME20 BioAutoML-FAST was a poster.
+  // TODO[TALK-01]: Add presentation type, presenter, and abstract/programme link for each conference entry; distinguish co-authorship from personally presenting. ISME20 BioAutoML-FAST was a poster.
 ]
 ]
 
@@ -360,17 +388,20 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
 == Selected Professional Development
 #entry[2025][*Summer School in Trends in Multi-omics Data Analysis for Microbial Ecology and Biotechnology*, UFZ, Leipzig.]
 #entry[2024][*15th Summer Course in Bioinformatics*, FMUSP, São Paulo.]
-#entry[2020 – 2021][Data science specializations: University of Michigan (_Applied Data Science with Python_) and Johns Hopkins University (_Data Science_), Coursera.]
+#entry[2020 – 2021][Data science specialisations: University of Michigan (_Applied Data Science with Python_) and Johns Hopkins University (_Data Science_), Coursera.]
 #entry[2020][_Nutrition and Health: Human Microbiome_, Wageningen University, edX.]
 ]
 
-#let community() = [
-== Community and Student Leadership
-#entry[2018 – 2021][
-  *Co-founder and coordinator — efestus*, University of São Paulo. Student organization addressing computing, data science, and technology ethics for social good. Funded participation in the TechShift Summit, Chapel Hill, USA.
-  // TODO[SERVICE-01]: Add initiatives you organized, your responsibilities, and verified participation or outcomes.
+#let community(short: false) = [
+#let entry = entry.with(compact: short)
+#if not short [== Community and Student Leadership]
+#entry([2018 – 2021], title: [*Co-founder and coordinator — efestus*, University of São Paulo.])[
+  Student organisation addressing computing, data science, and technology ethics for social good. Funded participation in the TechShift Summit, Chapel Hill, USA.
+  // TODO[SERVICE-01]: Add initiatives you organised, your responsibilities, and verified participation or outcomes.
 ]
-#entry[2017 – 2019][*Software division member — Warthog Robotics*, University of São Paulo. Participated in robotics competitions and taught Git and object-oriented programming to new members.]
+#if not short [
+  #entry[2017 – 2019][*Software division member — Warthog Robotics*, University of São Paulo. Participated in robotics competitions and taught Git and object-oriented programming to new members.]
+]
 ]
 
 
@@ -379,30 +410,29 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
 // ========================================================================
 
 #let teaching(short: false) = [
+#let entry = entry.with(compact: short)
 = Teaching and Mentoring
-#entry[2025 – 2026][
-  *Instructor — UFZ Summer School*, Leipzig.
-  Unix/Bash/Git, machine learning, and alignment-based and alignment-free annotation.
-  // TODO[TEACH-01]: Add teaching hours, participant counts, links to your materials, and documented feedback for the July 2025 and July 2026 editions.
+#entry([2025 – 2026], title: [*Instructor — UFZ Summer School on Trends in Multi-Omics Data Analysis for Microbial Ecology and Biotechnology*, Leipzig.])[
+
+  Taught Unix/Bash/Git, machine learning, and sequence annotation to approximately 30 participants across two editions, delivering approximately 20 hours of instruction.
+  #link("https://github.com/brenoslivio/UFZ_SummerSchool")[Teaching materials (GitHub)].
 ]
-#if not short [
-  #entry[09.2025][
-    *Instructor — NFDI4Microbiota workshop, ISAM*, Leipzig. Taught submission of research data and metadata to public repositories.
-    // TODO[TEACH-02]: Add workshop size, your teaching hours, and a public lesson/materials link.
-  ]
+#entry([09.2025], title: [*Instructor — NFDI4Microbiota workshop, 13th International Symposium on Anaerobic Microbiology (ISAM)*, Leipzig.])[
+  Taught submission of research data and metadata to public repositories to approximately 20 students.
+  // TODO[TEACH-02]: Add your teaching hours and a public lesson/materials link.
 ]
-#entry[06.2025][
-  *Co-organizer and instructor — BAGECO metagenomics workshop*, Graz.
-  #if not short [Taught experimental design, computer experiments, and end-to-end sequence analysis with BioAutoML.]
-  // Source: https://bageco.org/fileadmin/bageco/2025/docs/Metagenomics_WS.pdf lists Breno among the organizers.
-  // TODO[TEACH-03]: Describe your organizing responsibilities, actual attendance (not advertised capacity), and teaching materials.
+#entry([06.2025], title: [*Co-organiser and instructor — Metagenomics workshop, 17th Symposium on Bacterial Genetics and Ecology (BAGECO)*, Graz.])[
+
+  Taught experimental design, computer experiments, and end-to-end sequence analysis with BioAutoML to approximately 20 students.
+  #link("https://bageco.org/fileadmin/bageco/2025/docs/Metagenomics_WS.pdf")[Workshop programme].
+  // Source: https://bageco.org/fileadmin/bageco/2025/docs/Metagenomics_WS.pdf lists Breno among the organisers.
+  // TODO[TEACH-03]: Describe your organising responsibilities and link to teaching materials.
 ]
-#entry[05.2021 – 11.2022][
-  *Teaching Assistant — University of São Paulo.*
-  #if short [Four undergraduate courses.] else [
-    Eight hours/week across Object-Oriented Analysis and Design, Statistics, Fundamentals of Data Science, and Computational Visualization. Graded assignments, prepared exams, and delivered practical lectures.
-  ]
-  // TODO[TEACH-04]: Add verified class sizes or teaching outcomes. If you mentored students, add level, dates, your role, and outcomes separately; thesis examination is not supervision.
+#entry([05.2021 – 11.2022], title: [*Teaching Assistant — University of São Paulo.*])[
+
+  Eight hours/week across Object-Oriented Analysis and Design, Statistics, Fundamentals of Data Science, and Computational Visualization, serving approximately 150 students in total.
+  #if not short [Graded assignments, prepared exams, and delivered practical lectures.]
+  // TODO[TEACH-04]: Add documented teaching outcomes. If you mentored students, add level, dates, your role, and outcomes separately; thesis examination is not supervision.
 ]
 #if not short { block(breakable: false, development()) }
 ]
@@ -412,19 +442,23 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
 // Academic service
 // ========================================================================
 
+#let reviewing = (
+  (date: [2026 – Present], journal: [Computational and Structural Biotechnology Journal.], detail: [One manuscript reviewed.]),
+  (date: [2026 – Present], journal: [Journal of Thermal Biology.], detail: [One manuscript reviewed.]),
+  (date: [2025 – Present], journal: [Briefings in Bioinformatics.], detail: [One manuscript reviewed across two rounds.]),
+)
+
 #let service(short: false) = [
 = Academic Service
 #if short [
-  Journal reviewer: _Briefings in Bioinformatics_ and _Journal of Thermal Biology_. Member of six undergraduate thesis examination committees.
+  *Journal Peer Review* — #reviewing.map(r => emph(r.journal)).join([ ])
 ] else [
   == Journal Peer Review
-  #entry[2026 – Present][*Computational and Structural Biotechnology Journal.* One manuscript reviewed.]
-  #entry[2026 – Present][*Journal of Thermal Biology.* One manuscript reviewed.]
-  #entry[2025 – Present][*Briefings in Bioinformatics.* One manuscript reviewed across two rounds.]
+  #for r in reviewing { entry(r.date)[#strong(r.journal) #r.detail] }
   == Undergraduate Thesis Examination
-  #entry[][Member of six undergraduate thesis examination committees.]
-  #community()
 ]
+#entry(compact: short)[][Member of six undergraduate thesis examination committees.]
+#community(short: short)
 // TODO[SERVICE-02]: Add dates and institutions for thesis committees; refresh review counts without disclosing confidential manuscript information.
 ]
 
@@ -436,20 +470,16 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
 #let sequence-tools = [Biopython, BLAST, Prodigal, OrthoFinder, Anvi'o, HMMER, Infernal, DIAMOND, MMSeqs2.]
 
 #let skills(short: false) = [
+#let entry = entry.with(compact: short, label-width: 28mm)
 = Technical Skills
-#if short [
-  *Methods:* sequence representation, automated machine learning, metagenomic sequence analysis.
-  *Tools:* Python, R, scikit-learn, TensorFlow, Git, Linux.
-  *Sequence analysis:* #sequence-tools
-  *Languages:* Portuguese (native), English (C1), German (A1.2).
-] else [
-  #entry[Methods][Biological sequence representation; handcrafted descriptors and learned embeddings; automated machine learning; non-coding RNA classification; protein annotation; metagenomic sequence analysis.]
-  #entry[Programming][Python, R, Bash, Nix, SQL, Java, C, C++.]
-  #entry[Modeling and data][Scikit-learn, TensorFlow, pandas, Polars, NumPy, SciPy, NetworkX.]
-  #entry[Sequence analysis][#sequence-tools]
-  #entry[Research tools][Git, Linux, Jupyter, R Markdown, #LaTeX, Typst, Matplotlib, Plotly, Streamlit.]
-  #entry[Languages][Portuguese (native), English (C1), German (A1.2).]
+#if not short [
+  #entry[Methods][Biological sequence representation; handcrafted descriptors and learned representations from foundation models; automated machine learning; functional annotation; metagenomic sequence analysis.]
 ]
+#entry[Programming][Python, R, Bash, Nix, SQL, Java, C, C++.]
+#entry[Modelling and data][Scikit-learn, TensorFlow, pandas, Polars, NumPy, SciPy, NetworkX.]
+#entry[Sequence analysis][#sequence-tools]
+#entry[Research tools][Git, Linux, Jupyter, R Markdown, #LaTeX, Typst, Matplotlib, Plotly, Streamlit.]
+#entry[Languages][Portuguese (native), English (C1), German (A1.2).]
 // TODO[SKILL-01]: Add relevant workflow/HPC/container tools only if used in your research, with a project example. Confirm language levels and assessment dates if formally certified.
 ]
 
@@ -492,7 +522,7 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
   presentations(short: short)
   teaching(short: short)
   // Keep these compact sections intact when a page is nearly full.
-  block(breakable: false, service(short: short))
+  block(above: if short { 0.8em } else { 0pt }, breakable: false, service(short: short))
   block(breakable: false, skills(short: short))
   memberships(short: short)
 }

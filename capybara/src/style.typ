@@ -42,36 +42,52 @@
       #if short { [Abbreviated CV · ] }#counter(page).display("1 / 1", both: true)
     ])
   // Libertinus Serif is embedded in both the Typst CLI and Tinymist.
-  set text(font: "Libertinus Serif", size: if short { 10pt } else { 10.5pt }, lang: "en")
-  set par(leading: if short { 0.4em } else { 0.5em }, spacing: 0.7em)
+  set text(font: "Libertinus Serif", size: if short { 10pt } else { 10.5pt }, lang: "en", region: "GB")
+  set par(leading: if short { 0.35em } else { 0.5em },
+    spacing: if short { 0.6em } else { 0.7em })
   set heading(numbering: none)
   show link: set text(fill: purple)
-  show heading.where(level: 1): it => block(above: 0.9em, below: 0.45em, sticky: true,
+  show heading.where(level: 1): it => block(
+    above: if short { 0.65em } else { 0.9em },
+    below: if short { 0.35em } else { 0.45em }, sticky: true,
     stack(dir: ttb, spacing: 3pt,
       text(size: if short { 12pt } else { 14pt }, weight: "bold", it.body),
       line(length: 100%, stroke: 0.5pt + lilac.lighten(35%)),
     ),
   )
-  show heading.where(level: 2): it => block(above: 0.7em, below: 0.4em, sticky: true)[
+  show heading.where(level: 2): it => block(
+    above: if short { 0.5em } else { 0.7em },
+    below: if short { 0.3em } else { 0.4em }, sticky: true)[
     #text(size: if short { 10.5pt } else { 12pt }, weight: "bold", it.body)
   ]
   body
 }
 
 // Keep each date together with its entry when content moves between pages.
-#let entry(date, body) = block(above: 0.5em, below: 0.5em, breakable: false)[
+#let entry(date, body, compact: false, label-width: 24mm, title: none) = if compact {
+  block(above: 0.3em, below: 0.3em, breakable: false)[
+    #if date == [] { body } else {
+      grid(columns: (label-width, 1fr), column-gutter: 2mm,
+        align: (left + top, left + top),
+        text(size: 9pt, date), if title == none { body } else { title })
+      if title != none { block(above: 3pt, below: 0pt, body) }
+    }
+  ]
+} else { block(above: 0.5em, below: 0.5em, breakable: false)[
   #grid(
     columns: (25mm, 1fr),
     column-gutter: 4mm,
     align: (left + top, left + top),
     text(size: 9pt, date),
-    body,
+    if title == none { body } else { [#title #body] },
   )
-]
+] }
 
-#let cv-list(..items) = {
-  set list(indent: 1em, body-indent: 0.5em, spacing: 0.5em)
-  list(tight: false, ..items.pos().map(item => block(breakable: false, item)))
+#let cv-list(compact: false, dense: false, ..items) = if compact {
+  items.pos().join([ ])
+} else {
+  set list(indent: 1em, body-indent: 0.5em, spacing: if dense { 0.2em } else { 0.5em })
+  list(tight: dense, ..items.pos().map(item => block(breakable: false, item)))
 }
 
 // Dates belong to the data snapshot, never to the compilation time.

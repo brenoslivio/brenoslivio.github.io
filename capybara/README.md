@@ -6,8 +6,18 @@ Two traditional academic CVs share one content file:
 - `cv-short.pdf`: abbreviated CV (two pages).
 
 Both versions include all publication entries, grouped by publication status,
-and the same bioinformatics tools list. The short CV abbreviates other sections
-and uses 10-point body text with tighter spacing to fit two pages.
+and the same bioinformatics tools list. The short CV selects entries and omits
+some complete details, keeping the full CV's wording except for concise
+presentation-topic summaries. It uses 10-point body text, aligned dates beside
+role or award headings, and full-width description paragraphs underneath.
+Selected presentations show the year, conference, oral presentation type, and
+research subject, with a link on the conference name. Exact dates, session codes,
+full titles, author lists, and the BAGECO flash talk remain in the full CV.
+All publication entries remain in both versions, with tighter list spacing in
+the short CV to keep it within two pages.
+It retains all three reviewing journals, efestus leadership and TechShift Summit
+participation, and HIDA-sponsored instructor training. The BSc entry includes
+specialisations, GPA, rank, the 600-hour research thesis and its title, and the supervisor.
 
 Each PDF has a link beside the name to open the other version on the website.
 The links also work from downloaded copies with internet access; publish both PDFs together.
@@ -19,7 +29,7 @@ Page counts describe the current content; review pagination after adding details
 capybara/
 ├── src/
 │   ├── content.typ    # All CV content, funding calculations, and section order
-│   ├── style.typ      # Typography, icons, colors, and layout helpers
+│   ├── style.typ      # Typography, icons, colours, and layout helpers
 │   ├── cv.typ         # Full CV entry point
 │   └── cv-short.typ   # Abbreviated CV entry point
 ├── data/
@@ -31,17 +41,26 @@ capybara/
 
 ## Editing
 
+Use British English in CV prose and labels. Preserve the original spelling of
+published paper and presentation titles, official project and course names, and
+URLs. Both PDFs use the British English language setting.
+
 Most edits belong in [`src/content.typ`](src/content.typ). Comment banners mark
 sections, with funding records, bibliography entries, and presentation citations
 alongside the functions that display them. Search for the section name to jump
 to it. The header and research interests are at the beginning; `document()` at
 the end controls section order and page breaks.
 
-Each section takes a `short` argument. Shared text appears in both versions;
-`if short` and `if not short` select abbreviated and full details. The two entry
-files only call `document()` with the appropriate option.
+Each section takes a `short` argument. Keep a single shared wording for every
+included sentence, entry title, and link label. Use `if not short` or entry
+selection to omit details; presentation-topic summaries are the exception to
+shared wording and must remain faithful to the full titles. Formatting
+may differ: combine bullets into paragraphs, place dates inline, or omit
+subheadings. Version-switch links, document metadata, and footer labels also
+differ by version.
+The two entry files only call `document()` with the appropriate option.
 
-- Edit [`src/style.typ`](src/style.typ) for fonts, colors, icons, and spacing.
+- Edit [`src/style.typ`](src/style.typ) for fonts, colours, icons, and spacing.
 - Edit [`data/metrics.json`](data/metrics.json) for citation counts and their
   actual retrieval dates.
 - Missing information is marked with `// TODO[ID]: ...` comments in
@@ -100,17 +119,18 @@ font installation, icon download, or asset folder is needed.
 ## Funding summary
 
 The funding section in `src/content.typ` holds eight awards in their original
-currencies. Both CVs calculate the same total from all eight, even though the
-abbreviated version lists only three selected awards. The current indicative
-total is **€110,181**. The full CV lists every award and both versions explain
-the scope and rates.
+currencies. The full CV lists every award and reports the indicative total of
+**€110,181**, with its scope and conversion rates. The abbreviated version lists
+only three selected awards with their individual amounts in the original
+currencies, plus the same indicative total across all eight awards, conversion
+rates, and scope notes as the full CV.
 
 The calculation uses fixed reporting rates from the previous CV:
 BRL 1 = EUR 0.17 and USD 1 = EUR 0.85. These are not current market quotes;
 their source/date and the full award periods still need confirmation.
 Cash prizes, estimated sponsored-training values, and consortium budgets are
 excluded. Google and FAPESP fellowships appear in the funding section;
-prizes and sponsored training are listed separately under Honors and Awards.
+prizes and sponsored training are listed separately under Honours and Awards.
 Public grant records establish the award or project but may not publish its value.
 
 ## Citation metrics
@@ -138,5 +158,5 @@ Packages are pinned in the sources:
 - [`metalogo:1.2.0`](https://typst.app/universe/package/metalogo/1.2.0/) supplies
   the LaTeX wordmark in Technical Skills.
 
-The icon packages include their graphics and license information and need no
-icon fonts. The `icon` and `field` helpers apply the CV's purple color and alignment.
+The icon packages include their graphics and licence information and need no
+icon fonts. The `icon` and `field` helpers apply the CV's purple colour and alignment.
