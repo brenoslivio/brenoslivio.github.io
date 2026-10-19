@@ -33,7 +33,8 @@ capybara/
 │   ├── cv.typ         # Full CV entry point
 │   └── cv-short.typ   # Abbreviated CV entry point
 ├── data/
-│   └── metrics.json   # Citation counts and actual snapshot dates
+│   ├── metrics.json   # Citation counts and actual snapshot dates
+│   └── cv-link-version.json # Generated version for links inside the PDFs
 ├── scripts/
 │   └── build.sh       # Compile PDFs and refresh website CV link hashes
 ├── cv.pdf             # Website download
@@ -77,10 +78,10 @@ The two entry files only call `document()` with the appropriate option.
 ### VS Code
 
 Open `src/cv.typ` or `src/cv-short.typ` to preview the corresponding CV.
-Press **Ctrl+Shift+B** to build both PDFs. To build just one, use
+Press **Ctrl+Shift+B** to build both PDFs. The existing tasks
 **Terminal → Run Task → Build full academic CV** or
-**Build abbreviated academic CV**.
-These tasks also refresh the website's CV links using the PDF content hashes.
+**Build abbreviated academic CV** now also rebuild both versions, so their
+embedded links stay in sync. All build tasks refresh the website's CV links too.
 
 The repository's VS Code settings configure Tinymist's project root as
 `capybara/`, so sources in `src/` can read `data/metrics.json`.
@@ -89,8 +90,10 @@ task after editing. Automatic export is disabled. The `tinymist.outputPath`
 setting (`$root/$name`) makes the PDF button write to `capybara/`, matching the
 build tasks and the website's download paths.
 Tinymist's PDF button does not run the build script. After exporting with that
-button, run **Terminal → Run Task → Refresh CV website links**, or use
+button, run **Terminal → Run Task → Refresh CV links**, or use
 **Ctrl+Shift+B** to compile and refresh together.
+The refresh task also rebuilds both PDFs. Tinymist previews and direct exports
+use the embedded link version saved by the last successful build.
 
 ### Command line
 
@@ -101,10 +104,12 @@ From the repository root, with Typst, Bash, Git, and standard command-line tools
 bash capybara/scripts/build.sh both
 ```
 
-Use `full` or `short` instead of `both` to compile one version. The script refreshes
-the website links only after compilation succeeds.
+The `full`, `short`, and `links` arguments remain supported, but all modes now
+compile both linked PDFs. The script replaces the local PDFs and refreshes the
+website links only after both compilations succeed.
 
-Direct Typst compilation also works; refresh the links afterwards:
+Direct Typst compilation also works for previews. Before publishing, run the
+build script to refresh the embedded versions and website links:
 
 ```sh
 typst compile --root capybara --ignore-system-fonts capybara/src/cv.typ capybara/cv.pdf
@@ -137,15 +142,24 @@ font installation, icon download, or asset folder is needed.
 
 ## Website cache busting
 
-`scripts/build.sh` replaces date-based versions in local HTML CV links with the
-first 16 hexadecimal characters of each PDF's SHA-256 hash, for example
-`/capybara/cv.pdf?v=1bf01b0a7b81ff67`. Full and short PDFs have independent hashes.
-Repeated link refreshes leave unchanged PDFs' versions alone. Recompilation can
-change the PDF bytes through metadata even when the visible text stays the same.
+`scripts/build.sh` versions both kinds of CV links:
+
+- Links inside the PDFs use the first 16 hexadecimal characters of a shared
+  SHA-256 hash of the source and data files, build script, and Typst version.
+  Changing any of these inputs updates both PDFs' embedded links, including the
+  short CV's funding-detail link. Unchanged inputs keep the same embedded version.
+- Website HTML links use each final PDF's own SHA-256 prefix. Recompilation can
+  change these hashes through PDF metadata even when the visible text stays the same.
+
+The shared version is computed before compilation, passed to Typst, and saved to
+`data/cv-link-version.json` after a successful build. This generated file is
+excluded from the hash inputs and should be committed with the PDFs. Using the
+source hash inside the PDFs avoids a circular dependency: putting each final
+PDF's hash into the other would change both hashes again.
 
 Publish the updated HTML and PDFs together. The script edits local files; it
-does not commit, push, or deploy. Links inside the PDFs keep their stable URLs
-to avoid circular dependencies between the two documents' hashes.
+does not commit, push, or deploy. Previously downloaded PDFs keep their embedded
+version; they cannot update links when a later edition is published.
 
 ## Funding summary
 

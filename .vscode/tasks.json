@@ -55,7 +55,7 @@
       "problemMatcher": []
     },
     {
-      "label": "Refresh CV website links",
+      "label": "Refresh CV links",
       "type": "process",
       "command": "bash",
       "args": ["capybara/scripts/build.sh", "links"],

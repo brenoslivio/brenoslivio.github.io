@@ -4,6 +4,11 @@
 #import "style.typ": cv, entry, cv-list, icon, field, citation-metrics
 #import "@preview/metalogo:1.2.0": LaTeX
 
+// The build supplies a source hash shared by both PDFs, avoiding circular hashes.
+// Tinymist uses the version saved by the last successful build.
+#let cv-link-version = sys.inputs.at("cv-link-version", default: json("../data/cv-link-version.json").version)
+#let cv-url(short: false) = "https://brenoslivio.github.io/capybara/" + if short { "cv-short.pdf" } else { "cv.pdf" } + "?v=" + cv-link-version
+
 // ========================================================================
 // Header and research interests
 // ========================================================================
@@ -13,9 +18,9 @@
 #h(1fr)
 #text(size: 9pt)[
   #if short {
-    link("https://brenoslivio.github.io/capybara/cv.pdf")[View full academic CV ↗]
+    link(cv-url())[View full academic CV ↗]
   } else {
-    link("https://brenoslivio.github.io/capybara/cv-short.pdf")[View short CV ↗]
+    link(cv-url(short: true))[View short CV ↗]
   }
 ]
 #linebreak()
@@ -190,7 +195,7 @@
 = #if short [Selected Research Funding and Fellowships] else [Research Funding and Fellowships]
 Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowships, research scholarships, and mobility/travel grants across the award periods.
 #if short [
-  Complete funding and fellowship details are available in the #link("https://brenoslivio.github.io/capybara/cv.pdf")[full academic CV].
+  Complete funding and fellowship details are available in the #link(cv-url())[full academic CV].
 ]
 
 #for a in awards.filter(a => not short or a.selected) {
