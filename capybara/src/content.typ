@@ -64,7 +64,7 @@
   *Five-year programme* · GPA: 9.4/10 · Rank: 7/116
   #linebreak()
   Research-intensive final year with 600 hours of thesis work.
-  #if not short [Accelerated completion through credit transfer from prior Computer Engineering coursework.]
+  Accelerated completion through credit transfer from prior Computer Engineering coursework.
   #if short { linebreak() }
   #cv-list(
     [*Thesis:* BioDeepFuse: A Hybrid Deep Learning Approach with Handcrafted Features for Non-coding RNA Classification. #link("https://doi.org/10.1080/15476286.2024.2329451")[Paper DOI].
@@ -187,8 +187,11 @@
 
 #let funding(short: false) = [
 #let entry = entry.with(compact: short)
-= Research Funding and Fellowships
+= #if short [Selected Research Funding and Fellowships] else [Research Funding and Fellowships]
 Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowships, research scholarships, and mobility/travel grants across the award periods.
+#if short [
+  Complete funding and fellowship details are available in the #link("https://brenoslivio.github.io/capybara/cv.pdf")[full academic CV].
+]
 
 #for a in awards.filter(a => not short or a.selected) {
   entry(a.year, title: [#strong(a.title) — #a.currency #money(a.amount).])[

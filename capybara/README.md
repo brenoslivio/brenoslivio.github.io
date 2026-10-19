@@ -34,6 +34,8 @@ capybara/
 │   └── cv-short.typ   # Abbreviated CV entry point
 ├── data/
 │   └── metrics.json   # Citation counts and actual snapshot dates
+├── scripts/
+│   └── build.sh       # Compile PDFs and refresh website CV link hashes
 ├── cv.pdf             # Website download
 ├── cv-short.pdf       # Abbreviated academic CV
 └── README.md
@@ -78,6 +80,7 @@ Open `src/cv.typ` or `src/cv-short.typ` to preview the corresponding CV.
 Press **Ctrl+Shift+B** to build both PDFs. To build just one, use
 **Terminal → Run Task → Build full academic CV** or
 **Build abbreviated academic CV**.
+These tasks also refresh the website's CV links using the PDF content hashes.
 
 The repository's VS Code settings configure Tinymist's project root as
 `capybara/`, so sources in `src/` can read `data/metrics.json`.
@@ -85,14 +88,28 @@ Click Tinymist's **PDF** export button to export the current CV, or run the buil
 task after editing. Automatic export is disabled. The `tinymist.outputPath`
 setting (`$root/$name`) makes the PDF button write to `capybara/`, matching the
 build tasks and the website's download paths.
+Tinymist's PDF button does not run the build script. After exporting with that
+button, run **Terminal → Run Task → Refresh CV website links**, or use
+**Ctrl+Shift+B** to compile and refresh together.
 
 ### Command line
 
-From the repository root, with the Typst CLI installed:
+From the repository root, with Typst, Bash, Git, and standard command-line tools
+(`sha256sum`, `sed`, `cmp`, and `mktemp`) available:
+
+```sh
+bash capybara/scripts/build.sh both
+```
+
+Use `full` or `short` instead of `both` to compile one version. The script refreshes
+the website links only after compilation succeeds.
+
+Direct Typst compilation also works; refresh the links afterwards:
 
 ```sh
 typst compile --root capybara --ignore-system-fonts capybara/src/cv.typ capybara/cv.pdf
 typst compile --root capybara --ignore-system-fonts capybara/src/cv-short.typ capybara/cv-short.pdf
+bash capybara/scripts/build.sh links
 ```
 
 For automatic rebuilding while editing:
@@ -101,10 +118,12 @@ For automatic rebuilding while editing:
 typst watch --root capybara --ignore-system-fonts capybara/src/cv.typ capybara/cv.pdf
 ```
 
+After stopping the watcher, run `bash capybara/scripts/build.sh links` before publishing.
+
 On Nix, the compiler can be run without installing it into your profile:
 
 ```sh
-nix shell nixpkgs#typst --command typst compile --root capybara --ignore-system-fonts capybara/src/cv.typ capybara/cv.pdf
+nix shell nixpkgs#typst --command bash capybara/scripts/build.sh both
 ```
 
 `--root capybara` allows the compiler to read the sibling `src/` and `data/`
@@ -115,6 +134,18 @@ consistent layout. Typst downloads the pinned packages on the first build
 and stores them in its normal package cache, outside this repository. That first
 build needs internet access; subsequent builds can use the cache. No separate
 font installation, icon download, or asset folder is needed.
+
+## Website cache busting
+
+`scripts/build.sh` replaces date-based versions in local HTML CV links with the
+first 16 hexadecimal characters of each PDF's SHA-256 hash, for example
+`/capybara/cv.pdf?v=1bf01b0a7b81ff67`. Full and short PDFs have independent hashes.
+Repeated link refreshes leave unchanged PDFs' versions alone. Recompilation can
+change the PDF bytes through metadata even when the visible text stays the same.
+
+Publish the updated HTML and PDFs together. The script edits local files; it
+does not commit, push, or deploy. Links inside the PDFs keep their stable URLs
+to avoid circular dependencies between the two documents' hashes.
 
 ## Funding summary
 

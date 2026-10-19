@@ -4,14 +4,10 @@
     {
       "label": "Build full academic CV",
       "type": "process",
-      "command": "typst",
+      "command": "bash",
       "args": [
-        "compile",
-        "--root",
-        "capybara",
-        "--ignore-system-fonts",
-        "capybara/src/cv.typ",
-        "capybara/cv.pdf"
+        "capybara/scripts/build.sh",
+        "full"
       ],
       "options": {
         "cwd": "${workspaceFolder}"
@@ -26,14 +22,10 @@
     {
       "label": "Build abbreviated academic CV",
       "type": "process",
-      "command": "typst",
+      "command": "bash",
       "args": [
-        "compile",
-        "--root",
-        "capybara",
-        "--ignore-system-fonts",
-        "capybara/src/cv-short.typ",
-        "capybara/cv-short.pdf"
+        "capybara/scripts/build.sh",
+        "short"
       ],
       "options": {
         "cwd": "${workspaceFolder}"
@@ -47,14 +39,28 @@
     },
     {
       "label": "Build both academic CVs",
-      "dependsOn": [
-        "Build full academic CV",
-        "Build abbreviated academic CV"
+      "type": "process",
+      "command": "bash",
+      "args": [
+        "capybara/scripts/build.sh",
+        "both"
       ],
-      "dependsOrder": "parallel",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
       "group": {
         "kind": "build",
         "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Refresh CV website links",
+      "type": "process",
+      "command": "bash",
+      "args": ["capybara/scripts/build.sh", "links"],
+      "options": {
+        "cwd": "${workspaceFolder}"
       },
       "problemMatcher": []
     }
