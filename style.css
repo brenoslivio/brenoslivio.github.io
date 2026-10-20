@@ -417,6 +417,13 @@ figcaption {
     line-height: 1.65;
 }
 
+/* Only suppress paint while JS prepares the text ranges; retain layout and accessibility. */
+.terminal-intro-pending #whoamiOutput,
+.terminal-intro-pending .terminal-command-text,
+.terminal-intro-pending .terminal-input-row {
+    opacity: 0;
+}
+
 .terminal-output-streaming figure {
     opacity: 0;
     transform: translateY(0.35rem) scale(0.985);

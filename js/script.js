@@ -68,6 +68,7 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
     let introCancelled = false;
 
     const revealOutput = () => {
+        window.releaseTerminalIntro?.();
         window.CSS?.highlights?.delete("terminal-unrevealed");
         window.CSS?.highlights?.delete("terminal-typing-caret");
         initialWhoamiOutput.classList.remove("terminal-output-streaming", "terminal-output-streaming-active");
@@ -151,8 +152,11 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
     const playTerminalIntro = async () => {
         const supportsTextReveal = window.CSS?.highlights && typeof window.Highlight === "function"
             && CSS.supports("selector(::highlight(terminal-unrevealed))");
-        if (!terminal || !initialCommandText || motionPreference.matches || !supportsTextReveal) {
-            focusTerminalInput();
+        // If startup timed out or the user already focused the terminal, leave it readable.
+        if (!terminal || !initialCommandText || motionPreference.matches || !supportsTextReveal
+            || !document.documentElement.classList.contains("terminal-intro-pending")) {
+            window.releaseTerminalIntro?.();
+            if (document.activeElement === document.body) focusTerminalInput();
             return;
         }
 
@@ -168,6 +172,8 @@ if (terminalForm && terminalInput && terminalHistory && initialWhoamiOutput) {
             motionPreference.addEventListener("change", handleMotionChange);
             initialCommandText.classList.add("terminal-command-typing");
             initialCommandText.textContent = "";
+            // Hand off to the highlight animation only once its first frame is ready.
+            window.releaseTerminalIntro?.();
 
             await wait(350);
 

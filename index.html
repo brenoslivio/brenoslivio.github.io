@@ -29,7 +29,31 @@
   <meta name="twitter:image:alt" content="Portrait of Breno Livio Silva de Almeida">
 
   <link rel="icon" href="imgs/NixOS.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=terminal-paint-1">
+  <script>
+    (() => {
+      const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      if (motion.matches || !window.CSS?.highlights || typeof window.Highlight !== "function"
+          || !CSS.supports("selector(::highlight(terminal-unrevealed))")) return;
+
+      // Prepare before the body can paint; keep the biography in the HTML.
+      const root = document.documentElement;
+      const release = () => {
+        root.classList.remove("terminal-intro-pending");
+        window.clearTimeout(timeout);
+        document.removeEventListener("focusin", handleFocus);
+        motion.removeEventListener("change", release);
+      };
+      const handleFocus = (event) => {
+        if (event.target.closest(".terminal")) release();
+      };
+      const timeout = window.setTimeout(release, 3000);
+      window.releaseTerminalIntro = release;
+      document.addEventListener("focusin", handleFocus);
+      motion.addEventListener("change", release);
+      root.classList.add("terminal-intro-pending");
+    })();
+  </script>
+  <link rel="stylesheet" href="style.css?v=terminal-paint-2">
   <link rel="stylesheet" href="/spotify.css?v=spotify-header-3">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script type="application/ld+json">
@@ -339,6 +363,6 @@
   </footer>
   <script src="/js/site.js?v=footer-1"></script>
   <script src="/js/spotify.js?v=spotify-header-2"></script>
-  <script src="js/script.js?v=terminal-paint-1"></script>
+  <script src="js/script.js?v=terminal-paint-2"></script>
 </body>
 </html>
