@@ -8,8 +8,12 @@ Two traditional academic CVs share one content file:
 Both versions include all publication entries, grouped by publication status,
 and the same bioinformatics tools list. The short CV selects entries and omits
 some complete details, keeping the full CV's wording except for concise
-presentation-topic summaries. It uses 10-point body text, aligned dates beside
-role or award headings, and full-width description paragraphs underneath.
+presentation-topic summaries. Research Software and Resources appears only in
+the full CV, leaving room for larger type and more spacing in the short CV.
+The short CV uses 10.25-point body text and 13-point section headings. Dates sit
+in a left column, with titles and descriptions aligned together in the right
+column, as in the full CV. Margins of 17 mm horizontally and 15 mm vertically
+keep the indented layout within two pages.
 Selected presentations show the year, conference, oral presentation type, and
 research subject, with a link on the conference name. Exact dates, session codes,
 full titles, author lists, and the BAGECO flash talk remain in the full CV.
@@ -66,9 +70,6 @@ The two entry files only call `document()` with the appropriate option.
 - Edit [`src/style.typ`](src/style.typ) for fonts, colours, icons, and spacing.
 - Edit [`data/metrics.json`](data/metrics.json) for citation counts and their
   actual retrieval dates.
-- Missing information is marked with `// TODO[ID]: ...` comments in
-  `src/content.typ`. These comments never appear in the PDFs. Fill them with
-  verified information and remove each resolved comment.
 - Update publication entries and their status grouping when a preprint or
   accepted paper is published.
 - Rebuild both PDFs after editing and check their pagination.

@@ -36,29 +36,29 @@
 
 #let cv(body, short: false) = {
   set document(title: "Breno Livio Silva de Almeida — " + if short { "Abbreviated Academic CV" } else { "Curriculum Vitae" }, author: "Breno Livio Silva de Almeida")
-  set page(paper: "a4", margin: (x: 20mm, y: 17mm),
+  set page(paper: "a4", margin: if short { (x: 17mm, y: 15mm) } else { (x: 20mm, y: 17mm) },
     footer: context text(size: 9pt, fill: rgb("555555"))[
       Breno Livio Silva de Almeida #h(1fr)
       #if short { [Abbreviated CV · ] }#counter(page).display("1 / 1", both: true)
     ])
   // Libertinus Serif is embedded in both the Typst CLI and Tinymist.
-  set text(font: "Libertinus Serif", size: if short { 10pt } else { 10.5pt }, lang: "en", region: "GB")
-  set par(leading: if short { 0.35em } else { 0.5em },
+  set text(font: "Libertinus Serif", size: if short { 10.25pt } else { 10.5pt }, lang: "en", region: "GB")
+  set par(leading: if short { 0.38em } else { 0.5em },
     spacing: if short { 0.6em } else { 0.7em })
   set heading(numbering: none)
   show link: set text(fill: purple)
   show heading.where(level: 1): it => block(
-    above: if short { 0.65em } else { 0.9em },
-    below: if short { 0.35em } else { 0.45em }, sticky: true,
+    above: if short { 0.8em } else { 0.9em },
+    below: if short { 0.4em } else { 0.45em }, sticky: true,
     stack(dir: ttb, spacing: 3pt,
-      text(size: if short { 12pt } else { 14pt }, weight: "bold", it.body),
+      text(size: if short { 13pt } else { 14pt }, weight: "bold", it.body),
       line(length: 100%, stroke: 0.5pt + lilac.lighten(35%)),
     ),
   )
   show heading.where(level: 2): it => block(
     above: if short { 0.5em } else { 0.7em },
     below: if short { 0.3em } else { 0.4em }, sticky: true)[
-    #text(size: if short { 10.5pt } else { 12pt }, weight: "bold", it.body)
+    #text(size: if short { 11pt } else { 12pt }, weight: "bold", it.body)
   ]
   body
 }
@@ -69,8 +69,7 @@
     #if date == [] { body } else {
       grid(columns: (label-width, 1fr), column-gutter: 2mm,
         align: (left + top, left + top),
-        text(size: 9pt, date), if title == none { body } else { title })
-      if title != none { block(above: 3pt, below: 0pt, body) }
+        text(size: 9pt, date), if title == none { body } else { [#title #body] })
     }
   ]
 } else { block(above: 0.5em, below: 0.5em, breakable: false)[

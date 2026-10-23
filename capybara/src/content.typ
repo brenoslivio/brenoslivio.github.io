@@ -55,7 +55,7 @@
 #let entry = entry.with(compact: short)
 = Education
 #entry([2024 – Present], title: [*PhD in Computer Science — University of São Paulo / Leipzig University*])[
-  #if not short { linebreak() }
+  #linebreak()
   *Double-degree programme*
   #if short { linebreak() }
   #cv-list(
@@ -65,7 +65,7 @@
 ]
 #if short { v(0.3em) }
 #entry([2020 – 2024], title: [*BSc in Computer Science, with specialisations in Data Engineering and Data Science — University of São Paulo*])[
-  #if not short { linebreak() }
+  #linebreak()
   *Five-year programme* · GPA: 9.4/10 · Rank: 7/116
   #linebreak()
   Research-intensive final year with 600 hours of thesis work.
@@ -110,7 +110,6 @@
   Helmholtz Innovation Pool project (2025–2027), led by GEOMAR with UFZ, Forschungszentrum Jülich, and GFZ, using AI to discover marine microbial enzymes for plastic degradation and carbon capture.
   I contribute protein-language-model approaches for microbial protein annotation.
   #link("https://www.geomar.de/en/research/ongoing-projects/project-details/prj/376660?cHash=87327bc2071186ed874d7d56c68e4400")[Funder, dates, and partners] · #link("https://www.geomar.de/en/news/article/mit-kuenstlicher-intelligenz-neue-marine-enzyme-aufspueren")[Project announcement].
-  // TODO[AUDIT-02]: Add the AI MareExplore total budget or UFZ allocation only with an award document or public source; GEOMAR's public funding fields are blank.
 ]
 ]
 
@@ -129,7 +128,6 @@
       [Helped develop a machine-learning approach to classify data types across millions of runs from the Sequence Read Archive (SRA) within #link("https://helmholtz-metadaten.de/inf-projects/ereemid")[EReMiD].],
       [Contributed to metagenomic metadata standardisation in related projects and to the development of teaching materials.],
   )
-  // TODO[RES-03]: Add a public resource, model evaluation results, and links to metadata standards or teaching materials you contributed to.
 ]
 #entry([07.2022 – 09.2022], title: [*Research Intern — Big Data Biology Lab, Fudan University.*])[
 
@@ -174,7 +172,6 @@
     links: (("FAPESP grant record", "https://bv.fapesp.br/en/bolsas/208213/"),), selected: false),
   (year: [2023], title: [CNPq Scientific Initiation Scholarship], currency: "BRL", amount: 1500,
     detail: [_Automated machine learning for life sciences_. National Council for Scientific and Technological Development (CNPq); grant \#101243/2023-5.],
-    // TODO[AUDIT-01]: Add a public award-specific record for CNPq #101243/2023-5; the link below explains the scholarship category, not the individual award or amount.
     links: (("CNPq scholarship category", "https://www.gov.br/cnpq/pt-br/acesso-a-informacao/bolsas-e-auxilios/copy_of_modalidades/bolsas-modalidades"),), selected: false),
   (year: [2021 – 2022], title: [FAPESP Scientific Initiation Scholarship], currency: "BRL", amount: 7652.70,
     detail: [_Classification and analysis of bacterial non-coding RNA sequences using machine-learning techniques_. Competitive, peer-reviewed; grant \#2021/08561-8.],
@@ -258,8 +255,6 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
 // ========================================================================
 
 // Shared bibliographic entries for both CVs. Preserve published author order.
-// TODO[PUB-01]: Confirm acceptance dates and add final year, DOI, volume, and article number for Dominique and AutoAI Hub when available.
-// TODO[PUB-02]: Update BioAutoML-FAST when published; confirm equal-contribution markers against the final papers.
 #let papers = (
   fast: [#strong[de Almeida, B. L.], Bonidia, R. P., Bole, M., Avila-Santos, A. P., Stadler, P. F., Nunes da Rocha, U., & de Carvalho, A. C. P. L. F. (2026). BioAutoML-FAST: an automated machine-learning platform for reusable and benchmarked biological sequence models. #emph[bioRxiv]. #strong[DOI:] #link("https://doi.org/10.64898/2026.04.18.719383", "10.64898/2026.04.18.719383"). #strong[Under revision at #emph[Bioinformatics] following peer review (major revision).]],
   small_proteins: [Duan, Y., Santos-Júnior, C. D., Schmidt, T. S., Fullam, A., #strong[de Almeida, B. L.], Zhu, C., ... & Coelho, L. P. (2024). A catalog of small proteins from the global microbiome. Nature Communications, 15(1), 7563. #strong[DOI:] #link("https://doi.org/10.1038/s41467-024-51894-6", "10.1038/s41467-024-51894-6").],
@@ -275,7 +270,6 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
 #let cv-list = cv-list.with(dense: short)
 = Publications
 #citation-metrics(json("../data/metrics.json"))
-// TODO[MET-01]: Refresh citation counts and each source's actual retrieval date together; do not change dates merely because the CV was rebuilt.
 #text(size: 9pt)[#super[†] Equal contribution.]
 == Manuscripts Under Review
 #cv-list(papers.fast)
@@ -303,7 +297,6 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
   #link("https://bioautoml.icmc.usp.br/")[Web application] ·
   #link("https://doi.org/10.64898/2026.04.18.719383")[Preprint].
   #if not short [Provides reusable trained models for genomics, transcriptomics, and proteomics.]
-  // TODO[SW-01]: Specify your implementation/maintenance role, a stable release/model DOI, reproducibility assets, and verified independent reuse. Do not treat model counts or downloads as user counts.
 ]
 #entry[BioAutoML][
   *Automated feature engineering and model selection.* Contributing developer.
@@ -317,7 +310,6 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
   #if not short [Includes training and evaluation scripts, datasets, and experimental results for bacterial RNA classification.]
   #link("https://github.com/brenoslivio/BioDeepFuse")[Code] ·
   #link("https://doi.org/10.1080/15476286.2024.2329451")[Paper].
-  // TODO[SW-02]: Add a stable archived release, your specific software contribution, and evidence of external reuse.
 ]
 #entry[MAG2ENA][
   *Metagenome-assembled genome submission to the European Nucleotide Archive.* Lead developer; developed within NFDI4Microbiota.
@@ -383,7 +375,6 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
   == Conference Abstracts and Posters
   #cv-list(..abstracts)
   #link("https://brenoslivio.github.io/works/")[Additional conference contributions and abstracts].
-  // TODO[TALK-01]: Add presentation type, presenter, and abstract/programme link for each conference entry; distinguish co-authorship from personally presenting. ISME20 BioAutoML-FAST was a poster.
 ]
 ]
 
@@ -405,7 +396,6 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
 #if not short [== Community and Student Leadership]
 #entry([2018 – 2021], title: [*Co-founder and coordinator — efestus*, University of São Paulo.])[
   Student organisation addressing computing, data science, and technology ethics for social good. Funded participation in the TechShift Summit, Chapel Hill, USA.
-  // TODO[SERVICE-01]: Add initiatives you organised, your responsibilities, and verified participation or outcomes.
 ]
 #if not short [
   #entry[2017 – 2019][*Software division member — Warthog Robotics*, University of São Paulo. Participated in robotics competitions and taught Git and object-oriented programming to new members.]
@@ -427,20 +417,17 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
 ]
 #entry([09.2025], title: [*Instructor — NFDI4Microbiota workshop, 13th International Symposium on Anaerobic Microbiology (ISAM)*, Leipzig.])[
   Taught submission of research data and metadata to public repositories to approximately 20 students.
-  // TODO[TEACH-02]: Add your teaching hours and a public lesson/materials link.
 ]
 #entry([06.2025], title: [*Co-organiser and instructor — Metagenomics workshop, 17th Symposium on Bacterial Genetics and Ecology (BAGECO)*, Graz.])[
 
   Taught experimental design, computer experiments, and end-to-end sequence analysis with BioAutoML to approximately 20 students.
   #link("https://bageco.org/fileadmin/bageco/2025/docs/Metagenomics_WS.pdf")[Workshop programme].
   // Source: https://bageco.org/fileadmin/bageco/2025/docs/Metagenomics_WS.pdf lists Breno among the organisers.
-  // TODO[TEACH-03]: Describe your organising responsibilities and link to teaching materials.
 ]
 #entry([05.2021 – 11.2022], title: [*Teaching Assistant — University of São Paulo.*])[
 
   Eight hours/week across Object-Oriented Analysis and Design, Statistics, Fundamentals of Data Science, and Computational Visualization, serving approximately 150 students in total.
   #if not short [Graded assignments, prepared exams, and delivered practical lectures.]
-  // TODO[TEACH-04]: Add documented teaching outcomes. If you mentored students, add level, dates, your role, and outcomes separately; thesis examination is not supervision.
 ]
 #if not short { block(breakable: false, development()) }
 ]
@@ -465,9 +452,10 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
   #for r in reviewing { entry(r.date)[#strong(r.journal) #r.detail] }
   == Undergraduate Thesis Examination
 ]
-#entry(compact: short)[][Member of six undergraduate thesis examination committees.]
+#entry(compact: short)[][
+  #if short [*Undergraduate Thesis Examination* — ]Member of six undergraduate thesis examination committees.
+]
 #community(short: short)
-// TODO[SERVICE-02]: Add dates and institutions for thesis committees; refresh review counts without disclosing confidential manuscript information.
 ]
 
 
@@ -488,7 +476,6 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
 #entry[Sequence analysis][#sequence-tools]
 #entry[Research tools][Git, Linux, Jupyter, R Markdown, #LaTeX, Typst, Matplotlib, Plotly, Streamlit.]
 #entry[Languages][Portuguese (native), English (C1), German (A1.2).]
-// TODO[SKILL-01]: Add relevant workflow/HPC/container tools only if used in your research, with a project example. Confirm language levels and assessment dates if formally certified.
 ]
 
 
@@ -526,7 +513,7 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
   }
   publications(short: short)
   if not short { collaborations() }
-  software(short: short)
+  if not short { software() }
   presentations(short: short)
   teaching(short: short)
   // Keep these compact sections intact when a page is nearly full.
