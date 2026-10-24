@@ -1,7 +1,7 @@
 // Shared content for both CVs. Short mode omits details; it never paraphrases them.
 // Keep included sentences, entry titles, and link labels identical in both versions.
 // Selected presentation topics are concise summaries of the full citation titles.
-#import "style.typ": cv, entry, cv-list, icon, field, citation-metrics
+#import "style.typ": cv, entry, cv-list, icon, field, doi-link, citation-metrics
 #import "@preview/metalogo:1.2.0": LaTeX
 
 // The build supplies a source hash shared by both PDFs, avoiding circular hashes.
@@ -36,7 +36,9 @@
 #field("github", url: "https://github.com/brenoslivio", alt: "GitHub")[GitHub] #h(0.7em)
 #field("linkedin", url: "https://www.linkedin.com/in/brenoslivio/", alt: "LinkedIn")[LinkedIn]
 
-*Research interests:* Biological sequence representation and functional inference in microbial ecology, with a focus on handcrafted descriptors, foundation models and automated machine learning for sequence classification and annotation, complemented by metagenomic metadata curation.
+#if not short [
+  *Research interests:* Biological sequence representation and functional inference in microbial ecology, with a focus on handcrafted descriptors, foundation models and automated machine learning for sequence classification and annotation, complemented by metagenomic metadata curation.
+]
 ]
 
 
@@ -59,6 +61,7 @@
   *Double-degree programme*
   #if short { linebreak() }
   #cv-list(
+    [Researching biological sequence representations through automated machine learning and foundation models, using orthologous groups from over 23,000 high-quality metagenome-assembled genomes to connect functional annotation with shared evolutionary ancestry. Work also includes metagenomic metadata curation and submission to public archives. Currently investigating whether sequence representations capture evidence of small-protein evolutionary origins.],
     [*Thesis:* Decoding the Language of Life: Towards the Limits of Biological Sequence Representation.],
     [*Supervisors:* #andre and #peter.],
   )
@@ -72,7 +75,7 @@
   Accelerated completion through credit transfer from prior Computer Engineering coursework.
   #if short { linebreak() }
   #cv-list(
-    [*Thesis:* BioDeepFuse: A Hybrid Deep Learning Approach with Handcrafted Features for Non-coding RNA Classification. #link("https://doi.org/10.1080/15476286.2024.2329451")[Paper DOI].
+    [*Thesis:* BioDeepFuse: A Hybrid Deep Learning Approach with Handcrafted Features for Non-coding RNA Classification. #doi-link("https://doi.org/10.1080/15476286.2024.2329451").
       #if not short [
         #linebreak()
         Research conducted with UFZ, supported by the São Paulo Research Foundation (FAPESP).
@@ -115,13 +118,13 @@
 
 
 // ========================================================================
-// Research experience
+// Employment history
 // ========================================================================
 
 #let experience(short: false) = [
 #let cv-list = cv-list.with(compact: short)
-#let entry = entry.with(compact: short)
-= Research Experience
+#let entry = entry.with(compact: short, compact-gap: 0.6em)
+= Employment History
 #entry([07.2025 – 06.2026], title: [*Research Assistant — Helmholtz Centre for Environmental Research (UFZ).*])[
   #if not short [Microbial Data Science group, Department of Computational Biology and Chemistry.]
   #cv-list(
@@ -137,7 +140,7 @@
   #cv-list(
       [Developed a rarefaction workflow for nearly one billion unique small open reading frames (smORFs) across 63,402 samples.],
       ..if short { () } else { ([Compared smORF richness and sampling saturation across habitats, identifying undersampled soil-associated diversity.],) },
-      [Contributed to _A catalog of small proteins from the global microbiome_ (_Nature Communications_, 2024). #link("https://www.big-data-biology.org/blog/2022/09/29/smorfs_rarefaction/")[Lab blog post] · #link("https://doi.org/10.1038/s41467-024-51894-6")[Paper].],
+      [Contributed to _A catalog of small proteins from the global microbiome_ (_Nature Communications_, 2024). #link("https://www.big-data-biology.org/blog/2022/09/29/smorfs_rarefaction/")[Lab blog post] · #doi-link("https://doi.org/10.1038/s41467-024-51894-6", label: [Paper]).],
   )
 
 ]
@@ -256,14 +259,14 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
 
 // Shared bibliographic entries for both CVs. Preserve published author order.
 #let papers = (
-  fast: [#strong[de Almeida, B. L.], Bonidia, R. P., Bole, M., Avila-Santos, A. P., Stadler, P. F., Nunes da Rocha, U., & de Carvalho, A. C. P. L. F. (2026). BioAutoML-FAST: an automated machine-learning platform for reusable and benchmarked biological sequence models. #emph[bioRxiv]. #strong[DOI:] #link("https://doi.org/10.64898/2026.04.18.719383", "10.64898/2026.04.18.719383"). #strong[Under revision at #emph[Bioinformatics] following peer review (major revision).]],
-  small_proteins: [Duan, Y., Santos-Júnior, C. D., Schmidt, T. S., Fullam, A., #strong[de Almeida, B. L.], Zhu, C., ... & Coelho, L. P. (2024). A catalog of small proteins from the global microbiome. Nature Communications, 15(1), 7563. #strong[DOI:] #link("https://doi.org/10.1038/s41467-024-51894-6", "10.1038/s41467-024-51894-6").],
-  deepfuse: [#strong[de Almeida, B. L.]#super[†], Avila Santos, A. P.#super[†], Bonidia, R. P., Stadler, P. F., Stefanic, P., Mandic-Mulec, I., ... & de Carvalho, A. C. (2024). BioDeepfuse: a hybrid deep learning approach with integrated feature extraction techniques for enhanced non-coding RNA classification. RNA Biology, 21(1), 410-421. #strong[DOI:] #link("https://doi.org/10.1080/15476286.2024.2329451", "10.1080/15476286.2024.2329451").],
-  entropy: [Bonidia, R. P., Avila Santos, A. P., #strong[de Almeida, B. L.], Stadler, P. F., Nunes da Rocha, U., Sanches, D. S., & De Carvalho, A. C. (2022). Information theory for biological sequence classification: A novel feature extraction technique based on Tsallis entropy. Entropy, 24(10), 1398. #strong[DOI:] #link("https://doi.org/10.3390/e24101398", "10.3390/e24101398").],
-  automl: [Bonidia, R. P., Santos, A. P. A., #strong[de Almeida, B. L.], Stadler, P. F., da Rocha, U. N., Sanches, D. S., & de Carvalho, A. C. (2022). BioAutoML: automated feature engineering and metalearning to predict noncoding RNAs in bacteria. Briefings in Bioinformatics, 23(4), bbac218. #strong[DOI:] #link("https://doi.org/10.1093/bib/bbac218", "10.1093/bib/bbac218").],
+  fast: [#strong[de Almeida, B. L.], Bonidia, R. P., Bole, M., Avila-Santos, A. P., Stadler, P. F., Nunes da Rocha, U., & de Carvalho, A. C. P. L. F. (2026). BioAutoML-FAST: an automated machine-learning platform for reusable and benchmarked biological sequence models. #emph[bioRxiv]. #doi-link("https://doi.org/10.64898/2026.04.18.719383"). #strong[Under revision at #emph[Bioinformatics] following peer review (major revision).]],
+  small_proteins: [Duan, Y., Santos-Júnior, C. D., Schmidt, T. S., Fullam, A., #strong[de Almeida, B. L.], Zhu, C., ... & Coelho, L. P. (2024). A catalog of small proteins from the global microbiome. Nature Communications, 15(1), 7563. #doi-link("https://doi.org/10.1038/s41467-024-51894-6").],
+  deepfuse: [#strong[de Almeida, B. L.]#super[†], Avila Santos, A. P.#super[†], Bonidia, R. P., Stadler, P. F., Stefanic, P., Mandic-Mulec, I., ... & de Carvalho, A. C. (2024). BioDeepfuse: a hybrid deep learning approach with integrated feature extraction techniques for enhanced non-coding RNA classification. RNA Biology, 21(1), 410-421. #doi-link("https://doi.org/10.1080/15476286.2024.2329451").],
+  entropy: [Bonidia, R. P., Avila Santos, A. P., #strong[de Almeida, B. L.], Stadler, P. F., Nunes da Rocha, U., Sanches, D. S., & De Carvalho, A. C. (2022). Information theory for biological sequence classification: A novel feature extraction technique based on Tsallis entropy. Entropy, 24(10), 1398. #doi-link("https://doi.org/10.3390/e24101398").],
+  automl: [Bonidia, R. P., Santos, A. P. A., #strong[de Almeida, B. L.], Stadler, P. F., da Rocha, U. N., Sanches, D. S., & de Carvalho, A. C. (2022). BioAutoML: automated feature engineering and metalearning to predict noncoding RNAs in bacteria. Briefings in Bioinformatics, 23(4), bbac218. #doi-link("https://doi.org/10.1093/bib/bbac218").],
   dominique: [Tavares, D., Barreto, M. C. A., #strong[de Almeida, B. L. S.], Florentino, B. R., Tetzner, F., Goedert, G., Struchiner, C., Bonidia, R., & de Carvalho, A. Dominique: An AI-powered fact-checking chatbot for democratizing access to reliable information. Oxford Open Digital Health. #strong[Accepted for publication].],
   hub: [#strong[de Almeida, B. L. S.]#super[†], Bonidia, R.#super[†], Florentino, B.#super[†], Barreto, M. C. A.#super[†], Constantino, J. L. R.#super[†], Tavares da Silva, D.#super[†], Zwicker, G. G., Rocha, U., Goedert, G., Struchiner, C., & de Carvalho, A. AutoAI Hub: From data to society, democratizing machine learning for everyone. Oxford Open Digital Health. #strong[Accepted for publication].],
-  bsb: [#strong[de Almeida, B. L. S.]#super[†], Queiroz, A. P.#super[†], Santos, A. P. A.#super[†], Bonidia, R. P., da Rocha, U. N., Sanches, D. S., & de Carvalho, A. C. P. D. L. F. (2021, November). Feature importance analysis of non-coding DNA/RNA sequences based on machine learning approaches. In Brazilian Symposium on Bioinformatics (pp. 81-92). Cham: Springer International Publishing. #strong[DOI:] #link("https://doi.org/10.1007/978-3-030-91814-9_8", "10.1007/978-3-030-91814-9_8").],
+  bsb: [#strong[de Almeida, B. L. S.]#super[†], Queiroz, A. P.#super[†], Santos, A. P. A.#super[†], Bonidia, R. P., da Rocha, U. N., Sanches, D. S., & de Carvalho, A. C. P. D. L. F. (2021, November). Feature importance analysis of non-coding DNA/RNA sequences based on machine learning approaches. In Brazilian Symposium on Bioinformatics (pp. 81-92). Cham: Springer International Publishing. #doi-link("https://doi.org/10.1007/978-3-030-91814-9_8").],
 )
 
 #let publications(short: false) = [
@@ -295,21 +298,21 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
   *Automated machine learning for biological sequences.* Lead developer; expanded sequence types, prediction tasks, and evaluation within the BioAutoML framework.
   #link("https://github.com/Bonidia/BioAutoML-FAST")[Code] ·
   #link("https://bioautoml.icmc.usp.br/")[Web application] ·
-  #link("https://doi.org/10.64898/2026.04.18.719383")[Preprint].
+  #doi-link("https://doi.org/10.64898/2026.04.18.719383", label: [Preprint]).
   #if not short [Provides reusable trained models for genomics, transcriptomics, and proteomics.]
 ]
 #entry[BioAutoML][
   *Automated feature engineering and model selection.* Contributing developer.
   #if not short [Automates sequence-feature extraction and selection, algorithm recommendation, and hyperparameter tuning for biological sequence classification, including bacterial non-coding RNAs.]
   #link("https://github.com/Bonidia/BioAutoML")[Code] ·
-  #link("https://doi.org/10.1093/bib/bbac218")[Paper].
+  #doi-link("https://doi.org/10.1093/bib/bbac218", label: [Paper]).
 ]
 #entry[BioDeepFuse][
   *Hybrid deep learning for non-coding RNA classification.* Co-first author of the methods paper.
   Combines convolutional or bidirectional LSTM networks with handcrafted sequence features to capture complementary sequence patterns.
   #if not short [Includes training and evaluation scripts, datasets, and experimental results for bacterial RNA classification.]
   #link("https://github.com/brenoslivio/BioDeepFuse")[Code] ·
-  #link("https://doi.org/10.1080/15476286.2024.2329451")[Paper].
+  #doi-link("https://doi.org/10.1080/15476286.2024.2329451", label: [Paper]).
 ]
 #entry[MAG2ENA][
   *Metagenome-assembled genome submission to the European Nucleotide Archive.* Lead developer; developed within NFDI4Microbiota.
@@ -408,7 +411,7 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
 // ========================================================================
 
 #let teaching(short: false) = [
-#let entry = entry.with(compact: short)
+#let entry = entry.with(compact: short, compact-gap: 0.6em)
 = Teaching and Mentoring
 #entry([2025 – 2026], title: [*Instructor — UFZ Summer School on Trends in Multi-Omics Data Analysis for Microbial Ecology and Biotechnology*, Leipzig.])[
 
@@ -466,7 +469,7 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
 #let sequence-tools = [Biopython, BLAST, Prodigal, OrthoFinder, Anvi'o, HMMER, Infernal, DIAMOND, MMSeqs2.]
 
 #let skills(short: false) = [
-#let entry = entry.with(compact: short, label-width: 28mm)
+#let entry = entry.with(compact: short, label-width: 28mm, compact-gap: 0.3em)
 = Technical Skills
 #if not short [
   #entry[Methods][Biological sequence representation; handcrafted descriptors and learned representations from foundation models; automated machine learning; functional annotation; metagenomic sequence analysis.]

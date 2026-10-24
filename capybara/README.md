@@ -10,10 +10,17 @@ and the same bioinformatics tools list. The short CV selects entries and omits
 some complete details, keeping the full CV's wording except for concise
 presentation-topic summaries. Research Software and Resources appears only in
 the full CV, leaving room for larger type and more spacing in the short CV.
+The short CV also omits the header's Research Interests paragraph; both versions
+retain the detailed PhD research description under Education.
 The short CV uses 10.25-point body text and 13-point section headings. Dates sit
 in a left column, with titles and descriptions aligned together in the right
 column, as in the full CV. Margins of 17 mm horizontally and 15 mm vertically
 keep the indented layout within two pages.
+The PhD research description appears above the thesis title in both versions.
+The short CV uses 0.4em line leading and 0.4em entry spacing, with larger 0.6em
+gaps in Employment History and Teaching and Mentoring. The compact skills rows
+use 0.3em spacing. This keeps distinct roles separated within two pages without
+reducing the font size.
 Selected presentations show the year, conference, oral presentation type, and
 research subject, with a link on the conference name. Exact dates, session codes,
 full titles, author lists, and the BAGECO flash talk remain in the full CV.

@@ -20,6 +20,7 @@
     location-arrow: "paper-airplane",
     bookmark: "bookmark",
     chart-pie: "chart-pie",
+    link: "link",
   )
   if name in brands {
     brands.at(name)(color: purple, height: size, baseline: 0.1em)
@@ -34,6 +35,9 @@
   if url == none { content } else { link(url, content) }
 }
 
+#let doi-link(url, label: [DOI]) = field("link", label,
+  url: url, alt: "DOI: " + url)
+
 #let cv(body, short: false) = {
   set document(title: "Breno Livio Silva de Almeida — " + if short { "Abbreviated Academic CV" } else { "Curriculum Vitae" }, author: "Breno Livio Silva de Almeida")
   set page(paper: "a4", margin: if short { (x: 17mm, y: 15mm) } else { (x: 20mm, y: 17mm) },
@@ -43,13 +47,13 @@
     ])
   // Libertinus Serif is embedded in both the Typst CLI and Tinymist.
   set text(font: "Libertinus Serif", size: if short { 10.25pt } else { 10.5pt }, lang: "en", region: "GB")
-  set par(leading: if short { 0.38em } else { 0.5em },
+  set par(leading: if short { 0.4em } else { 0.5em },
     spacing: if short { 0.6em } else { 0.7em })
   set heading(numbering: none)
   show link: set text(fill: purple)
   show heading.where(level: 1): it => block(
-    above: if short { 0.8em } else { 0.9em },
-    below: if short { 0.4em } else { 0.45em }, sticky: true,
+    above: if short { 0.65em } else { 0.9em },
+    below: if short { 0.35em } else { 0.45em }, sticky: true,
     stack(dir: ttb, spacing: 3pt,
       text(size: if short { 13pt } else { 14pt }, weight: "bold", it.body),
       line(length: 100%, stroke: 0.5pt + lilac.lighten(35%)),
@@ -64,8 +68,8 @@
 }
 
 // Keep each date together with its entry when content moves between pages.
-#let entry(date, body, compact: false, label-width: 24mm, title: none) = if compact {
-  block(above: 0.3em, below: 0.3em, breakable: false)[
+#let entry(date, body, compact: false, label-width: 24mm, title: none, compact-gap: 0.4em) = if compact {
+  block(above: compact-gap, below: compact-gap, breakable: false)[
     #if date == [] { body } else {
       grid(columns: (label-width, 1fr), column-gutter: 2mm,
         align: (left + top, left + top),
