@@ -264,22 +264,22 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
   deepfuse: [#strong[de Almeida, B. L.]#super[†], Avila Santos, A. P.#super[†], Bonidia, R. P., Stadler, P. F., Stefanic, P., Mandic-Mulec, I., ... & de Carvalho, A. C. (2024). BioDeepfuse: a hybrid deep learning approach with integrated feature extraction techniques for enhanced non-coding RNA classification. RNA Biology, 21(1), 410-421. #doi-link("https://doi.org/10.1080/15476286.2024.2329451").],
   entropy: [Bonidia, R. P., Avila Santos, A. P., #strong[de Almeida, B. L.], Stadler, P. F., Nunes da Rocha, U., Sanches, D. S., & De Carvalho, A. C. (2022). Information theory for biological sequence classification: A novel feature extraction technique based on Tsallis entropy. Entropy, 24(10), 1398. #doi-link("https://doi.org/10.3390/e24101398").],
   automl: [Bonidia, R. P., Santos, A. P. A., #strong[de Almeida, B. L.], Stadler, P. F., da Rocha, U. N., Sanches, D. S., & de Carvalho, A. C. (2022). BioAutoML: automated feature engineering and metalearning to predict noncoding RNAs in bacteria. Briefings in Bioinformatics, 23(4), bbac218. #doi-link("https://doi.org/10.1093/bib/bbac218").],
-  dominique: [Tavares, D., Barreto, M. C. A., #strong[de Almeida, B. L. S.], Florentino, B. R., Tetzner, F., Goedert, G., Struchiner, C., Bonidia, R., & de Carvalho, A. Dominique: An AI-powered fact-checking chatbot for democratizing access to reliable information. Oxford Open Digital Health. #strong[Accepted for publication].],
+  dominique: [Tavares, D., Barreto, M. C. A., #strong[de Almeida, B. L. S.], Florentino, B., Tetzner, F., Goedert, G., Struchiner, C., Bonidia, R., & de Carvalho, A. (2026). Dominique: An AI-Powered Fact-Checking Chatbot for Democratizing Access to Reliable Information. Oxford Open Digital Health, oqag045. #doi-link("https://doi.org/10.1093/oodh/oqag045").],
   hub: [#strong[de Almeida, B. L. S.]#super[†], Bonidia, R.#super[†], Florentino, B.#super[†], Barreto, M. C. A.#super[†], Constantino, J. L. R.#super[†], Tavares da Silva, D.#super[†], Zwicker, G. G., Rocha, U., Goedert, G., Struchiner, C., & de Carvalho, A. AutoAI Hub: From data to society, democratizing machine learning for everyone. Oxford Open Digital Health. #strong[Accepted for publication].],
   bsb: [#strong[de Almeida, B. L. S.]#super[†], Queiroz, A. P.#super[†], Santos, A. P. A.#super[†], Bonidia, R. P., da Rocha, U. N., Sanches, D. S., & de Carvalho, A. C. P. D. L. F. (2021, November). Feature importance analysis of non-coding DNA/RNA sequences based on machine learning approaches. In Brazilian Symposium on Bioinformatics (pp. 81-92). Cham: Springer International Publishing. #doi-link("https://doi.org/10.1007/978-3-030-91814-9_8").],
 )
 
 #let publications(short: false) = [
-#let cv-list = cv-list.with(dense: short)
+#let cv-list = cv-list.with(dense: short, spacing: if short { 0.5em } else { 0.65em })
 = Publications
 #citation-metrics(json("../data/metrics.json"))
 #text(size: 9pt)[#super[†] Equal contribution.]
 == Manuscripts Under Review
 #cv-list(papers.fast)
 == Published Journal Articles
-#cv-list(..("small_proteins", "deepfuse", "entropy", "automl").map(k => papers.at(k)))
+#cv-list(..("dominique", "small_proteins", "deepfuse", "entropy", "automl").map(k => papers.at(k)))
 == Accepted Journal Articles
-#cv-list(papers.hub, papers.dominique)
+#cv-list(papers.hub)
 == Conference Proceedings
 #cv-list(papers.bsb)
 ]

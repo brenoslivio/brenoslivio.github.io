@@ -30,13 +30,14 @@
   }
 }
 
-#let field(name, body, url: none, alt: "") = {
-  let content = box[#icon(name, alt: alt)#h(0.4em)#body]
+#let field(name, body, url: none, alt: "", icon-size: 0.95em) = {
+  let content = box[#icon(name, size: icon-size, alt: alt)#h(0.4em)#body]
   if url == none { content } else { link(url, content) }
 }
 
+// Keep the inline DOI icon within the text line's height.
 #let doi-link(url, label: [DOI]) = field("link", label,
-  url: url, alt: "DOI: " + url)
+  url: url, alt: "DOI: " + url, icon-size: 0.75em)
 
 #let cv(body, short: false) = {
   set document(title: "Breno Livio Silva de Almeida — " + if short { "Abbreviated Academic CV" } else { "Curriculum Vitae" }, author: "Breno Livio Silva de Almeida")
@@ -86,10 +87,11 @@
   )
 ] }
 
-#let cv-list(compact: false, dense: false, ..items) = if compact {
+#let cv-list(compact: false, dense: false, spacing: auto, ..items) = if compact {
   items.pos().join([ ])
 } else {
-  set list(indent: 1em, body-indent: 0.5em, spacing: if dense { 0.2em } else { 0.5em })
+  set list(indent: 1em, body-indent: 0.5em,
+    spacing: if spacing != auto { spacing } else if dense { 0.2em } else { 0.5em })
   list(tight: dense, ..items.pos().map(item => block(breakable: false, item)))
 }
 
