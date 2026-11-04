@@ -24,11 +24,14 @@ reducing the font size.
 Selected presentations show the year, conference, oral presentation type, and
 research subject, with a link on the conference name. Exact dates, session codes,
 full titles, author lists, and the BAGECO flash talk remain in the full CV.
-All publication entries remain in both versions, with tighter list spacing in
+All publication entries remain in both versions, with 0.25em list spacing in
 the short CV to keep it within two pages.
 It retains all three reviewing journals, efestus leadership and TechShift Summit
 participation, and HIDA-sponsored instructor training. The BSc entry includes
 specialisations, GPA, rank, the 600-hour research thesis and its title, and the supervisor.
+Both versions include the 2026 evaluator role at the 34th SIICUSP under Academic
+Service. The full CV adds the official Portuguese event name; the short CV uses
+only the shared opening text, with the subsection label and year inline.
 
 Each PDF has a link beside the name to open the other version on the website.
 The links also work from downloaded copies with internet access; publish both PDFs together.

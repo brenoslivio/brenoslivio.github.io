@@ -270,7 +270,7 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
 )
 
 #let publications(short: false) = [
-#let cv-list = cv-list.with(dense: short, spacing: if short { 0.5em } else { 0.65em })
+#let cv-list = cv-list.with(dense: short, spacing: if short { 0.25em } else { 0.65em })
 = Publications
 #citation-metrics(json("../data/metrics.json"))
 #text(size: 9pt)[#super[†] Equal contribution.]
@@ -453,10 +453,18 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
 ] else [
   == Journal Peer Review
   #for r in reviewing { entry(r.date)[#strong(r.journal) #r.detail] }
-  == Undergraduate Thesis Examination
+  == Research Symposium Evaluation
+]
+#entry(if short { [] } else { [2026] }, compact: short)[
+  #if short [*Research Symposium Evaluation* — ]
+  *Evaluator — 34th SIICUSP*, University of São Paulo#if short [ (2026)].
+  #if not short [Simpósio Internacional de Iniciação Científica e Tecnológica da Universidade de São Paulo.]
+]
+#if not short [
+  == Thesis Examination Committees
 ]
 #entry(compact: short)[][
-  #if short [*Undergraduate Thesis Examination* — ]Member of six undergraduate thesis examination committees.
+  #if short [*Thesis Examination Committees* — ]Member of six undergraduate thesis examination committees.
 ]
 #community(short: short)
 ]
@@ -520,7 +528,7 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
   presentations(short: short)
   teaching(short: short)
   // Keep these compact sections intact when a page is nearly full.
-  block(above: if short { 0.8em } else { 0pt }, breakable: false, service(short: short))
+  block(above: if short { 0.8em } else { 0.9em }, breakable: false, service(short: short))
   block(breakable: false, skills(short: short))
   memberships(short: short)
 }
