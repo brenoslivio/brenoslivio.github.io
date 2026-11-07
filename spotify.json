@@ -1,0 +1,13 @@
+{
+  "isPlaying": false,
+  "isFallback": true,
+  "track": "La Villa Strangiato",
+  "artist": "Rush",
+  "album": "Hemispheres",
+  "albumArt": "https://i.scdn.co/image/ab67616d0000b273fe148db2d296efd0f703e61f",
+  "spotifyUrl": "https://open.spotify.com/track/4CyElmiM9EF9aURGWlPZLi",
+  "progressMs": 0,
+  "durationMs": 574733,
+  "lastPlayedAt": "2026-11-06T20:57:39Z",
+  "updatedAt": "2026-11-07T13:29:00Z"
+}
