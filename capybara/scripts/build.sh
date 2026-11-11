@@ -1,25 +1,23 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Run from any directory. No Python or Node installation is needed.
+# Build the deployment artifact without rewriting source HTML or local previews.
 repo_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)
 cd -- "$repo_dir"
+if [[ $# -gt 0 ]]; then
+  echo "Usage: bash capybara/scripts/build.sh (writes _site/)" >&2
+  exit 2
+fi
 
-case "${1:-both}" in
-  full|short|both|links) ;; # All modes rebuild the linked pair together.
-  *) echo "Usage: bash capybara/scripts/build.sh [both|full|short|links]" >&2; exit 2 ;;
-esac
-
-# PDF-to-PDF links use a shared source hash: hashing mutually linked final PDFs
-# would create a circular dependency. Exclude the generated version manifest.
+# Pin PDF creation metadata to the revision rather than the runner's wall clock.
+export SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH:-$(git log -1 --format=%ct)}
 source_version() {
   local digest
   digest=$(
     {
       typst --version
       sha256sum capybara/scripts/build.sh
-      find capybara/src capybara/data -type f \
-        ! -path capybara/data/cv-link-version.json -print0 \
+      find capybara/src capybara/data -type f -print0 \
         | LC_ALL=C sort -z | xargs -0 sha256sum
     } | sha256sum
   )
@@ -29,54 +27,46 @@ source_version() {
 link_version=$(source_version)
 build_dir=$(mktemp -d)
 trap 'rm -rf -- "$build_dir"' EXIT
+site_dir="$build_dir/site"
+mkdir -p "$site_dir/capybara"
+
+# Copy only public assets, never sources or old local preview PDFs.
+cp -- index.html style.css spotify.css robots.txt sitemap.xml CNAME \
+  google*.html "$site_dir/"
+cp -R -- js imgs works events faq "$site_dir/"
 
 echo "Building both CVs with embedded link version $link_version"
 for name in cv cv-short; do
   typst compile --root capybara --ignore-system-fonts \
     --input "cv-link-version=$link_version" \
-    "capybara/src/$name.typ" "$build_dir/$name.pdf"
+    "capybara/src/$name.typ" "$site_dir/capybara/$name.pdf"
 done
 if [[ "$(source_version)" != "$link_version" ]]; then
   echo "CV inputs changed during compilation; run the build again." >&2
   exit 1
 fi
 
-# Publish local build outputs only when both compilations succeed. The manifest
-# lets Tinymist previews and direct exports use the last successful link version.
-printf '{"version":"%s"}\n' "$link_version" > "$build_dir/cv-link-version.json"
-for name in cv cv-short; do
-  mv -- "$build_dir/$name.pdf" "capybara/$name.pdf"
-done
-if ! cmp -s -- "$build_dir/cv-link-version.json" capybara/data/cv-link-version.json; then
-  mv -- "$build_dir/cv-link-version.json" capybara/data/cv-link-version.json
-fi
-
-# Hash the final PDF bytes, including their metadata. Identical files keep the
-# same version; a changed PDF gets a different URL even within the same day.
-for pdf in capybara/cv.pdf capybara/cv-short.pdf; do
-  if [[ ! -s "$pdf" ]]; then
-    echo "Missing or empty PDF: $pdf. Build both CVs first." >&2
-    exit 1
-  fi
-done
-full_hash=$(sha256sum capybara/cv.pdf)
+# HTML links identify the final PDF bytes. PDF-to-PDF links use the shared
+# source hash because hashing mutually linked final PDFs would be circular.
+full_hash=$(sha256sum "$site_dir/capybara/cv.pdf")
 full_hash=${full_hash:0:16}
-short_hash=$(sha256sum capybara/cv-short.pdf)
+short_hash=$(sha256sum "$site_dir/capybara/cv-short.pdf")
 short_hash=${short_hash:0:16}
-
-temp_file="$build_dir/page.html"
-
-# Only rewrite local CV hrefs, leaving other asset versions and external URLs
-# untouched. Also discover new, untracked pages that are not ignored by Git.
 while IFS= read -r -d '' page; do
-  sed -E \
+  sed -i -E \
     -e "s|(href=[\"']/capybara/cv\\.pdf)(\\?v=[[:alnum:]._-]+)?([\"'])|\\1?v=$full_hash\\3|g" \
     -e "s|(href=[\"']/capybara/cv-short\\.pdf)(\\?v=[[:alnum:]._-]+)?([\"'])|\\1?v=$short_hash\\3|g" \
-    "$page" > "$temp_file"
-  if ! cmp -s -- "$page" "$temp_file"; then
-    cat -- "$temp_file" > "$page"
-    echo "Updated CV links: $page"
-  fi
-done < <(git ls-files --cached --others --exclude-standard -z -- '*.html')
+    "$page"
+done < <(find "$site_dir" -type f -name '*.html' -print0)
+printf '{"full":"%s","short":"%s","embedded":"%s"}\n' \
+  "$full_hash" "$short_hash" "$link_version" > "$site_dir/capybara/cv-versions.json"
+
+python3 capybara/scripts/check-site.py "$site_dir"
+# Preserve any previous artifact if compilation or validation fails.
+rm -rf -- "$repo_dir/_site"
+mv -- "$site_dir" "$repo_dir/_site"
 
 echo "CV link versions: full=$full_hash short=$short_hash"
+if [[ -n "${GITHUB_OUTPUT:-}" ]]; then
+  printf 'full_hash=%s\nshort_hash=%s\n' "$full_hash" "$short_hash" >> "$GITHUB_OUTPUT"
+fi

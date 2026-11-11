@@ -4,10 +4,10 @@
 #import "style.typ": cv, entry, cv-list, icon, field, doi-link, citation-metrics
 #import "@preview/metalogo:1.2.0": LaTeX
 
-// The build supplies a source hash shared by both PDFs, avoiding circular hashes.
-// Tinymist uses the version saved by the last successful build.
-#let cv-link-version = sys.inputs.at("cv-link-version", default: json("../data/cv-link-version.json").version)
-#let cv-url(short: false) = "https://brenoslivio.github.io/capybara/" + if short { "cv-short.pdf" } else { "cv.pdf" } + "?v=" + cv-link-version
+// CI supplies a shared source hash, avoiding circular hashes between the PDFs.
+// Editor previews use the stable public URLs without a generated local manifest.
+#let cv-link-version = sys.inputs.at("cv-link-version", default: "")
+#let cv-url(short: false) = "https://breno.science/capybara/" + if short { "cv-short.pdf" } else { "cv.pdf" } + if cv-link-version != "" { "?v=" + cv-link-version } else { "" }
 
 // ========================================================================
 // Header and research interests
@@ -26,11 +26,11 @@
 #linebreak()
 #text(size: 10.5pt)[Computational biology · Biological sequence representation · Machine learning]
 #linebreak()
-#field("envelope", url: "mailto:brenoslivio@pm.me", alt: "Email")[brenoslivio\@pm.me] #h(0.8em)
+#field("envelope", url: "mailto:breno@breno.science", alt: "Email")[breno\@breno.science] #h(0.8em)
 #field("location-arrow", alt: "Location")[São Carlos, Brazil]
 #if not short [#h(0.8em)#field("mobile", alt: "Phone")[+55 11 96839 2259]]
 #linebreak()
-#field("globe", url: "https://brenoslivio.github.io/", alt: "Website")[Website] #h(0.7em)
+#field("globe", url: "https://breno.science/", alt: "Website")[Website] #h(0.7em)
 #field("graduation-cap", url: "https://scholar.google.com/citations?user=g0zZ_U4AAAAJ", alt: "Google Scholar")[Google Scholar] #h(0.7em)
 #field("orcid", url: "https://orcid.org/0000-0002-2041-9170", alt: "ORCID")[0000-0002-2041-9170] #h(0.7em)
 #field("github", url: "https://github.com/brenoslivio", alt: "GitHub")[GitHub] #h(0.7em)
@@ -377,7 +377,7 @@ Awarded approximately *€#money(calc.round(eur-total))* in competitive fellowsh
 #if not short [
   == Conference Abstracts and Posters
   #cv-list(..abstracts)
-  #link("https://brenoslivio.github.io/works/")[Additional conference contributions and abstracts].
+  #link("https://breno.science/works/")[Additional conference contributions and abstracts].
 ]
 ]
 

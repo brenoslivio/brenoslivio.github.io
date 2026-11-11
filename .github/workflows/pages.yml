@@ -1,0 +1,59 @@
+name: Build CVs and deploy website
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Typst
+        uses: typst-community/setup-typst@v5.3.1
+        with:
+          typst-version: '0.14.2'
+      - name: Compile CVs and build versioned website
+        id: site
+        run: bash capybara/scripts/build.sh
+      - name: Report PDF versions
+        env:
+          FULL_HASH: ${{ steps.site.outputs.full_hash }}
+          SHORT_HASH: ${{ steps.site.outputs.short_hash }}
+        run: |
+          {
+            echo 'PDF versions in this artifact (public after deployment):'
+            echo "- Full CV: https://breno.science/capybara/cv.pdf?v=$FULL_HASH"
+            echo "- Short CV: https://breno.science/capybara/cv-short.pdf?v=$SHORT_HASH"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload website and CVs
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Deploy website
+        id: deployment
+        uses: actions/deploy-pages@v4

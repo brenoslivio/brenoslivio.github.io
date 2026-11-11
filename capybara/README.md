@@ -2,7 +2,7 @@
 
 Two traditional academic CVs share one content file:
 
-- `cv.pdf`: full CV (five pages), linked by the website.
+- `cv.pdf`: full CV (five pages), built by CI and linked by the website.
 - `cv-short.pdf`: abbreviated CV (two pages).
 
 Both versions include all publication entries, grouped by publication status,
@@ -47,12 +47,10 @@ capybara/
 │   ├── cv.typ         # Full CV entry point
 │   └── cv-short.typ   # Abbreviated CV entry point
 ├── data/
-│   ├── metrics.json   # Citation counts and actual snapshot dates
-│   └── cv-link-version.json # Generated version for links inside the PDFs
+│   └── metrics.json   # Citation counts and actual snapshot dates
 ├── scripts/
-│   └── build.sh       # Compile PDFs and refresh website CV link hashes
-├── cv.pdf             # Website download
-├── cv-short.pdf       # Abbreviated academic CV
+│   ├── build.sh       # Build PDFs and versioned website into _site/
+│   └── check-site.py  # Validate hashes, download links, and metadata
 └── README.md
 ```
 
@@ -84,93 +82,72 @@ The two entry files only call `document()` with the appropriate option.
   accepted paper is published.
 - Rebuild both PDFs after editing and check their pagination.
 
-## Build
+## Build and deployment
 
-### VS Code
+[The Pages workflow](../.github/workflows/pages.yml) runs on pull requests,
+pushes to `main`, and manual dispatch. It installs **Typst 0.14.2**, compiles both
+CVs, and validates the complete site artifact before uploading it. Only builds
+on `main` deploy to GitHub Pages. Failed builds leave the live site unchanged.
 
-Open `src/cv.typ` or `src/cv-short.typ` to preview the corresponding CV.
-Press **Ctrl+Shift+B** to build both PDFs. The existing tasks
-**Terminal → Run Task → Build full academic CV** or
-**Build abbreviated academic CV** now also rebuild both versions, so their
-embedded links stay in sync. All build tasks refresh the website's CV links too.
+The repository's Pages publishing source must be **GitHub Actions**, with
+`breno.science` retained as the custom domain. No generated PDFs, link manifests,
+or versioned HTML need to be committed. The Spotify workflow continues to update
+its separate data branch independently.
 
-The repository's VS Code settings configure Tinymist's project root as
-`capybara/`, so sources in `src/` can read `data/metrics.json`.
-Click Tinymist's **PDF** export button to export the current CV, or run the build
-task after editing. Automatic export is disabled. The `tinymist.outputPath`
-setting (`$root/$name`) makes the PDF button write to `capybara/`, matching the
-build tasks and the website's download paths.
-Tinymist's PDF button does not run the build script. After exporting with that
-button, run **Terminal → Run Task → Refresh CV links**, or use
-**Ctrl+Shift+B** to compile and refresh together.
-The refresh task also rebuilds both PDFs. Tinymist previews and direct exports
-use the embedded link version saved by the last successful build.
+The build writes only `_site/`, containing public assets, the two PDFs, and
+`capybara/cv-versions.json`. It never edits source HTML or local preview PDFs.
+The uploaded `github-pages` artifact is available from the workflow run, and the
+run summary lists both versioned download URLs. PR artifacts are for review;
+their URLs do not become live unless deployed from `main`.
 
-### Command line
+### Local previews
 
-From the repository root, with Typst, Bash, Git, and standard command-line tools
-(`sha256sum`, `sed`, `cmp`, and `mktemp`) available:
+Open `src/cv.typ` or `src/cv-short.typ` in Tinymist to preview it. The VS Code tasks
+**Preview full academic CV**, **Preview abbreviated academic CV**, and
+**Preview both academic CVs** compile ignored PDFs under `capybara/` without
+hashing or modifying website links. **Ctrl+Shift+B** previews both.
 
-```sh
-bash capybara/scripts/build.sh both
-```
+Tinymist uses `capybara/` as the root, disables system fonts, and exports to
+`$root/$name`. Automatic export is disabled. The PDF export button remains
+available. Preview PDFs link to the stable public CV URLs without a query string.
 
-The `full`, `short`, and `links` arguments remain supported, but all modes now
-compile both linked PDFs. The script replaces the local PDFs and refreshes the
-website links only after both compilations succeed.
-
-Direct Typst compilation also works for previews. Before publishing, run the
-build script to refresh the embedded versions and website links:
+To preview directly:
 
 ```sh
 typst compile --root capybara --ignore-system-fonts capybara/src/cv.typ capybara/cv.pdf
 typst compile --root capybara --ignore-system-fonts capybara/src/cv-short.typ capybara/cv-short.pdf
-bash capybara/scripts/build.sh links
 ```
 
-For automatic rebuilding while editing:
+To reproduce the CI artifact for troubleshooting, use Typst 0.14.2, Python 3,
+Bash, Git, and standard GNU command-line tools:
 
 ```sh
-typst watch --root capybara --ignore-system-fonts capybara/src/cv.typ capybara/cv.pdf
+bash capybara/scripts/build.sh
 ```
 
-After stopping the watcher, run `bash capybara/scripts/build.sh links` before publishing.
-
-On Nix, the compiler can be run without installing it into your profile:
-
-```sh
-nix shell nixpkgs#typst --command bash capybara/scripts/build.sh both
-```
-
-`--root capybara` allows the compiler to read the sibling `src/` and `data/`
-folders. Supply an output path to keep generated PDFs outside `src/`.
-
-Validated with Typst **0.14.2**. Pin this compiler version when setting up CI for
-consistent layout. Typst downloads the pinned packages on the first build
-and stores them in its normal package cache, outside this repository. That first
-build needs internet access; subsequent builds can use the cache. No separate
-font installation, icon download, or asset folder is needed.
+This optional check writes ignored `_site/` files; deployment hashes are always
+computed again by CI. Normal editing requires no local publishing build.
+Typst downloads the pinned packages on the first build and caches them outside
+the repository. No separate font installation is needed.
 
 ## Website cache busting
 
-`scripts/build.sh` versions both kinds of CV links:
+The build versions two kinds of links:
 
-- Links inside the PDFs use the first 16 hexadecimal characters of a shared
-  SHA-256 hash of the source and data files, build script, and Typst version.
-  Changing any of these inputs updates both PDFs' embedded links, including the
-  short CV's funding-detail link. Unchanged inputs keep the same embedded version.
-- Website HTML links use each final PDF's own SHA-256 prefix. Recompilation can
-  change these hashes through PDF metadata even when the visible text stays the same.
+- Website HTML links use the first 16 hexadecimal characters of each final PDF's
+  SHA-256 hash, for example `/capybara/cv.pdf?v=<hash>`. Source HTML keeps plain
+  paths; only the deployment copies get hashes.
+- Links inside the PDFs use a shared hash of the CV sources, data, build script,
+  and compiler version. This avoids a circular dependency between mutually
+  linked PDFs. CI passes this value through Typst's `cv-link-version` input.
 
-The shared version is computed before compilation, passed to Typst, and saved to
-`data/cv-link-version.json` after a successful build. This generated file is
-excluded from the hash inputs and should be committed with the PDFs. Using the
-source hash inside the PDFs avoids a circular dependency: putting each final
-PDF's hash into the other would change both hashes again.
+The deployed `capybara/cv-versions.json` exposes `full`, `short`, and `embedded`
+hashes. The build also reports the PDF hashes through GitHub Actions outputs.
+PDF creation timestamps use the commit timestamp (`SOURCE_DATE_EPOCH`), making
+repeat builds of the same revision reproducible with the same compiler.
 
-Publish the updated HTML and PDFs together. The script edits local files; it
-does not commit, push, or deploy. Previously downloaded PDFs keep their embedded
-version; they cannot update links when a later edition is published.
+Both PDFs and all versioned pages deploy together. Previously downloaded PDFs
+keep their embedded version; they cannot update links after a later deployment.
 
 ## Funding summary
 
@@ -197,7 +174,7 @@ Compilation never refreshes the statistics or changes their dates automatically.
 
 A future update script can write this JSON before compilation. It should update
 each date only after a successful retrieval and retain previous values on failure.
-No API fetching or CV compilation GitHub Actions workflow is configured yet.
+CI compiles the CVs using the committed metrics; no automatic metrics fetching is configured.
 
 ## Fonts, icons, and attribution
 

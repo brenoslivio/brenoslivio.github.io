@@ -2,12 +2,16 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Build full academic CV",
+      "label": "Preview full academic CV",
       "type": "process",
-      "command": "bash",
+      "command": "typst",
       "args": [
-        "capybara/scripts/build.sh",
-        "full"
+        "compile",
+        "--root",
+        "capybara",
+        "--ignore-system-fonts",
+        "capybara/src/cv.typ",
+        "capybara/cv.pdf"
       ],
       "options": {
         "cwd": "${workspaceFolder}"
@@ -20,12 +24,16 @@
       }
     },
     {
-      "label": "Build abbreviated academic CV",
+      "label": "Preview abbreviated academic CV",
       "type": "process",
-      "command": "bash",
+      "command": "typst",
       "args": [
-        "capybara/scripts/build.sh",
-        "short"
+        "compile",
+        "--root",
+        "capybara",
+        "--ignore-system-fonts",
+        "capybara/src/cv-short.typ",
+        "capybara/cv-short.pdf"
       ],
       "options": {
         "cwd": "${workspaceFolder}"
@@ -38,29 +46,15 @@
       }
     },
     {
-      "label": "Build both academic CVs",
-      "type": "process",
-      "command": "bash",
-      "args": [
-        "capybara/scripts/build.sh",
-        "both"
+      "label": "Preview both academic CVs",
+      "dependsOn": [
+        "Preview full academic CV",
+        "Preview abbreviated academic CV"
       ],
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
+      "dependsOrder": "sequence",
       "group": {
         "kind": "build",
         "isDefault": true
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Refresh CV links",
-      "type": "process",
-      "command": "bash",
-      "args": ["capybara/scripts/build.sh", "links"],
-      "options": {
-        "cwd": "${workspaceFolder}"
       },
       "problemMatcher": []
     }
